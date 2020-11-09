@@ -1,0 +1,43 @@
+<div class="container container-lg">
+ {% if not discussions.count %}
+ <div class="alert alert-info">پیامی برای نمایش وجود ندارد.</div>
+ {% endif %}
+
+ {% for dis in discussions %}
+ <div class="row">
+ <div class="col-md-2">
+ <span class="pull-left hidden-sm hidden-xs">
+{% include "image.html" with user=dis.userprofile %}
+</span>
+ </div>
+ <div class="col-md-10">
+ {% ifequal dis.message "این پیغام به دلیل نقض قوانین سایت (تبادل اطلاعات تماس) حذف شده است." %}
+  <div class="alert alert-danger">{{dis.message}}</div>
+{% else %}
+ <div   class="panel panel-default dis-panel">
+	<div class="panel-body"> 
+	 <a href="/{{dis.userprofile.user.username}}/"><span>{{dis.userprofile.user.username}}</span></a><span class="pull-left gray">{{dis.date|since}}</span>
+	 <hr>
+	{{dis.message}}
+		</div>
+</div>
+ {% endifequal %}
+
+ 
+ </div>
+ </div>
+
+
+<hr>
+{% endfor %}
+<form class="form" role="form" action="/project/{{form.project.id}}/" method="POST" >
+	{% csrf_token %}
+	<div class="form-group">
+		<textarea class="form-control" placeholder="پیام خود را بنویسید" name ="message" ></textarea>
+		<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success" >ارسال</button>
+	</div>
+</form>
+</div>

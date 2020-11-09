@@ -1,0 +1,69 @@
+{% extends "head-tag.html" %}
+{% block title %}ثبت نام{% endblock %}
+{% block content %}
+	{% load staticfiles %}
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="{% static 'captcha/latest-jquery/jquery-1.5.1.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'captcha/latest-jquery-ui/jquery-ui.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'captcha/captcha/jquery.captcha.js' %}"></script>
+<link href="{% static 'captcha/captcha/captcha.css' %}" rel="stylesheet" type="text/css" />
+<style type="text/css" media="screen">
+		body { background-color: white; }
+	</style>
+<script type="text/javascript" charset="utf-8">
+		$(function() {
+			$(".ajax-fc-container").captcha({
+				borderColor: "silver",
+				text: " لطفا <span>چاقو</span> را به داخل دایره بکشید."
+			});
+		});
+	</script>
+<div class="container container-sm" > {% if form.errors %}
+	<div class="alert alert-danger">
+		<p style="color: red;"> لطفا خطا های زیر را برطرف کنید
+			{{ form.errors|pluralize }} </p>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form id="myForm" class="form-horizontal" role="form" action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="user_name" class="col-md-4 control-label">نام کاربری:</label>
+					<div class="col-md-8">
+						<input type="text" class="form-control" id="user_name" name="user_name" placeholder="user name" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-md-4 control-label">ایمیل:</label>
+					<div class="col-md-8">
+						<input type="email" class="form-control" id="email" name="email" placeholder="email" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-md-4 control-label">رمز عبور:</label>
+					<div class="col-md-8">
+						<input type="password" class="form-control" id="password" name="password" placeholder="password" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="confirm_password" class="col-md-4 control-label">تکرار رمز عبور:</label>
+					<div class="col-md-8">
+						<input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="confirm password" >
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="ajax-fc-container" >برای دیدن کپچا باید جاوا اسکریپت بروزر خود را فعال کنید</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-4 col-md-8">
+						<button type="submit" class="btn btn-default">ثبت نام</button>
+						<span class="help-block">{{form.errors}}</span> </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %} 

@@ -1,0 +1,34 @@
+ {% if form.errors %}
+<div class="alert alert-danger">
+	<p style="color: red;"> لطفا خطاهای زیر را برطرف کنید
+		{{ form.errors|pluralize }} </p>
+</div>
+{% endif %}
+<form class="form-horizontal" role="form" action="/timeincrease/{{project.id}}/{{form.is_offer}}/" method="post">
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="day" class="col-md-3 control-label">میزان افزایش</label>
+		<div class="col-md-4">
+			<div class="input-group">
+				<input type="number" class="form-control" id="day" name="day"  placeholder="amount" value='1' >
+				<span class="input-group-addon">{% if project.is_running %}روز{% else %}ساعت{% endif %}</span> </div>
+			<span class="help-block">{{ form.day.errors }} </span> </div>
+		{% if project.is_running %}
+		<div class="col-md-4">
+			<div class="input-group">
+				<input type="number" class="form-control" id="month" name="month"  placeholder="amount" value='0'>
+				<span class="input-group-addon">ماه</span> </div>
+			<span class="help-block">{{ form.month.errors }} </span> </div>
+		{% else %} </div>
+	<div hidden>
+		<div class="field"> {{ form.month.errors }}
+			<label for="id_title">ماه:</label>
+			{{ form.month }} </div>
+	</div>
+	{% endif %}
+	<div class="form-group">
+		<div class="col-md-offset-3 col-md-9">
+			<button type="submit" class="btn btn-default">ثبت</button>
+		</div>
+	</div>
+</form>

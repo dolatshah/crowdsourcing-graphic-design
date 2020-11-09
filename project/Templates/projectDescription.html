@@ -1,0 +1,73 @@
+<div id="project">
+
+    <div id="accordion" class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">ﻣﺸﺨﺼﺎﺕ</a>
+                </h1>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tr>
+                        <td>نام کارفرما</td>
+                        <td>{{form.project.employer.user.username}}</td>
+                        <td style="width:150px;"></td>
+                        <td>ﺩﺳﺘﻪ ﺑﻨﺪی</td>
+                        <td>{{form.project.category}}</td>
+                        </tr>
+                        <tr>
+                        <td>حداکثر میزان بودجه</td>
+                        <td>{{form.project.endBid}} تومان</td>
+                        <td style="width:150px;"></td>
+                        <td>زمان باقیمانده</td>
+                        <td><div style="direction:ltr; float:right;">{% ifequal form.is_time_remain True %}
+                                        {{form.time_remain}}
+                                    {% else %}
+                                        زمان ارسال پیشنهاد به پایان رسیده است.
+                                    {% endifequal %} </div></td>
+                        </tr>
+                        <tr>
+                        <td>مهلت انجام پروژه</td>
+                        <td>{{form.project.offerDay}} روز</td>
+                        <td style="width:150px;"></td>
+                        <td>میانگین پیشنهادها</td>
+                        <td><div>{{form.averageOfferValue}}  تومان<div></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+ <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">شرح پروژه</a>
+                </h1>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>{{form.project.description |linebreaks }} </p>
+                </div>
+            </div>
+        </div>
+        
+ <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">فایل ها</a>
+                </h1>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                {% if form.attachedUrl %}
+                <p> <a href = "{{form.attachedUrl}}" ><span class="glyphicon glyphicon-file"></span>فایل ضمیمه شده</a> </p>
+                {% endif %} 
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

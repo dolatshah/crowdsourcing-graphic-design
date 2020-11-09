@@ -1,0 +1,39 @@
+<div id="message-box"></div>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> اشتراک فایل</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div  id="uploadbox"> </div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-body"> <span>فایل های موجود</span><span title="برای بروزرسانی فایل های موجود در این قسمت باید صفحه را Refresh کنید." class="glyphicon glyphicon-question-sign pull-left orange"></span>
+				<hr>
+				<div  id="fileslist">{% if form.files  %}
+					<ul class="list-unstyled">
+						{% for file in form.files %}
+						<li>
+							<ul class="list-inline">
+								<li> <a href="/static/files/{{file.id}}.zip">دریافت</a></li>
+								| توسط
+								<li> <a href="/{{file.uploader.user.username}}/">{{file.uploader.user.username}}|</a></li>
+								<li> {{file.description |linebreaks}}</li>
+								<li>| {{file.uploadTime|cdatetime}} |</li>
+								{% ifequal file.uploader.user user %}
+								<li> <a title=" بعد از حذف فایل و بازگشت به صفحه پروژه صفحه را رفرش کنید تا وضعیت فایلها آپدیت شود" href="/remove-upload/{{file.id}}/">پاک کردن</a></li>
+								{% endifequal %}
+							</ul>
+						</li>
+						<hr>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<div class="alert alert-info">فایلی برای دریافت وجود ندارد</div>
+					{% endif %} </div>
+			</div>
+		</div>
+	</div>
+</div>

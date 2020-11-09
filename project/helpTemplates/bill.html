@@ -1,0 +1,70 @@
+{% extends "head-tag.html" %}
+{% block title %}فاکتور پرداخت{% endblock %}
+{% block style %}
+<style>
+@media print {
+.footer,.navbar,.alert {
+    display: none;
+}
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-sm">
+<div class="panel panel-info" id="printableArea">
+	<div class="panel-heading">
+		<h4 class="text-center">
+			<div class="col-sm-offset-3 col-sm-6"> «فاکتور پرداخت» </div>
+			<div class="col-sm-3">
+				<button type="submit" onclick="window.print();"  class="btn btn-default pull-left"><span class="glyphicon glyphicon-print"></span> چاپ</button>
+			</div>
+		</h4>
+	</div>
+	<div class="panel-body" >
+		<p> نام کاربری:<span class="pull-left"> {{form.user}}</span> </p>
+		<hr>
+		<p> مبلغ به ریال :<span class="pull-left"> {{form.text.value}}</span> </p>
+		<hr>
+		<p> بابت:<span class="pull-left">افزایش اعتبار حساب</span> </p>
+		<hr>
+		<p> کد رهگیری:<span class="pull-left">{{form.code}}</span> </p>
+		<hr>
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-6">
+				<form class="form-horizontal" action="/deposit/{{form.code}}/" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<button type="submit" id="submit"  class="btn btn-success btn-block ">تایید</button>
+				</form>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="alert alert-warning" style="text-align:justify"> بعد از تایید اطلاعات وارد درگاه بانک ملت خواهید شد. <br>
+			دقت داشته باشید که نام پذیرنده در درگاه بانکی حتما "شركت فناوري اطلاعات برگ سبز غرب" باشد. <br>
+			توجه داشته باشید 2.5 درصد مبلغ فاکتور به عنوان کارمزد انتقال وجه به مبلغ فوق اضافه خواهد شد. </div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+
+
+
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+
+
+
+
+
+</script> 
+{% endblock %}

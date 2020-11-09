@@ -1,0 +1,398 @@
+{% if form.offerlist or form.acceptedOffer %}
+<div id="offers">
+{% if form.acceptedOffer %}
+<div class="col-offers">
+
+<div class="inner accepted" id="after_accept{{form.acceptedOffer.id}}">
+<div class="image">
+<div class="img"><img src="{{STATIC_URL}}offeringfiles/{{form.acceptedOffer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<a href="#" data-toggle="modal" data-messageto="{{form.acceptedOffer.offerer.user.id}}" data-target="#send-message"><div class="send-message"></div></a>
+<a id="reject" onclick="canceling({{form.acceptedOffer.id}})"><div class="reject"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{form.acceptedOffer.offerer.user.username}}/">{{form.acceptedOffer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{form.acceptedOffer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{form.acceptedOffer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{form.acceptedOffer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{form.acceptedOffer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"1"|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"0"|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"2"|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="images/design.jpgimages/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
+{% else %}
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:0|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"2"|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"1"|divisibleby:"3" %}
+<div class="inner" id="before_accept{{offer.id}}">
+<div class="image">
+<div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{offer.image}}" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+</div>
+
+<div class="tools">
+<li><a href="#" data-messageto="{{offer.offerer.user.id}}" class="send-message"data-toggle="modal" data-target="#message-Modal"></a></li>
+<a class="accept" onclick="accepting({{offer.id}})"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<table>
+	<tr>
+		<td>قیمت پیشنهادی	:</td><td>{{offer.totallValue}} تومان</td>
+	</tr>
+	<tr>
+		<td>پیش پرداخت درخواستی	:</td><td>{{offer.value}} تومان</td>
+	</tr>
+	<tr>
+		<td>تعداد روزهای مورد نیاز	:</td><td>{{offer.offerDay}} روز</td>
+	</tr>
+	</table>
+<table>
+<tr>
+	<td>توضیحات	:</td>
+</tr>
+<tr>
+	<td><div>{{offer.text}}</div></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
+{% endif %}
+
+
+
+
+
+
+
+{% else %}
+<div class="alert alert-info" style="text-align:center; margin-top:20px;">هنوز هیچ پیشنهادی ثبت نشده است!</div>
+{% endif %}
+

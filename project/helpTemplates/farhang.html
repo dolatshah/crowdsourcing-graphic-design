@@ -1,0 +1,298 @@
+{% load staticfiles %}
+<link href="{% static "css/bootstrap.min.zirend.css" %} " rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script defer src="{% static 'js/bootstrap.min.js' %}" ></script>
+<script src="/static/js/rangy-core.js"></script>
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script>
+<link href="{% static "css/bootstrap-tokenfield.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.min.js' %}" ></script>
+<style>
+.select {
+background-color:orange;
+}
+.active {
+background-color:yellow;
+}
+.ui-autocomplete {
+z-index:10000;
+}
+.text {
+text-align: justify;
+}
+.success {
+text-decoration:underline;
+}
+</style>
+
+{% if form.before %}
+
+<div id="rules" class="container container-md">
+<br>
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<h3 style="margin-top:30px ; margin-bottom:30px">به سیستم تغییر محتوای زیرند خوش آمدید!</h3>
+	<hr>
+<p>
+هدف این سیستم اعمال تغییراتی روی یک متن فارسی است به طوریکه شباهت آن با متن اولیه برای گوگل و حتی برای انسان محسوس نباشد.
+</p>
+<p>
+در فاز اول این پروژه از استراتژی جایگزین کردن لغات ، اصطلاحات و عبارات موجود در متن با معادل مترادف آن ها استفاده می شود به صورتی که جایگزینی آن ها خللی در مفهوم متن ایجاد نکند.
+</p>
+<p>
+این سیستم با استفاده از خلاقیت و تلاش کاربران خود رشد خواهد کرد به این صورت که از لغات و عبارات جایگزین شده توسط کاربران به مرور زمان یک دیتابیس ایجاد می شود و در دفعات بعدی استفاده از سیستم در صورتی که لغت موجود در دیتابیس در متن موجود باشد معادل آن برای جایگزینی به کاربر پیشنهاد می گردد. بدین ترتیب سرعت کار به مرور زمان بالا می رود و به تدریج بخش قابل توجهی از لغات و عبارات توسط سیستم به طور خودکار تشخیص داده خواهد شد.
+</p>
+	</div>
+	</div>
+	<div class="alert alert-success">
+	برای شروع متن خود را در کادر زیر وارد کنید و کلید شروع را بفشارید.
+	</div>
+	<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<textarea class="form-control" id="input" name="input" rows="20" cols="150"></textarea>
+		<br>
+		<button type="submit" class="btn btn-success btn-block">شروع</button>
+	</form>
+</div>
+{% else %}
+	<div class="container container-md" >
+	<br><br>
+	
+<div class="alert alert-success">
+در این قسمت می توانید متن خود را ویرایش کنید.<br>
+در صورتی که اولین بار است که از این سیستم استفاده می کنید حتما بخش <a href="#rules">راهنما</a> را ملاحظه کنید.
+</div>
+
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<input type="text" id='word' hidden></input>
+	<div class="text"  contenteditable="true">
+{% for word in form.dic %}{% ifequal word 'break' %}<br>{% else %}{% if word in form.db %}<span class="found mark" style="color:green">{{word}}</span> {% else %}{% if word in form.high %}<span class="found mark" style="color:blue">{{word}}</span> {% else %}{{word}} {% endif %}{% endif %}{% endifequal %}{% endfor %}
+
+</div>
+	</div>
+	</div>
+	</div>
+<div id="rules" class="container container-md">
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<h3 style="margin-top:30px" class="heading">راهنما</h3>
+	<hr>
+<h4>روش کار:</h4>
+	<ul>
+		<li>برای جایگزین کردن کلمات ابتدا باید آن ها را انتخاب کنید. برای انتخاب کردن کلمات آبی و سبز کافی است روی آن ها کلیک کنید . برای انتخاب سایر کلمات می توانید به دو صورت زیر عمل کنید:
+<p>1.	برای انتخاب کامل یک کلمه کلید Ctrl را نگه داشته سپس روی کلمه مورد نظر کلیک کنید.</p>
+			<p>2.	برای انتخاب بخشی از یک کلمه کلید Alt را نگه داشته سپس قسمت مورد نظر را انتخاب کنید. </p>
+</li>
+<li>
+سپس در منوی ظاهر شده کلمه جایگزین را وارد کنید. در صورتی که جایگزین مناسب در دیتابیس موجود باشد در این قسمت به شما نشان داده می شود. پس از انتخاب کلمه جایگزین روی کلید اصلاح کلیک کنید تا کلمه مورد نظر جایگزین شود.
+</li>
+		</ul>
+<h4>نکات مهم و اساسی:</h4>
+	
+<ul>
+<li>
+زمانی که از کلید Alt برای انتخاب کلمه استفاده می کنید دقت کنید که هیچ کاراکتر اضافی را انتخاب نکنید. این کار باعث می شود که لغت به درستی در دیتابیس ذخیره شده و در دفعات بعدی به راحتی در متن تشخیص داده شود.
+</li>
+<li>
+سعی کنید تا حد امکان کوچکترین جزء کلمه را تغییر دهید به طور مثال علایم جمع و شناسه ها و ضمایر متصل را انتخاب نکنید:    موبایلم > موبایل > تلفن همراه 
+</li>
+<li>
+در بسیاری از موارد می توانید از جمع مکثر لغات و جمع فارسی به جای هم استفاده کنید.
+</li>
+<li>
+کلمات انگلیسی و عربی متن را به فارسی و یا بالعکس برگردانید.
+</li>
+<li>
+گاهی اوقات دو کلمه همیشه با هم به کار می روند اما می توان یکی از آنها را حذف نمود:     بر روی > روی
+</li>
+		</ul>
+		<h4>رنگ ها و علایم:</h4>
+	
+<ul>
+<li>
+رنگ سبز : کلماتی که مترادف آن ها در دیتابیس موجود است.</li>
+<li>
+رنگ آبی : کلماتی که بیش از یکبار در متن تکرار شده اند.</li>
+<li>
+highlight : کلمه انتخاب شده</li>
+<li>
+underline : کلماتی که اصلاح شده اند.</li>
+		</ul>
+</div>
+</div></div>
+	
+	
+{% endif %}
+
+
+
+
+<script>
+var word_sep = " ";
+
+function expand() {
+	$(".text .active").popover('hide')
+    $('.text .select').contents().unwrap()
+	var span = document.createElement("span");
+	span.className = 'select'
+    var sel = rangy.getSelection();
+    var range = sel.getRangeAt(0);
+
+    var start_node = range.startContainer;
+    if (start_node.nodeType === Node.TEXT_NODE) {
+        var sep_at = start_node.nodeValue.lastIndexOf(word_sep, range.startOffset);
+        range.setStart(start_node, (sep_at !== -1) ? sep_at + 1 : 0);
+    }
+
+    var end_node = range.endContainer;
+    if (end_node.nodeType === Node.TEXT_NODE) {
+        var sep_at = end_node.nodeValue.indexOf(word_sep, range.endOffset);
+        range.setEnd(end_node, (sep_at !== -1) ? sep_at : range.endContainer.nodeValue.length);
+    }
+    sel.setSingleRange(range);
+	range.surroundContents(span);
+    sel.removeAllRanges();
+
+} 
+
+function surroundSelection() {
+	$(".text .active").popover('hide')
+    $('.text .select').contents().unwrap()
+    var span = document.createElement("span");
+	span.className = 'select'
+    if (window.getSelection) {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var range = sel.getRangeAt(0).cloneRange();
+            range.surroundContents(span);
+            sel.removeAllRanges();
+          
+        }
+    }
+}
+
+function semiSpace () {
+semi = $(".text .select").text().replace(/\s/g, '&zwnj;')
+$(".text .select").html( semi )
+}
+
+function replace () {
+$(".text .active").text( $(".active+.popover .replace").val() )
+$(".text .active").wrap("<span class='success'></span>")
+dota = $("#word").val() + "-" + $(".active+.popover .replace").val()
+dota = String(dota);
+
+$.post( "/farhang-replace/", { text: dota})
+.done(function( data ) {	
+	console.log(dota);
+});
+
+}
+
+function autofill (suggestion) 
+{
+
+$('.active+.popover .replace').autocomplete({
+    source: suggestion,
+    minLength: 0,
+    scroll: true
+}).focus(function() {
+    $(this).autocomplete("search", "");
+});
+}
+
+function search(text)
+{
+	text = String(text);
+	$.post( "/farhang-search/", { input: text})
+	.done(function( data ) {
+		
+		var arr = new Array();
+		arr = data.split("-");
+		autofill(arr);
+		$("#status").removeClass('glyphicon-refresh')
+		$("#status").addClass('glyphicon-ok')
+	});	
+}
+
+$('html').mouseup(function(e){
+if (e.ctrlKey) {
+expand()
+update()
+}
+if (e.altKey) {
+surroundSelection()
+update()
+}
+})
+
+$(document).ready(function(){
+
+
+$(".text .mark").popover({
+content:" \
+<div class='form-group'> \
+<div class='input-group'> \
+<span class='input-group-addon'><span id ='status' class='glyphicon glyphicon-refresh'></span></span> \
+<input type='text' class='form-control replace' placeholder='کلمه جایگزین'></input> \
+<span class='input-group-btn'><button onClick='replace()' class='btn btn-default'>اصلاح</span></button></span> \
+</div> \
+</div> \
+",
+html:true,
+placement:'top',
+trigger:'manual',
+})
+
+$(".text .mark").click(function () {
+if ( $(this).hasClass("active") ) {
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+}
+else {
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+$(this).addClass("active")
+$(".active").popover('show')
+$("#word").val( $(".active").text() )
+search( $(".active").text() );
+}
+})
+
+})
+
+function update () {
+$(".text .select").popover({
+content:" \
+<div class='form-group'> \
+<div class='input-group'> \
+<span class='input-group-addon'><span id ='status' class='glyphicon glyphicon-refresh'></span></span> \
+<input type='text' class='form-control replace' placeholder='کلمه جایگزین'></input> \
+<span class='input-group-btn'><button onClick='replace()' class='btn btn-default'>اصلاح</span></button></span> \
+</div> \
+</div> \
+",
+html:true,
+placement:'top',
+trigger:'manual',
+})
+
+$(".text .select").click(function () { 
+if ( $(this).hasClass("active") ) {
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+}
+else {
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+$(this).addClass("active")
+$(".active").popover('show')
+$("#word").val( $(".active").text() )
+search( $(".active").text() );
+}
+})
+$(".text .select").click()
+}
+
+</script> 

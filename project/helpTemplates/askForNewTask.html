@@ -1,0 +1,37 @@
+{% extends "head-tag.html" %}
+{% block title %}درخواست مهارت جدید{% endblock %}
+{% block content %}
+<div class="container container-sm"> {% if form.errors %}
+	<div class="alert alert-danger">
+		<p style="color: red;"> لطفا خطاهای زیر را برطرف کنید </p>
+	</div>
+	{% endif %}
+	{% if done %}
+	<div class="alert alert-success">
+		<p style="text-align:center">درخواست شما با موفقیت در سیستم ثبت شد!</p>
+		<p style="text-align:center"> مهارت هایی که وارد کرده اید در صورت تایید به زودی در سایت قرار خواهد گرفت.</p>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3 class="text-center">درخواست مهارت یا رشته جدید</h3>
+			<hr>
+			<p> لطفا مهارت یا رشته مورد نظر خود را به همراه گروه و توضیحات در فرم زیر وارد کنید تا پس از بررسی به سایت اضافه گردد.</p>
+			<hr>
+			<form class="form-horizontal" role="form" action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<div class="col-md-12">
+						<textarea type="textbox" class="form-control" id="username" name="skills" placeholder="مهارت یا رشته مورد نظر را وارد کنید" ></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-8">
+						<button type="submit" class="btn btn-default">ثبت</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %} 

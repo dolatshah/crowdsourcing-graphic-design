@@ -1,0 +1,187 @@
+{% extends "head-tag.html" %}
+{% block title %}ویرایش مشخصات پروژه{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script>
+<link href="{% static "css/bootstrap-tokenfield.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.min.js' %}" ></script> 
+{% endblock %}
+{% block style %}
+<style>
+.skill-list > li {
+	margin: 10px 20px;
+}
+#accordion {
+	margin-top: 10px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+<ol class="breadcrumb">
+  <li><a href="/">خانه</a></li>
+  <li><a href="/controlPanel/">پنل مدیریت</a></li>
+  <li><a href="/project/{{form.project.id}}/">اتاق کار پروژه</a></li>
+  <li class="active">ویرایش مشخصات پروژه</li>
+</ol>
+</div>
+{% if form.errors %}
+<p style="color: red;"> Please correct the error{{ form.errors|pluralize }} below. </p>
+{% endif %}
+<div class="container container-md">
+<div class="alert alert-info">برای ویرایش مواردی که در این صفحه مشاهده نمی کنید با پشتیبانی سایت تماس بگیرید.</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<form class="form-horizontal" role="form" action="/editProject/{{form.project.id}}/" method="post">
+			{% csrf_token %}
+			<div class="form-group">
+			<label for="offerDay" class="col-md-3 control-label">مهلت انجام پروژه:</label>
+			<div class="col-md-5">
+			<div class="input-group"  title="حداکثر تعداد روزی که انتظار دارید پروژه در آن مدت انجام شود">
+			<input type="number"  class="form-control" id="offerDay" name="offerDay" min="1" value="{{form.offerDay}}" required>
+			<span class="input-group-addon">روز</span></div>
+			<span class="help-block">{{ form.offerDay.errors }} </span> </div>
+			</div><hr>
+			<div class="form-group"  >
+			<label for="budgetrange" class="col-md-3 control-label">محدوده بودجه:</label>
+			<div class="col-md-8">
+			<div class="input-group"  title="بودجه ای که برای پروژه در نظر گرفته اید ( این فقط بودجه تقریبی شما است و هزینه نهایی انجام پروژه بر اساس پیشنهاد پیمانکاران تعیین میشود)">
+			<p style="direction:ltr" class="form-control"  id="showrange"></p>
+			<span class="input-group-addon">تومان</span></div>
+			<input type="text" id="budgetrange"  name="offerValue" style="display:none" >
+			<input type="text" id="budgetrange-slider"  name="slider" value="{{form.project.startSlider}} - {{form.project.endSlider}}"  hidden >
+			</div>
+			</div>
+			<div class="form-group"   >
+			<div class="col-md-offset-3 col-md-8" id="slider" >
+			<div style="margin:11px 0px" id="slider-range"></div>
+			</div>
+			</div><hr>
+			<div class="form-group">
+				<label for="description" class="col-md-3 control-label">توضیحات:</label>
+				<div class="col-md-9">
+					<textarea title="به طور دقیق و کامل توضیح دهید که خواسته پروژه شما چیست و انتظار دارید که چه مواردی به شما تحویل داده شود." class="form-control" id="description" name="description" rows="3"  > {{form.description}} </textarea>
+					<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+					<span class="help-block">{{ form.description.errors }} </span> </div>
+			</div><hr>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-10">
+					<button type="submit" class="btn btn-success" onclick="sub()" >ذخیره تغییرات</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<a class="btn btn-default" href="/project/{{form.project.id}}/" > بازگشت به صفحه پروژه </a>
+</div> 
+{% endblock %}
+{% block javascript %} 
+<script>
+function sub()
+{ 
+	
+	var string="";
+	$.each( $('#skills').tokenfield('getTokens') , 
+	function( index, value ) 
+	{
+	
+		$.each( value, 
+			function( ind, val ) 
+			{
+				if (ind=='value')
+				{
+					string =string + val + "," ;
+					}
+			});
+		
+		
+	});
+	
+	
+	$('#typed-skills').val(string);
+	
+
+
+
+}
+
+ 
+$(document).ready(function()
+{
+
+
+function eval (value) {
+if (value <= 20)             {var inputvalue = value * 5;}
+else if (value<=35 && value>20)  {var inputvalue = value * 10 - 100;}
+else if (value<=45 && value>35)  {var inputvalue = value * 25 - 625;}  
+else if (value<=55 && value>45)  {var inputvalue = value * 50 - 1750;}  
+else if (value<=70 && value>55)  {var inputvalue = value * 100 - 4500;}
+else if (value<=80 && value>70)  {var inputvalue = value * 250 - 15000;}  
+else if (value<=90 && value>80)  {var inputvalue = value * 500 - 35000;}  
+else if (value<=101 && value>90) {var inputvalue = value * 1000 - 80000;}  
+return inputvalue * 1000;  
+}
+
+$( "#slider-range" ).slider({
+range: true,
+min: 0,
+max: 101,
+step: 1,
+values: [ {{form.project.startSlider}} , {{form.project.endSlider}} ],
+slide: function( event, ui ) {
+$( "#budgetrange" ).val( "" + eval(ui.values[ 0 ]) + " - " + eval(ui.values[ 1 ]) );
+
+$( "#budgetrange-slider" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+
+if (ui.values[ 1 ] == 101) { smax = "بی نهایت" } else {smax = eval(ui.values[ 1 ]).formatMoney(0)}
+$( "#showrange" ).text( "" + eval(ui.values[ 0 ]).formatMoney(0) + " - " + smax );
+}
+});
+$( "#budgetrange" ).val( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ) +
+" - " + eval( $( "#slider-range" ).slider( "values", 1 ) ) );
+if ( $( "#slider-range" ).slider( "values", 1 ) == 101 ) { imax = "بی نهایت" } else { imax = eval( $( "#slider-range" ).slider( "values", 1 ) ).formatMoney(0) }
+$( "#showrange" ).text( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ).formatMoney(0) +
+" - " + imax );
+
+
+
+$('#skills').tokenfield({
+  autocomplete: {
+    source: [
+	{% for item in skills %}
+		'{{item}}',
+	{% endfor %}
+	
+	],
+    delay: 100
+  },
+  showAutocompleteOnFocus: false
+  
+});
+
+
+$('#skills').tokenfield('setTokens', [
+
+	{% for item in skills %}
+        {% if item.name  in checked %}
+          '{{item}}',
+		{% endif %}
+	{% endfor %}
+
+
+
+]);
+
+
+$(".skill").click(function(){
+  var tag= $(this).text();
+  $('#skills').tokenfield('createToken', tag );
+}); 
+
+
+
+});
+
+</script> 
+{% endblock %}

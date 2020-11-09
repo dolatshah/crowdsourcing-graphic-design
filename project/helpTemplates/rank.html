@@ -1,0 +1,54 @@
+{% include 'header.html' %}
+<html>
+<head>
+<title>Rank</title>
+</head>
+<body>
+<h1>Rank Your 
+	{% if form.is_employee %}
+	Employer
+	{% else %}
+	Employee
+	{% endif %} </h1>
+<form method="post" action="">
+	{% csrf_token %}
+	
+	{% for case in form.cases %}
+	{{case}}:<br>
+	<input type="radio" name="{{case}}" value="0">
+	0
+	<input type="radio" name="{{case}}" value="1">
+	1
+	<input type="radio" name="{{case}}" value="2">
+	2
+	<input type="radio" name="{{case}}" value="3">
+	3
+	<input type="radio" name="{{case}}" value="4">
+	4
+	<input type="radio" name="{{case}}" value="5">
+	5
+	<input type="radio" name="{{case}}" value="6">
+	6
+	<input type="radio" name="{{case}}" value="7">
+	7
+	<input type="radio" name="{{case}}" value="8">
+	8
+	<input type="radio" name="{{case}}" value="9">
+	9
+	<input type="radio" name="{{case}}" value="10">
+	10
+	ssssssssssssssssssss
+	{% if form.valueCases %}
+	{% for k,v in form.valueCases.items %}
+	{% ifequal k case %}
+	Your current rank is {{v}}<br>
+	{% endifequal %}
+	
+	{% endfor %}
+	{% endif %}
+	
+	{% endfor %} <br>
+	<input    type="submit"  value="submit" >
+	</br>
+</form>
+<a href="/project/{{form.project.id}}/">Back to the project </a>

@@ -1,0 +1,161 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+	<script src="../static/js/jquery-2.1.1.min.js"></script>
+	<!--<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/pastel-stream.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" />
+	<title>صفحه ی شخصی</title>
+	<script> 
+    $(function(){
+      $("#header").load("header.html"); 
+    });
+</script> 
+</head>
+<body>
+{% include "header.html" %}
+
+<div id="header"></div>
+<div class="row" style="height:90%;margin:0">
+<div class="col-sm-8" style="background-color:E6E6DC;height:100%;overflow-y: scroll">
+	<div class="row" style="background-color:E6E6DC;height:50%">
+	<h2 style="font-family:tahoma" align="center">ویرایش اطلاعات صفحه ی کاربری</h2>
+		<div class="col-sm-7">
+		<form class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+			<div class="col-sm-7"><input type="text" class="form-control" id="text" style="text-align:right" placeholder="شناسه ی خود را وارد کنید"></div>
+			<div class="col-sm-5"><label class="control-label col-sm-2" for="email" align="right" dir="rtl">نام:</label></div>  
+        </div>
+        <div class="form-group">
+			<div class="col-sm-7"><input type="password" class="form-control" id="password" style="text-align:right" placeholder="رمز عبور را وارد نمایید"></div>
+			<div class="col-sm-5"><label class="control-label col-sm-2" for="email" align="right" dir="rtl">رمز:</label></div>  
+        </div>
+		<div class="form-group">
+			<div class="col-sm-7"><input type="password" class="form-control" id="retry_password" style="text-align:right" placeholder="مجددا رمز عبور را وارد نمایید"></div>
+			<div class="col-sm-5"><label class="control-label col-sm-2" for="email" align="right" dir="rtl">تکرار: </label></div>  
+        </div>
+		<div class="form-group">
+			<div class="col-sm-7"><input type="text" class="form-control" id="nickname" style="text-align:right" placeholder="نام کاربری در سایت"></div>
+			<div class="col-sm-5"><label class="control-label col-sm-2" for="nickname" align="right" dir="rtl" style="font-size:12px">شناسه:</label></div>  
+        </div>
+        <div class="form-group">
+			<div class="col-sm-7"><input type="email" class="form-control" id="email" style="text-align:right" placeholder="پست الکترونیکی خود را وارد نمایید"></div>
+			<div class="col-sm-5"><label class="control-label col-sm-2" for="email" align="right" dir="rtl">ایمیل:</label></div>  
+        </div>
+        <div class="form-group">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">ثبت اطلاعات</button>
+          </div>
+        </div>
+      </form>
+		
+		
+		</div>
+		
+		
+		
+		<div class="col-sm-5">
+			
+			<div class="fileinput fileinput-new" data-provides="fileinput">
+			<!--<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>-->
+			<br>
+			<p align="right" dir="rtl">عکس خود را انتخاب کنید</p>
+			<div>
+			<span class="btn btn-default btn-file"><span class="fileinput-new">انتخاب</span><span class="fileinput-exists">/تعویض</span><input type="file" name="..."></span>
+			<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">تایید</a>
+			</div>
+			</div>
+		</div>
+
+
+	</div>
+	<p align="right" style="color:00628B">سوابق سفارشات من</p>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="table-responsive"> 
+				
+				 
+			   <table class="table table-striped table-bordered" style="color:81A594">
+				
+				 <thead>
+				   <tr>
+					 <th style="text-align:center">ردیف</th>
+					 <th style="text-align:center">وضعیت پروژه</th>
+					 <th style="text-align:center">عنوان پروژه</th>
+					 <th style="text-align:center">نام پیمانکار</th>
+				   </tr>
+				 </thead>
+				 <tbody>
+				   <tr>
+					 <td style="text-align:center">1</td>
+					 <td style="text-align:center">در حال اجرا</td>
+					 <td style="text-align:center">طرح روی تی شرت</td>
+					 <td style="text-align:center">سید قاسم حسینی</td>
+				   </tr>
+				   <tr>
+					 <td style="text-align:center">2</td>
+					 <td style="text-align:center">تمام شده</td>
+					 <td style="text-align:center">طراحی قالب وب سایت</td>
+					 <td style="text-align:center;font-size:14px">طراوت حسینی</td>
+				   </tr>
+				   <tr>
+					 <td style="text-align:center">3</td>
+					 <td style="text-align:center">در حال اجرا</td>
+					 <td style="text-align:center">طرح لوگو</td>
+					 <td style="text-align:center">ایران دیزاین</td>
+				   </tr>
+				 </tbody>
+			   </table>
+			   
+
+			 </div>
+		</div>
+	</div>
+
+
+
+</div>
+
+<!-- samte rast -->
+<div class="col-sm-4" style="background-color:000000;height:100%">
+	<div class="row" style="height:20%">
+	<h3 style="font-family:arial" align="rihgt" dir="rtl">علی اتقائی</h3>
+	<p align="right">کارفرما|شرکت طراحان پایتخت</p> 
+	</div>
+	<div class="row" style="height:50%;margin:0">
+		<div class="col-sm-3">
+			<br>
+			<p align="rihgt" dir="rtl">نام کاربری:<br>ali_atghaei</p>
+			<p align="right" dir="rtl">آخرین بازدید:<br> 93/8/29</p>
+		</div>
+		<div class="col-sm-9">
+			<img src="../static/images/photo.png" class="img-responsive img-circle" alt="Cinque Terre" width="250" height="150" align="right">
+		</div>
+	</div>
+	<div class="row" style="height:30%;margin:0;font-family:tahoma">
+			<h2 align="right" dir="rtl">زمینه های سفارشات</h2>     
+			<nav>
+		
+			<li align="right" dir="rtl">طرح های تبلیغاتی </li>      
+			<li align="right" dir="rtl">کارت ها و پوستر ها </li>          
+			<li align="right" dir="rtl">دفتر و سررسید </li>	 
+		
+			</nav>
+	</div>
+    
+                 
+       
+     
+	  
+      
+      
+</div>
+</div>
+<div id="footer" ></div>
+</body>
+
+
+
+</html>

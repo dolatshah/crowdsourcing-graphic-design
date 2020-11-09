@@ -1,0 +1,68 @@
+{% extends "head-tag.html" %}
+{% block title %}
+پنل مدیریت
+{% endblock %}
+{% block content %}
+<div id="fb-container" style="width:300px ; position:fixed ; right:100px;">
+	<ul class="nav nav-tabs" id="myTab" style="border-bottom: none; position:relative ; right:10px">
+		<li class="active"><a href="#feedback">بازخورد</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="feedback" style="padding-top:0px">
+			<div class="panel panel-default">
+				<div class="panel-body" >
+					<form role="form">
+						<div class="form-group">
+							<label for="subject">موضوع:</label>
+							<select class="form-control" id="subject">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="description">شرح:</label>
+							<textarea class="form-control" rows="3" id="description"></textarea>
+						</div>
+						<button type="submit" class="btn btn-default">ثبت</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+
+//feedback
+var feedbackshow;
+height=$("#myTab").height()-$("#fb-container").height();
+$("#fb-container").css("bottom",height);
+$("#myTab").click(function () {
+    $("#fb-container").animate(
+		{bottom:'-30px'},"slow",
+		function () {
+		feedbackshow=true;
+			
+});
+})
+$('html').click(function() {
+if (feedbackshow) {
+    $("#fb-container").animate(
+		{bottom: height },"slow",
+		function () {
+		feedbackshow=false;
+			
+});
+		}
+});
+
+$('#fb-container .panel').click(function(event){
+    event.stopPropagation();
+});
+});
+
+</script> 
+{% endblock %} 

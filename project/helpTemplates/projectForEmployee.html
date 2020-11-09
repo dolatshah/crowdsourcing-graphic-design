@@ -1,0 +1,249 @@
+{% extends "head-tag.html" %}
+{% block title %}اتاق کار پروژه{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/TimeCircles.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/TimeCircles.js' %}"></script>
+<link href="/static/css/trip.min.css" rel="stylesheet" media="screen">
+<script src="/static/js/trip.min.zirend.js" ></script> 
+<link href="{% static "css/uploadfile.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery.uploadfile.js' %}"></script> 
+<script src="{% static 'js/jquery.form.js' %}"></script> 
+<link href="/static/css/star-rating.min.css" rel="stylesheet" media="screen">
+<script src="{% static 'js/star-rating.min.js'  %} "  ></script> 
+{% endblock %}
+{% block style %}
+<style>
+#fileslist {
+	overflow: auto;
+	max-height: 250px;
+}
+.panel-heading {
+	overflow: auto;
+}
+.panel-heading a {
+    margin-right:20px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-lg"> 
+{% if form.sue %}
+	{% ifequal form.sue.is_otherside_give_money True %}
+	<div class="alert alert-info" style="text-align:center;"> هر دو طرف قرارداد پروژه هزینه قضاوت را قبول کردند. این پروژه به زودی در فرآیند قضاوت قرار خواهد گرفت </div>
+	{% else %}
+	{% ifequal form.sue.suer form.user.userprofile %}
+	<div class="alert alert-info" style="text-align:center;">شما از کارفرمای خود شکایت کرده اید.کارفرمای شما ۷ روز از زمان شکایت فرصت دارد که برای قضاوت اقدام کند در غیر این صورت قضاوت به صورت اتوماتیک به نفع شما تمام خواهد شد</div>
+	<hr>
+	<div class="alert alert-info" style="text-align:center;">زمان شکایت: {{form.sue.sueTime|since}}</div>
+	{% else %}
+	<div class="alert alert-info" style="text-align:center;">کارفرمای شما از شما شکایت کرده است و شما تا ۷ روز از زمان شکایت فرصت دارید که اقدام کنید در غیر این صورت قضاوت به صورت اتوماتیک به نفع کارفرما تمام خواهد ش‍‍‍‍‍‍د</div>
+	<hr>
+	<div class="alert alert-info" style="text-align:center;">زمان شکایت: {{form.sue.sueTime|since}}</div>
+	<input type="button" onclick="react({{form.sue.id}})"  value="اقدام" >
+{% endifequal %}
+	{% endifequal %}
+	{% endif %}
+	
+	{% if form.project.is_wait_for_employer %}
+<div class="alert alert-info" style="text-align:center;"> شما در
+	{{form.project.wait_for_employer_date|cdatetime}}
+	از کارفرمای خود درخواست کرده اید که پروژه را انجام شده اعلام کند <br>
+	اگر کارفرمای شما تا ۷ روز اقدامی انجام ندهد به صورت اتوماتیک مبلغ بیعانه کارفرما به حساب شما واریز خواهد شد </div>
+{% endif %}
+	
+	{% if form.project.is_denied %}
+<div class="alert alert-info" style="text-align:center;"> کارفرمای شما ادعای کامل شدن پروژه توسط شما را مردود اعلام کرده است <br>
+	شما میتوانید با کارفرما مکاتبه داشته باشید یا از او شکایت کنید </div>
+{% endif %}
+	
+	{% if not form.is_time_remain %}
+<div class="alert alert-info" style="text-align:center;">مهلت انجام پروژه به اتمام رسیده است</div>
+{% endif %}
+<div class="panel panel-default help-step2">
+<div class="panel-body">
+<ul class="nav nav-tabs" id="myTab">
+	<li><a id="specifacationstab" href="#specifacations" data-toggle="tab"><span class="glyphicon glyphicon-folder-open"></span><span> مشخصات پروژه</span></a></li>
+	<li><a id="communicationtab" href="#communication" data-toggle="tab"><span class="glyphicon glyphicon-phone"></span><span> چت و اشتراک فایل</span></a></li>
+	<li><a id="ratingtab"  href="#rating" title="شما تا اتمام انجام پروژه فرصت دارید کارفرما را ارزیابی کنید. این ارزیابی بر رتبه کارفرما در سایت موثر است." data-toggle="tab"><span class="glyphicon glyphicon-star"></span><span> ارزیابی کارفرما</span></a></li>
+	<li><a id="offertab" href="#offer" data-toggle="tab"><span class="glyphicon glyphicon-hand-up"></span><span>پیشنهاد شما</span></a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="specifacations">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 style="display:inline" class="panel-title">عنوان پروژه: {{form.project.title}} ( وضعیت: {% include "projectstatus.html" with project=form.project %} ) </h3>
+				<span class=" pull-left"><a title="در صورتی که پروژه را به طور کامل انجام داده اید و آن را برای پیمانکار بارگذاری نموده اید باید اتمام کار را از این قسمت به کارفرما اطلاع دهید. پس از تایید اتمام پروژه توسط کارفرما مبلغ بیعانه واریزی کارفرما به حساب شما منتقل می گردد." href="#" onclick="complete({{form.project.id}})"><span class="glyphicon glyphicon-ok"></span> اعلام اتمام پروژه</a> <a title="در صورتی که قصد انصراف از انجام پروژه را دارید می توانید از این قسمت اقدام کنید. لازم به ذکر است که با انصراف شما مبلغ ضمانت انجام پروژه در صورت وجود به کارفرما تعلق می گیرد." href="#" onclick="cancel({{form.project.id}})" ><span class="glyphicon glyphicon-remove"></span> لغو پروژه</a> <a title="در صورتی که از کارفرمای خود شکایتی دارید ابتدا موضوع را با پشتیبانی سایت در میان بگذارید سپس در صورت لزوم می توانید در این قسمت یک شکایت ثبت کنید." href="#" onclick="sue({{form.project.id}})"><span class="glyphicon glyphicon-screenshot"></span> شکایت</a> </span> </div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div style="height:171px" class="panel panel-default help-step1 " title="این مبلغ توسط کارفرما در سایت سپرده گذاری شده است و برای وی قابل برداشت نیست و پس از تایید پروژه توسط کارفرما به حساب شما واریز می شود.">
+					<div class="panel-body">
+						<span> مبلغ بیعانه واریزی توسط کارفرمای شما :</span>
+						<span class="glyphicon glyphicon-question-sign pull-left orange"></span>
+						<hr>
+						<div class="alert alert-success">{{form.project.employer_cashed_money}} تومان</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="panel panel-default " title="تا پایان این زمان مهلت دارید تا پروژه را به اتمام برسانید در صورتی که تحویل پروژه تا پایان این زمان امکان پذیر نمی باشد از کارفرما درخواست کنید تا مهلت انجام پروژه را تمدید کند.">
+					<div class="panel-body"> 
+						<span>زمان باقیمانده:</span><span class="glyphicon glyphicon-question-sign pull-left orange"></span>
+						<hr>
+						{% if form.seconds_remain > 0 %}
+							<div  style="height:75px" class="countdown" data-timer="{{form.seconds_remain}}"></div>
+						{% else %}
+							زمان تعیین شده برای انجام پروژه به پایان رسیده است
+							<br>
+							میتوانید از کارفرما درخواست کنید که زمان را افزایش دهد
+						{% endif%}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div style="height:171px" class="panel panel-default">
+					<div class="panel-body">
+						<p>مشخصات کارفرما</p>
+						<hr>
+						نام کاربری: <a href="/{{form.project.employer.user.username}}/">{{form.project.employer.user.username}}</a></div>
+				</div>
+			</div>
+		</div>
+		{% include "project-description.html" %}	
+	</div>
+	<div class="tab-pane" id="communication">
+{% include "projectForEmployer-communication.html" %}
+		<div class="alert alert-warning">قبل از ارسال هر قسمت از پروژه از کارفرما بخواهید تا هزینه آن قسمت را در سایت به صورت بیعانه واریز کند در غیر این صورت تضمینی برای پرداخت هزینه به شما وجود نخواهد داشت.</div>
+	</div>
+	<div class="tab-pane" id="rating" > {% include "RankModal.html" %} </div>
+	<div class="tab-pane" id="offer">
+	<div class="alert alert-info" style="text-align:center;">ویرایش این قسمت امکان پذیر نمی باشد.</div>	
+<div id="offer-edit"></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<img id="help-icon" title="با این صفحه بیشتر آشنا شوید!" src="/static/img/help-icon.png" >
+{% endblock %}
+{% block javascript %} 
+<script type='text/javascript '> 
+
+function react(id)
+{
+	var ver = confirm('آیا مطمئن هستید؟ در صورت ادامه ۱۰۰۰۰ تومان از حساب شما کاسته خواهد شد ولی در صورت عدم صحت شکایت طرف قرار داد شما این مبلغ به  حساب شما برگشت داده خواهد شد' );
+	if (ver)
+		window.location.href= '/react/'+id;
+
+}
+
+function sue(id)
+{
+	var ver = confirm(' آیا مطمئن هستید؟ در صورت ادامه ۱۰۰۰۰ تومان از حساب شما کاسته خواهد شد ولی در صورت صحت شکایت شما این مبلغ به حسابتان برگشت داده خواهد شد');
+	if (ver)
+		window.location.href= '/sue/'+id;
+
+}
+
+
+function cancel(projectid)
+{
+	var ver = confirm('آیا مطمئن هستید؟ عملیات کنسل کردن پروژه هزینه ی ۱۰۰۰۰ تومان یا ۱۰ درصد از هزینه پروژه شما را دربر خواهد داشت' );
+	if (ver)
+		window.location.href= '/cancel/'+projectid;            
+
+}
+
+function showcomplete()
+{
+	document.getElementById('complete').innerHTML = 'این عملیات به کارفرما اخطار میدهد تا در ۷ روز اقدام کند ';
+}
+
+function hidecomplete()
+{
+	document.getElementById('complete').innerHTML = '';
+}
+
+
+function complete(projectid)
+{
+	window.location.href= '/completeByEmployee/'+projectid;
+	
+	
+}
+
+</script> 
+<script>
+$(document).ready(function(){
+
+
+$('#myTab a:first').tab('show')
+
+$("#communicationtab").click(function () {
+$( "#message-box" ).load( "/chat/{{form.project.employer.id}}/{{form.project.id}}");
+$( "#uploadbox" ).load( "/upload/{{ form.project.id}}");
+});
+
+//tab-selection
+$("#myTab a").each( function (){
+if ( "{{form.tabId}}" == $(this).attr("id") ) { 
+$(this).click();
+}
+})
+
+
+
+$('.footable').footable()
+
+$(".countdown").TimeCircles(); 
+
+
+$( "#offer-edit" ).load( "/changeOffer/{{form.project.id}}/{{form.project.choosedOffer_id}}/",function () {
+$( "#offeredit input , #offeredit textarea " ).attr("disabled" ,"disabled" );
+$( "#offeredit button " ).hide();
+});
+
+
+//trip
+var trip = new Trip([
+  { sel : $("body"), content : "به اتاق کار پروژه خود خوش آمدید!<hr>همه ی کارهای مربوط به پروژه را میتوانید در اینجا انجام دهید.",position : "screen-center" ,expose : true},
+  { sel : $(".help-step1"), content : "این قسمت نشان دهنده مبلغ بیعانه واریزی توسط کارفرما می باشد. تا زمانی که دستمزد هر قسمت از پروژه را در این قسمت مشاهده ننموده اید از ارسال آن قسمت برای کارفرما خودداری کنید.",position : "n" ,expose : true},
+  { sel : $(".help-step2"), content : "در این قسمت می توانید با کارفرمای خود چت کنید و فایل به اشتراک بگذارید.",position : "n" ,expose : true},
+  ], {
+  showNavigation : true,
+  delay : -1,
+  tripTheme : "yeti",
+  onTripStart : function(i, tripData) {
+        if ( i === 0 ) {
+	$("#specifacationstab").click();
+    }
+      if ( i === 1 ) {
+	$("#specifacationstab").click();
+    }
+    if ( i === 2 ) {
+	$("#communicationtab").click();
+    }
+  }
+});
+
+function hit()
+{
+	$.ajax({
+      url: "/help5/",      
+      success: function(html)
+		{
+		if (html=='true'){ trip.start(); }
+		}
+    });	
+}
+hit();
+$("#help-icon").click( function() {trip.start();} )
+
+
+})
+
+
+</script> 
+{% endblock %} 

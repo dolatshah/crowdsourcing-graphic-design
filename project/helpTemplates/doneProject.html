@@ -1,0 +1,105 @@
+{% extends "head-tag.html" %}
+{% block title %}{{form.project.title}}{% endblock %}
+{% block meta %}
+<meta name="description" content="انجام پروژه {{form.project.title}}">
+<meta name="keywords" content="پروژه,دانشجویی,سفارش,انجام,استخدام,رایگان">
+{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/TimeCircles.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/TimeCircles.js' %}"></script> 
+<link href="/static/css/trip.min.css" rel="stylesheet" media="screen">
+<script src="/static/js/trip.min.zirend.js" ></script> 
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li><a href="/advanced-search/">جستجو در پروژه ها</a></li>
+		<li class="active">پروژه "{{form.project.title}}"</li>
+	</ol>
+</div>
+<div class="container container-lg">
+{% if form.project.is_finished %}
+
+	<div class="alert alert-success">این پروژه با موفقیت به پایان رسیده است!</div>
+	{% else %}
+	<div class="alert alert-info">این پروژه لغو شده است.</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<ul class="nav nav-tabs" id="myTab">
+				<li><a id="specifacationstab" href="#specifacations" data-toggle="tab">مشخصات پروژه</a></li>
+				<li><a id="discussiontab" href="#discussion" data-toggle="tab">پرسش و پاسخ</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="specifacations">
+					<div class="panel panel-primary">
+						<div   class="panel-heading">
+							<h3  class="panel-title">عنوان پروژه: {{form.project.title}} ( وضعیت: {% include "projectstatus.html" with project=form.project %} ) </h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<div style="height:171px" class="panel panel-default">
+								<div class="panel-body">
+									<P>میانگین پیشنهاد ها:{{form.averageOfferValue}} تومان</p>
+									<hr>
+									<p> محدوده بودجه:{{form.project.startBid|money_tag}} - {{form.project.endBid|money_tag}} تومان</p>
+									<hr>
+									<p> زمان پیشنهاد شده: {{form.project.offerDay}} روز</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="panel panel-default">
+								<div class="panel-body"> 
+									<span>تاریخ ایجاد: {{form.project.offerTime|cdate}}</span>
+									<hr>
+									{% if form.project.endDate %}
+										<span>تاریخ پایان: {{form.project.endDate|cdate}}</span>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div style="height:171px" class="panel panel-default">
+								<div class="panel-body">
+									<p>مشخصات کارفرما</p>
+									<hr>
+									نام کاربری: <a href="/{{form.project.employer.user.username}}/">{{form.project.employer.user.username}}</a></div>
+							</div>
+						</div>
+					</div>
+					{% include "project-description.html" %}
+					{% include "project-offers.html" %}
+				</div>
+				<div class="tab-pane" id="discussion"> {% include "discussion-tab.html" %} </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block javascript %} 
+<script>
+$(document).ready(function(){
+
+
+$('#myTab a:first').tab('show')
+
+$('.footable').footable()
+
+$("#discussion form").hide();
+
+})
+
+</script> 
+{% endblock %} 	
+	
+
+
+	
+	
+	
+	

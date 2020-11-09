@@ -1,0 +1,38 @@
+{% if form.errors %}
+<div class="alert alert-danger">
+	<p style="color: red;"> Please correct the error{{ form.errors|pluralize }} below. </p>
+</div>
+{% endif %}
+<form class="form-horizontal" action="/deposit/0/" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="text" class="col-md-3 control-label">مبلغ سپرده گذاری :</label>
+		<div class="col-md-5">
+			<input type="number" class="form-control" id="text" title="مبلغ وارد شده نمیتواند کمتر از 1000 ریال باشد" name="text" placeholder="مبلغ به ریال" min="1000" required>
+			<span class="help-block">{{ form.text.errors }} </span> </div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-3 col-md-10">
+			<button type="submit" title="برای مشاهده فاکتور واریز وجه و تکمیل فرآیند پرداخت کلیک کنید." class="btn btn-default">تکمیل فرآیند پرداخت</button>
+		</div>
+	</div>
+	
+	<div class="container container-md">
+		<div class="alert alert-info">
+				شما همچنین میتوانید با واریز مبلغ مورد نظر خود به شماره کارت :
+				<br>
+				<br>
+				<p style='color:#999999;direction:ltr;'> 6037 - 6917 - 0492 - 8498  </p>
+				<br>
+				به نام محمد دولتشاه بانک صادرات 
+				<br>
+				<br>
+				و اطلاع دادن واریز وجه به همراه شماره پیگیری در قسمت تماس با ما  تا 24 ساعت اقدام به سپرده گذاری حساب خود کنید
+		</div>
+	</div>
+	
+</form>
+<script>
+//tooltip
+$("[title]").tooltip();
+</script>

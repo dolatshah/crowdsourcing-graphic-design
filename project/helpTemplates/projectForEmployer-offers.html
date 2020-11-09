@@ -1,0 +1,78 @@
+{% if form.offerlist or form.acceptedOffer %}
+<div class="panel panel-default">
+	<table class="table footable ">
+		<thead>
+			<tr class="active">
+				<th >نام پیمانکار</th>
+				<th data-hide="all" >پیشنهاد</th>
+				<th data-hide="all" >مبلغ درخواستی برای شروع</th>
+				<th data-hide="all" >مبلغ ضمانت پیمانکار</th>
+				<th data-hide="all" >زمان ارسال پیشنهاد</th>
+				<th data-hide="all" >پیام پیمانکار</th>
+				<th ></th>
+			</tr>
+		</thead>
+		<tbody id="offerslist">
+		
+		{% if form.acceptedOffer %}
+		<tr id="after_accept{{form.acceptedOffer.id}}" class="accepted">
+			<td class="table-employee" ><a href="/{{form.acceptedOffer.offerer.user.username}}/">{{form.acceptedOffer.offerer.user.username}}</a></td>
+			<td class="table-Bid"><p>{{form.acceptedOffer.totallValue|money_tag}} تومان در {{form.acceptedOffer.offerDay}} روز</p></td>
+			<td class="table-guaranty">{{form.acceptedOffer.value|money_tag}} تومان</td>
+			<td class="table-guaranty">{{form.acceptedOffer.bayane|money_tag}} تومان <span class="glyphicon glyphicon-question-sign" title="این مبلغ ضمانت اجرای پروژه از سوی پیمانکار می باشد و با شروع اجرای پروژه این مبلغ از حساب پیمانکار کسر می شود و تا پایان اجرای پروژه نزد سایت باقی می ماند و در صورتی که پیمانکار پروژه را به درستی انجام ندهد این مبلغ به حساب شما واریز خواهد شد."></span></td>
+			<td class="table-offer-date">{{form.acceptedOffer.offerTime|since}}</td>
+			<td class="table-offer-text">{{form.acceptedOffer.text}}</td>
+			<td class="action"><ul class="list-unstyled">
+					<li><span class="glyphicon glyphicon-info-sign"></span> شما این پیشنهاد را پذیرفته اید!</li>
+					<li><a href="#" onclick="canceling({{form.acceptedOffer.id}})"><span class="glyphicon glyphicon-remove"></span> لغو پذیرش</a></li>
+					<li><a href="#" data-messageto="{{form.acceptedOffer.offerer.user.id}}" data-toggle="modal" data-target="#message-Modal"><span class="glyphicon glyphicon-envelope"></span> ارسال پیام خصوصی</a></li>
+				</ul></td>
+		</tr>
+		{% endif %}
+		
+		
+		{% for offer in form.offerlist %}
+		<tr id="before_accept{{offer.id}}">
+			<td class="table-employee" ><a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a></td>
+			<td class="table-Bid"><p>{{offer.totallValue|money_tag}} تومان در {{offer.offerDay}} روز</p>
+			<td class="table-guaranty">{{offer.value|money_tag}} تومان</td>
+			<td class="table-guaranty">{{offer.bayane|money_tag}} تومان <span class="glyphicon glyphicon-question-sign" title="این مبلغ ضمانت اجرای پروژه از سوی پیمانکار می باشد و با شروع اجرای پروژه این مبلغ از حساب پیمانکار کسر می شود و تا پایان اجرای پروژه نزد سایت باقی می ماند و در صورتی که پیمانکار پروژه را به درستی انجام ندهد این مبلغ به حساب شما واریز خواهد شد."></span></td>
+			<td class="table-offer-date">{{offer.offerTime|since}}</td>
+			<td class="table-offer-text">{{offer.text}}</td>
+			<td class="action"><ul class="list-unstyled">
+					{% if not form.project.is_running %}
+					<li><a href="#" onclick="accepting({{offer.id}})"><span class="glyphicon glyphicon-ok"></span> قبول پیشنهاد</a></li>
+					<li><a href="#" data-messageto="{{offer.offerer.user.id}}" data-toggle="modal" data-target="#message-Modal"><span class="glyphicon glyphicon-envelope"></span> ارسال پیام خصوصی</a></li>
+					{% endif %}
+				</ul></td>
+		</tr>
+		{% endfor %}
+			</tbody>
+		
+	</table>
+</div>
+{% else %}
+<div class="alert alert-info">هنوز هیچ پیشنهادی ثبت نشده است!</div>
+{% endif %}
+<div id="hidden-offer" hidden>
+	<table>
+		<tbody>
+		
+		{% if form.acceptedOffer %}
+		<tr id="before_accept{{form.acceptedOffer.id}}">
+			<td class="table-employee" ><a href="/{{form.acceptedOffer.offerer.user.username}}/">{{form.acceptedOffer.offerer.user.username}}</a></td>
+			<td class="table-Bid"><p>{{form.acceptedOffer.totallValue|money_tag}} تومان در {{form.acceptedOffer.offerDay}} روز</p></td>
+			<td class="table-guaranty">{{form.acceptedOffer.value|money_tag}} تومان</td>
+			<td class="table-guaranty">{{form.acceptedOffer.bayane|money_tag}} تومان <span class="glyphicon glyphicon-question-sign" title="این مبلغ ضمانت اجرای پروژه از سوی پیمانکار می باشد و با شروع اجرای پروژه این مبلغ از حساب پیمانکار کسر می شود و تا پایان اجرای پروژه نزد سایت باقی می ماند و در صورتی که پیمانکار پروژه را به درستی انجام ندهد این مبلغ به حساب شما واریز خواهد شد."></span></td>
+			<td class="table-offer-date">{{form.acceptedOffer.offerTime|since}}</td>
+			<td class="table-offer-text">{{form.acceptedOffer.text}}</td>
+			<td class="action"><ul class="list-unstyled">
+					<li><a href="#" onclick="accepting({{form.acceptedOffer.id}})"><span class="glyphicon glyphicon-ok"></span> قبول پیشنهاد</a></li>
+					<li><a href="#" data-messageto="{{form.acceptedOffer.offerer.user.id}}" data-toggle="modal" data-target="#message-Modal"><span class="glyphicon glyphicon-envelope"></span> ارسال پیام خصوصی</a></li>
+				</ul></td>
+		</tr>
+		{% endif %}
+			</tbody>
+		
+	</table>
+</div>

@@ -1,0 +1,379 @@
+{% extends "head-tag.html" %}
+{% block title %}ﻩژﻭﺭپ ﺭاک ﻕﺎﺗا{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/TimeCircles.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/TimeCircles.js' %}"></script>
+<link href="/static/css/trip.min.css" rel="stylesheet" media="screen">
+<script src="/static/js/trip.min.zirend.js" ></script> 
+<link href="{% static "css/uploadfile.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery.uploadfile.js' %}"></script> 
+<script src="{% static 'js/jquery.form.js' %}"></script> 
+<link href="/static/css/star-rating.min.css" rel="stylesheet" media="screen">
+<script src="{% static 'js/star-rating.min.js'  %} "  ></script> 
+{% endblock %}
+{% block style %}
+<style>
+#fileslist {
+ overflow: auto;
+ max-height: 250px;
+}
+.panel-heading {
+ overflow: auto;
+}
+.panel-heading a {
+	margin-right:20px;
+}
+.popover {
+ position: relative;
+ display: block;
+ margin-bottom: 5px;
+ max-width: 500px;
+ clear:both;
+}
+
+.popover.left {
+
+ margin-left: 10px;
+ float:right;
+}
+.popover.right {
+
+ margin-left: 10px;
+ float:left
+}
+.popover-title {
+ text-align: center
+}
+#messagesframe {
+ overflow: auto;
+ max-height: 300px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+ <ol class="breadcrumb">
+  <li><a href="/">ﻪﻧﺎﺧ</a></li>
+  <li><a href="/advanced-search/">ﺎﻫ ﻩژﻭﺭپ ﺭﺩ ﻮﺠﺘﺴﺟ</a></li>
+  <li class="active">ﻩژﻭﺭپ ﺭاک ﻕﺎﺗا</li>
+ </ol>
+</div>
+<div class="container container-lg"> {% if form.sue %}
+ {% ifequal form.sue.is_otherside_give_money True %}
+ <div class="alert alert-info"> ﺖﻓﺭگ ﺪﻫاﻮﺧ ﺭاﺮﻗ ﺕﻭﺎﻀﻗ ﺪﻧیﺁﺮﻓ ﺭﺩ یﺩﻭﺯ ﻪﺑ ﻩژﻭﺭپ ﻥیا .ﺪﻧﺩﺭک ﻝﻮﺒﻗ اﺭ ﺕﻭﺎﻀﻗ ﻪﻧیﺰﻫ ﻩژﻭﺭپ ﺩاﺩﺭاﺮﻗ ﻑﺮﻃ ﻭﺩ ﺮﻫ </div>
+ {% else %}
+ {% ifequal form.sue.suer form.user.userprofile %}
+ <div class="alert alert-info"> ﺭﺩ ﺩﻮﺧ ﺭاکﻥﺎﻣیپ ﺯا ﺎﻤﺷ
+  {{form.sue.sueTime}}
+  ﺩیﺱﺭ ﺪﻫاﻮﺧ ﻡﺎﻤﺗا ﻪﺑ ﺎﻤﺷ ﻊﻔﻧ ﻪﺑ کیﺕﺎﻣﻮﺗا ﺕﺭﻮﺻ ﻪﺑ ﺕﻭﺎﻀﻗ ﺕﺭﻮﺼﻧیا ﺭیﻍ ﺭﺩ ﺪﻧک ﻡاﺪﻗا ﺕﻭﺎﻀﻗ یاﺮﺑ ﻩک ﺩﺭاﺩ ﺖﺻﺮﻓ  ﺕیاکﺵ ﻥﺎﻣﺯ ﺯا ﺯﻭﺭ ۷ ﺎﺗ ﻥﺎﺗﺭاکﻥﺎﻣیپ ﻭ ﺩیا ﻩﺩﺭک ﺕیاکﺵ </div>
+ {% else %}
+ <div class="alert alert-info"> ﺥیﺭﺎﺗ ﺭﺩ ﺎﻤﺷ ﺭاکﻥﺎﻣیپ
+  {{form.sue.sueTime}} 
+  ﺖﺳا ﻩﺩﺭک ﺕیاکﺵ ﺎﻤﺷ ﺯا. <br>
+  ﺪﺷ ﺪﻫاﻮﺧ ﻡﺎﻤﺗ ﻥﺎﺗﺭاکﻥﺎﻣیپ ﻊﻔﻧ ﻪﺑ کیﺕﺎﻣﻮﺗا ﺕﺭﻮﺻ ﻪﺑ ﺕﻭﺎﻀﻗ ﺕﺭﻮﺼﻧیا ﺭیﻍ ﺭﺩ ﺩیﻥک ﻡاﺪﻗا ﻩک ﺩیﺭاﺩ ﺖﺻﺮﻓ ﺕیاکﺵ ﺥیﺭﺎﺗ ﺯا ﺪﻌﺑ ﺯﻭﺭ ۷ ﺎﺗ ﺎﻤﺷ
+  <input type="button" onclick="react({{form.sue.id}})"  value="ﻡاﺪﻗا" >
+ </div>
+ {% endifequal %}
+ 
+ {% endifequal %}
+ {% endif %}
+ 
+ 
+ {% if form.project.is_wait_for_employer %}
+ <div class="alert alert-info"> ﺩیﻥک ﺩاﺯﺁ اﺭ ﻪﻧﺎﻋیﺏ ﻭ ﻩﺩﺭک ﻡﻼﻋا ﻩﺩیﺱﺭ ﻡﺎﻤﺗا ﻪﺑ اﺭ ﻩژﻭﺭپ ﻩک ﺖﺳا ﻩﺩﺭک ﺖﺳاﻮﺧﺭﺩ ﺎﻤﺷ ﺯا ﺎﻤﺷ ﺭاکﻥﺎﻣیپ <br>
+  ﺕﺪﻣ ﻪﺑ ﺎﻤﺷ
+  {{form.remainActionTime}}
+  ﺩیﻥک ﻡاﺪﻗا ﻩک ﺩیﺭاﺩ ﺖﻠﻬﻣ <br>
+  <input type="button" onclick="deny({{form.project.id}})"  value="ﻩﺩیﺱﺭ ﻡﺎﻤﺗا ﻪﺑ ﻩژﻭﺭپ ﻩک ﻢﻧکیﻡ ﺭاکﻥا" >
+  </br>
+  <input type="button" onclick="done({{form.project.id}})"  value="ﺖﺳا ﻩﺩیﺱﺭ ﻡﺎﻤﺗا ﻪﺑ ﻞﻣاک ﺕﺭﻮﺻ ﻪﺑ ﻩژﻭﺭپ ﻪﻠﺑ" >
+  </br>
+ </div>
+ {% endif %}
+ <div class="panel panel-default help-step1">
+  <div class="panel-body">
+   <ul class="nav nav-tabs" id="myTab">
+	<li><a id="specificationstab" href="#specifacations" data-toggle="tab"><span class="glyphicon glyphicon-folder-open"></span><span> ﻩژﻭﺭپ ﺕﺎﺼﺨﺸﻣ</span></a></li>
+	{% ifequal form.done True %}
+	<li><a id="communicationtab" href="#communication" data-toggle="tab"><span class="glyphicon glyphicon-phone"></span><span> ﻝیﺎﻓ کاﺮﺘﺷا ﻭ ﺕچ</span></a></li>
+	<li><a id="ratingtab"  href="#rating" title="ﺖﺳا ﺮﺛﻮﻣ ﺕیﺎﺳ ﺭﺩ ﺭاکﻥﺎﻣیپ ﻪﺒﺗﺭ ﺮﺑ یﺏایﺯﺭا ﻥیا .ﺩیﻥک یﺏایﺯﺭا اﺭ ﺭاکﻥﺎﻣیپ ﺩیﺭاﺩ ﺖﺻﺮﻓ ﻩژﻭﺭپ ﻡﺎﺠﻧا ﻡﺎﻤﺗا ﺎﺗ ﺎﻤﺷ." data-toggle="tab"><span class="glyphicon glyphicon-star"></span><span> ﺭاکﻥﺎﻣیپ یﺏایﺯﺭا</span></a></li>
+	{% endifequal %}
+	<li><a id="offerstab" href="#offers" data-toggle="tab"><span class="glyphicon glyphicon-hand-up"></span><span> ﺎﻫ ﺩﺎﻬﻨﺷیپ</span></a></li>
+	<li><a id="discussiontab" href="#discussion" data-toggle="tab"><span class="glyphicon glyphicon-comment"></span><span> ﺦﺳاپ ﻭ ﺶﺳﺭپ</span></a></li>
+   </ul>
+   <div class="tab-content">
+	<div class="tab-pane active" id="specifacations"> {% include "projectForEmployer-specifacations.html" %}</div>
+	{% ifequal form.done True %}
+	<div class="tab-pane" id="communication"> {% include "projectForEmployer-communication.html" %}
+	 <div class="alert alert-warning">ﺪﻫﺪﻧ ﻝیﻮﺤﺗ ﺎﻤﺷ ﻪﺑ اﺭ ﺖﻤﺴﻗ ﻥﺁ ﺩیا ﻩﺩﺭکﻥ ﺯیﺭاﻭ اﺭ ﺖﻤﺴﻗ ﺮﻫ ﻪﻧیﺰﻫ ﺎﻤﺷ یﺖﻗﻭ ﺎﺗ ﻩک ﺩﺭاﺩ اﺭ ﻖﺣ ﻥیا ﺎﻤﺷ ﺭاکﻥﺎﻣیپ ،ﺩیﻥک یﺭاﺫگ ﻩﺩﺭپﺱ ﻪﻧﺎﻋیﺏ ﺕﺭﻮﺻ ﻪﺑ اﺭ ﺖﻤﺴﻗ ﻥﺁ ﻪﻧیﺰﻫ ﺩیﺎﺑ اﺪﺘﺑا ﺎﻤﺷ ﺭاکﻥﺎﻣیپ ﺯا ﻩژﻭﺭپ ﺯا ﺖﻤﺴﻗ ﺮﻫ ﻝﺎﺳﺭا ﺖﺳاﻮﺧﺭﺩ ﺯا ﻞﺒﻗ.</div>
+	</div>
+	{% endifequal %}
+	<div class="tab-pane" id="offers"> {% include "projectForEmployer-offers.html" %} </div>
+	<div class="tab-pane" id="discussion" > {% include "discussion-tab.html" %} </div>
+	<div class="tab-pane" id="rating" > {% include "RankModal.html" %} </div>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="modal fade" id="time-increase-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="myModalLabel">{% ifequal form.done True %}ﻩژﻭﺭپ ﻡﺎﺠﻧا ﺖﻠﻬﻣ ﺩیﺪﻤﺗ{% else %}ﺩﺎﻬﻨﺷیپ یﺭﻭﺎﻌﻤﺟ ﻥﺎﻣﺯ ﺩیﺪﻤﺗ{% endifequal %}</h4>
+   </div>
+   <div class="modal-body" id="timeincrease"> </div>
+   <div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="modal fade" id="mortgage-increase-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="myModalLabel">ﻪﻧﺎﻋیﺏ ﺵیاﺰﻓا</h4>
+   </div>
+   <div class="modal-body" id="mortgageincrease"> </div>
+   <div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="modal fade" id="message-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="myModalLabel">یﺹﻮﺼﺧ ﻡایپ ﻝﺎﺳﺭا</h4>
+   </div>
+   <div class="modal-body" id="message"> </div>
+   <div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+   </div>
+  </div>
+ </div>
+</div>
+<img id="help-icon" title="ﺩیﻮﺷ ﺎﻨﺷﺁ ﺮﺘﺷیﺏ ﻪﺤﻔﺻ ﻥیا ﺎﺑ!" src="/static/img/help-icon.png" >
+{% endblock %}
+{% block javascript %} 
+<script type='text/javascript '> 
+//spiner
+var opts = {
+  lines: 11, // The number of lines to draw
+  length: 10, // The length of each line
+  width: 5, // The line thickness
+  radius: 15, // The radius of the inner circle
+  top: '400px', // Top position relative to parent in px
+
+}; 
+function react(id)
+{
+ var ver = confirm('ﺪﺷ ﺪﻫاﻮﺧ ﻩﺩاﺩ ﺖﺷگﺮﺑ ﺎﻤﺷ ﺏﺎﺴﺣ  ﻪﺑ ﻎﻠﺒﻣ ﻥیا ﺎﻤﺷ ﺩاﺩ ﺭاﺮﻗ ﻑﺮﻃ ﺕیاکﺵ ﺖﺤﺻ ﻡﺪﻋ ﺕﺭﻮﺻ ﺭﺩ یﻝﻭ ﺪﺷ ﺪﻫاﻮﺧ ﻪﺘﺳاک ﺎﻤﺷ ﺏﺎﺴﺣ ﺯا ﻥﺎﻣﻮﺗ ۱۰۰۰۰ ﻪﻣاﺩا ﺕﺭﻮﺻ ﺭﺩ ؟ﺩیﺖﺴﻫ ﻦﺌﻤﻄﻣ ایﺁ' );
+ if (ver)
+  window.location.href= '/react/'+id;
+
+}
+
+function sue(id)
+{
+ var ver = confirm(' ﺪﺷ ﺪﻫاﻮﺧ ﻩﺩاﺩ ﺖﺷگﺮﺑ ﻥﺎﺘﺑﺎﺴﺣ ﻪﺑ ﻎﻠﺒﻣ ﻥیا ﺎﻤﺷ ﺕیاکﺵ ﺖﺤﺻ ﺕﺭﻮﺻ ﺭﺩ یﻝﻭ ﺪﺷ ﺪﻫاﻮﺧ ﻪﺘﺳاک ﺎﻤﺷ ﺏﺎﺴﺣ ﺯا ﻥﺎﻣﻮﺗ ۱۰۰۰۰ ﻪﻣاﺩا ﺕﺭﻮﺻ ﺭﺩ ؟ﺩیﺖﺴﻫ ﻦﺌﻤﻄﻣ ایﺁ');
+ if (ver)
+  window.location.href= '/sue/'+id;
+
+}
+
+
+function done(id)
+{
+ var ver=confirm('ﺪﺷ ﺪﻫاﻮﺧ ﻥﺎﺗﺭاکﻥﺎﻣیپ ﻪﺑ ﺎﻤﺷ ﻪﻧﺎﻋیﺏ ﻎﻠﺒﻣ ﻥﺩیﺱﺭ ﻭ ﻩژﻭﺭپ ﻥﺪﺷ ﻡﻼﻋا ﻞﻣاک ﺐﺒﺳ ﺭاک ﻥیا ؟ﺩیﺖﺴﻫ ﻦﺌﻤﻄﻣ ایﺁ');
+ //alert(ver);
+ if (ver)
+  window.location.href= '/done/'+id;            
+
+
+}
+
+function deny(id)
+{
+ window.location.href= '/deny/'+id;            
+}
+
+function cancel(projectid)
+{
+ var status="{{form.project.is_running}}";
+ if (status == "False")
+  var ver = confirm('؟ﺩیﺖﺴﻫ ﻦﺌﻤﻄﻣ ایﺁ' );
+ else
+  var ver = confirm('ﺖﺷاﺩ ﺪﻫاﻮﺧ ﺮﺑ ﺭﺩ اﺭ ﺎﻤﺷ ﻩژﻭﺭپ ﻎﻠﺒﻣ ﺯا ﺪﺻﺭﺩ ۵ ای یﻥﺎﻣﻮﺗ ﺭاﺰﻫ ۵ ﻪﻣیﺮﺟ ﺭاک ﻥیا ؟ﺩیﺖﺴﻫ ﻦﺌﻤﻄﻣ ایﺁ' );
+  
+ if (ver)
+  window.location.href= '/cancel/'+projectid;            
+
+}
+  
+
+function accepting(offerid)
+{ 
+ //spiner
+ var target = document.getElementById('offers');
+	var spinner = new Spinner(opts).spin(target);
+ //
+  fu e.preventDefault();
+spinner.stop(spinner_div); nction spin_stop()
+  {
+ spinner.stop();  
+  }
+ $.ajax(
+ {
+	  url: "/acceptOffer/"+offerid,
+	  //cache: false,
+	  success: function(html)
+   {  
+   spin_stop()
+   if(html=='1')
+   {
+	alert("ﺩیﻥک ﻮﻐﻟ ﺩیا ﻩﺩﺭک ﻝﻮﺒﻗ ﻩک اﺭ یﺩﺎﻬﻨﺷیپ ﺩیﺎﺑ اﺪﺘﺑا ﺎﻤﺷ");
+   }
+   else if(html=='2')
+	alert('ﺩیﺭاﺪﻧ ﺭﺎﺒﺘﻋا ﻩژﻭﺭپ ﻉﻭﺮﺷ یاﺮﺑ ﻥﺎﺗﺭاکﻥﺎﻣیپ یﺖﺳاﻮﺧ ﺭﺩ ﻪﻧﺎﻋیﺏ ﻩﺯاﺪﻧا ﻪﺑ ﻥﺎﺘﺑﺎﺴﺣ ﺭﺩ ﺎﻤﺷ');
+   else
+   {
+	$("#offerslist").prepend(html);
+	$("#hidden-offer>table>tbody").html( $("#before_accept"+offerid.toString()) );
+	   $("#offerslist #before_accept"+offerid.toString()).remove();
+	$('.footable').trigger('footable_redraw');
+  
+	
+   }
+   
+	  }
+	}
+  );
+ 
+ 
+}
+
+function canceling(offerid)
+{ 
+  //spiner
+ var target = document.getElementById('offers');
+	var spinner = new Spinner(opts).spin(target);
+ //
+  function spin_stop()
+  {
+ spinner.stop();  
+  } 
+ $.ajax(
+ {
+	  url: "/cancelOffer/"+offerid,
+	  //cache: false,
+	  success: function(html)
+   {
+  spin_stop()
+  if (html=='done')
+  {
+   $("#offerslist").prepend( $("#hidden-offer #before_accept"+offerid.toString()).parent().html() );
+			$("#offerslist #after_accept"+offerid.toString()).remove();
+   $('.footable').trigger('footable_redraw');
+   
+  }
+  else
+   alert("ﺩییﺎﻣﺮﻔﺑ ﺵﻼﺗ اﺪﻌﺑ ﻡیﺪﻨﻤﺸﻫاﻮﺧ ﺖﺳا ﻩﺩاﺩ ﺥﺭ ییﺎﻄﺧ ﺕایﻞﻤﻋ ﻡﺎﺠﻧا ﺭﺩ");
+  
+   
+	  }
+	}
+  );
+
+}
+
+</script> 
+<script>
+$(document).ready(function(){
+
+$('#myTab a:first').tab('show')
+//foo table 
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+if ($(e.target).attr("id") === "offerstab") { $('.footable').footable();$('.footable').trigger('footable_expand_first_row'); }
+})
+$('.footable').bind('footable_row_expanded', function(){
+  $("[title]").tooltip();
+});
+
+//trip
+var trip = new Trip([
+  { sel : $("body"), content : "ﺩیﺪﻣﺁ ﺵﻮﺧ ﺩﻮﺧ ﻩژﻭﺭپ ﺭاک ﻕﺎﺗا ﻪﺑ!<hr>ﺩیﻥک ﺕیﺭیﺪﻣ اﺭ ﺩﻮﺧ ﻩژﻭﺭپ یاﺮﺟا ﺪﻧﻭﺭ ﺩیﻥاﻮﺗ یﻡ ﺎﺠﻧیا ﺯا.<br>ﺩیﻩﺩ ﺦﺳاپ ﺎﻫ ﻥﺁ یﻝﺎﻤﺘﺣا ﺕﻻاﻮﺳ ﻪﺑ ﻥاﺭاکﻥﺎﻣیپ ﺩﺎﻬﻨﺷیپ ﻩﺪﻫﺎﺸﻣ ﻦﻤﺿ ﻭ ﺩیﻥﺰﺑ ﺮﺳ ﺩﻮﺧ ﻩژﻭﺭپ ﺭاک ﻕﺎﺗا ﻪﺑ ﺎﺒﺗﺮﻣ ﺩیا ﻩﺩﺭک ﻥییﻊﺗ ﺩﺎﻬﻨﺷیپ یﺭﻭﺎﻌﻤﺟ یاﺮﺑ ﻩک یﺕﺪﻣ ﻝﻮﻃ ﺭﺩ ﺩیﻥک یﻊﺳ.<hr>ﺩیﻮﺷ ﺩﺭاﻭ ﺶﺨﺑ ﻥیا ﻪﺑ ﺕیﺭیﺪﻣ ﻞﻧپ ﻕیﺮﻃ ﺯا ﺩیﻥاﻮﺗ یﻡ ﺎﻤﺷ.",position : "screen-center" ,expose : true},
+  { sel : $(".help-step1"), content : "ﺩیﻥک ﺵیاﺭیﻭ اﺭ ﺩﻮﺧ ﻩژﻭﺭپ ﺕﺎﺼﺨﺸﻣ ﺩیﻥاﻮﺗ یﻡ ﺖﻤﺴﻗ ﻥیا ﺭﺩ",position : "n" ,expose : true},
+  { sel : $(".help-step1"), content : "ﺩیﻥک ﺏﺎﺨﺘﻧا اﺭ ﺩﺎﻬﻨﺷیپ ﻥیﺮﺘﻬﺑ یﺱﺭﺮﺑ ﺯا ﺱپ ﻭ ﺩیﻥک ﻩﺪﻫﺎﺸﻣ اﺭ ﺪﻧا ﻩﺩﺭک ﺖﺒﺛ ﺎﻤﺷ ﻩژﻭﺭپ ﻡﺎﺠﻧا یاﺮﺑ ﻥاﺮﺑﺭاک ﺭگیﺩ ﻩک اﺭ یﺕاﺩﺎﻬﻨﺷیپ ﺩیﻥاﻮﺗ یﻡ ﺖﻤﺴﻗ ﻥیا ﺭﺩ.",position : "n" ,expose : true},
+  { sel : $(".help-step1"), content : "ﺩیﻩﺩ ﺦﺳاپ ﺎﻤﺷ ﻩژﻭﺭپ ﻥﻮﻣاﺭیپ ﻥاﺮﺑﺭاک ﺭگیﺩ ﺕﻻاﻮﺳ ﻪﺑ ﺩیﻥاﻮﺗ یﻡ ﺖﻤﺴﻗ ﻥیا ﺭﺩ.",position : "n" ,expose : true}
+  ], {
+  showNavigation : true,
+  delay : -1,
+  tripTheme : "yeti",
+  onTripChange : function(i, tripData) {
+	if ( i === 1 ) {
+ $("#specificationstab").click();
+	}  
+	if ( i === 2 ) {
+ $("#offerstab").click();
+	}
+ if ( i === 3 ) {
+ $("#discussiontab").click();
+	}
+  }
+});
+
+function hit()
+{
+ $.ajax({
+	  url: "/help3/",      
+	  success: function(html)
+  {
+  if (html=='true'){ trip.start(); }
+  }
+	}); 
+}
+hit();
+$("#help-icon").click( function() {trip.start();} )
+
+
+$("#communicationtab").click(function () {
+$( "#message-box" ).load( "/chat/{{form.project.employee.userprofile.id}}/{{form.project.id}}")
+$( "#uploadbox" ).load( "/upload/{{ form.project.id}}")
+});
+
+
+
+$("[data-messageto]").click( function() {
+messageto= $(this).attr("data-messageto");
+$( "#message" ).load( "/message/" + messageto)
+})
+
+{% ifequal form.done False %}
+$( "#timeincrease" ).load( "/timeincrease/{{ form.project.id}}/1/")
+$( "#mortgageincrease" ).load( "/mortgageincrease/{{form.project.id}}/1/")
+{% else %}
+$( "#timeincrease" ).load( "/timeincrease/{{ form.project.id}}/0/")
+$( "#mortgageincrease" ).load( "/mortgageincrease/{{form.project.id}}/0/")
+{% endifequal %}
+
+//tab-selection
+$("#myTab a").each( function (){
+if ( "{{form.tabId}}" == $(this).attr("id") ) { 
+$(this).click();
+}
+})
+
+
+$(".countdown").TimeCircles(); 
+
+
+})
+
+</script> 
+{% endblock %} 

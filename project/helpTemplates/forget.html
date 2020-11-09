@@ -1,0 +1,34 @@
+{% extends "head-tag.html" %}
+{% block title %}فراموشی پسورد{% endblock %}
+{% block content %}
+<div class="container container-sm"> {% if form.errors %}
+	<div class="alert alert-danger">
+		<p style="color: red;"> لطفا خطاهای زیر را برطرف کنید </p>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3 class="text-center">فراموشی رمز عبور</h3>
+			<hr>
+			لطفا ایمیل خود را وارد کنید تا پسورد جدید به ایمیل شما ارسال شود.
+			<hr>
+			<form class="form-horizontal" role="form" action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="username" class="col-md-4 control-label">ایمیل:</label>
+					<div class="col-md-8">
+						<input type="email" class="form-control" id="username" name="ail" placeholder="email" >
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-4 col-md-8">
+						<button type="submit" class="btn btn-default">ارسال ایمیل</button>
+						{% if done %} <span class="help-block"> پسورد جدید فرستاده شد</span> {% endif %}
+						
+						{% if done2 %} <span class="help-block">چنین ایمیلی در سیستم ثبت نشده است</span> {% endif %} </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %} 

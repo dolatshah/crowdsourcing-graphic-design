@@ -1,0 +1,97 @@
+{% load staticfiles %}
+<link href="{% static "css/bootstrap.min.zirend.css" %} " rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script defer src="{% static 'js/bootstrap.min.js' %}" ></script>
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script>
+<link href="{% static "css/bootstrap-tokenfield.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.min.js' %}" ></script>
+
+
+{% if form.before %}
+<div class="container" id="myArea">
+	متن خود را در کادر زیر وارد کنید
+	<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<textarea class="form-control" id="input" name="input" rows="30" cols="150"></textarea>
+		<br>
+		<button type="submit" class="btn btn-success btn-block">شروع</button>
+	</form>
+
+{% else %}
+	{% for word,moadels in form.result.items %}
+		<h3> {{word}} </h3>
+		<hr>
+		<br>
+		
+		{% for moadel in moadels %}
+			<input type="radio" name="{{word}}" value="{{moadel}}" >{{moadel}}
+			<br>
+		{% endfor %}
+	{% endfor %}
+{% endif %}
+
+
+<hr>
+<div class="text">
+<button id="1" type="button" class="btn btn-default" data-toggle="button">Word 1</button>
+<button id="2" type="button" class="btn btn-default" data-toggle="button">Word 2</button>
+<button id="3" type="button" class="btn btn-default" data-toggle="button">Word 3</button>
+<button id="4" type="button" class="btn btn-default" data-toggle="button">Word 4</button>
+<button id="5" type="button" class="btn btn-default" data-toggle="button">Word 5</button>
+</div>
+<form>
+<div class="input-group">								
+<input id="output" type="text" name="text" class="form-control">
+<button class="btn btn-default" type="submit">ثبت</button>
+</div>
+</form>
+</div>
+
+
+
+ 
+
+<script>
+ $(document).ready(function(){
+ $(".text button").popover({
+content:"<input id='replace' type='text'></input><button id='submit' onClick='AddValue()' class='btn btn-success btn-block'>اصلاح</button>",
+html:true,
+placement:'top',
+trigger:'manual',
+})
+ $(".text button").click(function(event) {
+if ( ! $(".text button").hasClass("active") ) {
+$(event.target).popover('show');
+}
+else {
+$(".text .active").each(function(){
+$(this).popover('hide');
+setTimeout(function(){ $(".text .active:last").popover('show') },500);
+})
+} 
+})
+})
+function AddValue () {
+replaced = $("#replace").val();
+var ids
+$(".text .active").each(function(){
+ids= ids + "," + $(this).attr("id")
+
+})
+alert(ids)
+value = $("#output").val() + ";" + replaced + "," + ids
+$("#output").val(value)
+}
+
+$("html").mouseup(function(){
+text=window.getSelection();
+var start = document.getElementById("myArea").selectionStart;  
+var end = document.getElementById("myArea").selectionEnd;
+alert(start);
+alert(end);
+})
+
+
+
+</script>

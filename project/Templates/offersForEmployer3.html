@@ -1,0 +1,172 @@
+{% if form.offerlist or form.acceptedOffer %}
+<div class="containers">
+<div id="offers">
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"0"|divisibleby:"4" %}
+<div class="inner">
+<div class="image">
+<div class="img"><img src="../static/images/design.jpg" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="../static/images/zoom.png" /></a></div>
+</div>
+<div class="tools">
+<a href="#" data-toggle="modal" data-target="#send-message"><div class="send-message"></div></a>
+<a href="#"  data-toggle="modal" data-target="#choose"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<span>
+{{offer.text}}
+</span>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"2"|divisibleby:"4" %}
+<div class="inner">
+<div class="image">
+<div class="img"><img src="../static/images/design.jpg" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="../static/images/zoom.png" /></a></div>
+</div>
+<div class="tools">
+<a href="#" data-toggle="modal" data-target="#send-message"><div class="send-message"></div></a>
+<a href="#"  data-toggle="modal" data-target="#choose"><div class="choose"></div></a>
+</div>
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<span>
+{{offer.text}}
+</span>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="col-offers">
+{% for offer in form.offerlist %}
+{% if forloop.counter0|add:"1"|divisibleby:"4" %}
+<div class="inner">
+<div class="image">
+<div class="img"><img src="../static/images/design.jpg" alt=""/></div>
+<div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="../static/images/zoom.png" /></a></div>
+</div>
+{% if not form.project.is_running %}
+<div class="tools">
+<a href="#" data-messageto="{{offer.offerer.user.id}}" data-toggle="modal" data-target="#send-message"><div class="send-message"></div></a>
+<a href="#"  data-toggle="modal" data-target="#choose"><div class="choose"></div></a>
+</div>
+{% endif %}
+
+<div class="designer"><div class="name">
+<a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a>
+</div>
+<div class="rate">
+<div class="rating">
+<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+</div>
+<div class="c"></div>
+</div>
+<div class="comment">
+<div class="latent">
+</div>
+<div class="commentChild">
+<span>
+{{offer.text}}
+</span>
+</div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
+<br class="clear" />
+</div>
+
+<div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+	   
+			<h4 class="modal-title" id="myModalLabel">ارسال پیغام</h4>
+			</div>
+			<div class="modal-body message">
+				<textarea rows="5" cols="70"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary">ارسال</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">انصراف               </button>
+				
+		</div>
+	</div>
+  </div>
+</div>  
+	
+
+<div class="modal fade zoom" id="zoom" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="zoomed-img">
+				<img src="../static/images/design.jpg" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">بستن             </button>
+		</div>
+	</div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="choose" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body zoomed-img">
+				<span>آیا از انتخاب این طرح به عنوان طرح نهایی اطمینان دارید؟</span>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="accepting({{offer.id}})">تایید</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">بستن             </button>
+		</div>
+	</div>
+  </div>
+</div>
+
+
+{% else %}
+<div class="alert alert-info">هنوز هیچ پیشنهادی ثبت نشده است!</div>
+{% endif %}

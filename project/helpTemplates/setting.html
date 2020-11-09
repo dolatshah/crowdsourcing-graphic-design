@@ -1,0 +1,66 @@
+{% extends "head-tag.html" %}
+{% block title %}تنظیمات{% endblock %}
+{% block style %}
+<style>
+#fileslist  {
+	overflow:auto;
+	max-height:250px;
+}
+.panel-heading {
+	overflow: auto;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-md">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3 class="text-center">تنظیمات</h3>
+			<hr>
+			<form class="form-horizontal" role="form" method="POST" >
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="email" class="col-md-3 control-label" style="display:none" >ایمیل:</label>
+					<div class="col-md-5">
+						<input type="email" class="form-control" id="email" title="ایمیل شما به دلایل امنیتی به هیچ کاربر دیگری نشان داده نخواهد شد و فقط برای ارتباط با سایت از آن استفاده خواهد شد" name="email" value="{{form.email}}"  style="display:none">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="currentpassword" class="col-md-3 control-label">رمز عبور فعلی:</label>
+					<div class="col-md-5">
+						<input type="password" class="form-control" id="currentpassword" name="current"  value="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="newpassword" class="col-md-3 control-label">رمز عبور جدید:</label>
+					<div class="col-md-5">
+						<input type="password" class="form-control" id="newpassword" name="new" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="confirmpassword" class="col-md-3 control-label">تکرار رمز عبور جدید:</label>
+					<div class="col-md-5">
+						<input type="password" class="form-control" id="confirmpassword" name="confirm" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="confirmpassword" class="col-md-3 control-label">اشتراک ایمیل:</label>
+					<div class="col-md-5">
+						<input type="checkbox" name="is_subscribeForProjects" {% if form.is_subscribeForProjects %} checked {% endif %} >
+						میخواهم پروژه های جدید سایت به صورت هفتگی برایم ایمیل شود </div>
+				</div>
+				<div class="form-group">
+					<div class=" col-md-offset-3 col-md-4">
+						<input type="checkbox" name="is_subscribeForNotif" {% if form.is_subscribeForNotif %} checked {% endif %} >
+						میخواهم اطلاعیه های سایت را به صورت آنی از طریق ایمیل دریافت کنم </div>
+				</div>
+				<hr >
+				<div class="form-group">
+				<div class="col-md-offset-3 col-md-5">
+					<button type="submit" class="btn btn-default">ثبت</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %} 

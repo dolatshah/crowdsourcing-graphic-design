@@ -1,0 +1,29 @@
+ {% if form.errors %}
+<div class="alert alert-danger">
+	<p style="color: red;"> Please correct the error{{ form.errors|pluralize }} below. </p>
+</div>
+{% endif %}
+<form role="form" class="form-horizontal" action="/message/{{form.receiver.id}}/" method="post">
+	{% csrf_token %}
+	<div class="form-group">
+		<label class="col-md-2 control-label">مخاطب :</label>
+		<div class="col-md-10">
+			<p class="form-control-static"><a href="/{{form.receiver.user.username}}/">{{form.receiver.user.username}}</a></p>
+		</div>
+	</div>
+	{% csrf_token %}
+	<div class="form-group">
+		<div class="col-md-12">
+			<textarea class="form-control" id="message-text" name="text" placeholder="متن پیام" ></textarea>
+			<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+			<span class="help-block">{{ form.text.errors }} </span> </div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-10">
+			<button type="submit" class="btn btn-default">ارسال</button>
+		</div>
+	</div>
+</form>
+<script>
+$("form").attr("action" , "/message/" + messageto + "/");
+ </script> 

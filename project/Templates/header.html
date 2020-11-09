@@ -1,0 +1,249 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل کاربری ...</title>
+
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/pastel-stream.css" />
+<link rel="stylesheet" type="text/css" href="/static/font-awesome.min.css" />
+<script src="/static/js/jquery-1.11.0.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-tabdrop.js"></script>
+<script src="/static/js/spin.js"></script>
+<script src="/static/js/jquery-ui.effects.min.js"></script>
+<script src="/static/js/footable.min.js"></script> 
+<script src="/static/js/footable.paginate.min.js"></script> 
+
+</head>
+
+<style>
+.form_hover {
+padding: 0px;
+position: relative;
+overflow: hidden;
+height: 240px;
+}
+
+.form_hover:hover .header {
+opacity: 1;
+transform: translateY(-172px);
+-webkit-transform: translateY(-172px);
+-moz-transform: translateY(-172px);
+-ms-transform: translateY(-172px);
+-o-transform: translateY(-172px);
+}
+
+.form_hover img {
+z-index: 4;
+}
+
+.form_hover .header {
+position: absolute;
+top: 170px;
+-webkit-transition: all 0.3s ease;
+-moz-transition: all 0.3s ease;
+-o-transition: all 0.3s ease;
+-ms-transition: all 0.3s ease;
+transition: all 0.3s ease;
+width: 100%;
+}
+
+.form_hover .blur {
+height: 240px;
+z-index: 5;
+position: absolute;
+width: 100%;
+}
+
+.form_hover .caption-text {
+z-index: 10;
+color: #fff;
+position: absolute;
+height: 240px;
+text-align: center;
+top: -20px;
+width: 100%;
+}
+</style>
+
+<style>
+.panel-heading span {
+margin-top: -20px;
+font-size: 15px;
+}
+.row {
+margin-top: 40px;
+padding: 0 10px;
+}
+.clickable {
+cursor: pointer;
+}
+</style>
+
+<script type="text/javascript">
+jQuery(function ($) {
+$('.panel-heading span.clickable').on("click", function (e) {
+if ($(this).hasClass('panel-collapsed')) {
+// expand the panel
+$(this).parents('.panel').find('.panel-body').slideDown();
+$(this).removeClass('panel-collapsed');
+$(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+}
+else {
+// collapse the panel
+$(this).parents('.panel').find('.panel-body').slideUp();
+$(this).addClass('panel-collapsed');
+$(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+}
+});
+});
+</script>
+
+
+<script type="text/javascript">
+jQuery(function ($) {
+$('[data-toggle="popover"]').popover();
+$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+
+{% if form.login or login %}
+<body>
+
+<div >
+<!-- پنل کاربری -->
+<div class="row">
+ <div class="col-lg-12">
+
+<div class="navbar navbar-default">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="#"></a>
+</div>
+<div class="navbar-collapse collapse navbar-responsive-collapse">
+<ul class="nav navbar-nav">
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">پنل کاربری<b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="/controlPanel/">اطلاعیه های من </a></li>
+<li><a href="/controlPanel/">پیام های من </a></li>
+</ul>
+</li>
+
+<li ><a href="/account/" >حساب </a></li>
+<li ><a href="/advanced-search/" >لیست پروژه ها</a></li>
+
+</ul>
+<ul class="nav navbar-nav navbar-right navbar-user">
+<li class="dropdown messages-dropdown">
+</li>
+<li class="dropdown user-dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if user.username %} {{user.username}} {% else %} {{form.user.username}} {% endif %} <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li class="dropdown-header">خوش آمدید</li>
+<li class="divider"></li>
+<li><a href="/profile/"><i class="fa fa-user"></i> پروفایل</a></li>
+<li><a href="/setting/"><i class="fa fa-gear"></i> تنظیمات</a></li>
+<li><a href="/editProfile/"><i class="fa fa-gear"></i> ویرایش اطلاعات</a></li>
+<li class="divider"></li>
+<li><a href="/logout/"><i class="fa fa-power-off"></i> خارج شو</a></li>
+</ul>
+</li>
+</ul>
+
+
+<div class="col-sm-3 col-md-3 pull-right">
+	<form  class="navbar-form" role="search" action="/advanced-search/"  method="POST" >
+		<div class="input-group"> 
+			<input id="-1" type="text" name="text" class="form-control"  placeholder="جستجو در پروژه ها">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="submit">بگرد</button>
+			</span> 
+		</div>
+		{% csrf_token %}
+	</form>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>
+{% else %}
+
+<body>
+
+<div >
+<!-- پنل کاربری -->
+<div class="row">
+ <div class="col-lg-12">
+
+<div class="navbar navbar-default">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="#"></a>
+</div>
+<div class="navbar-collapse collapse navbar-responsive-collapse">
+<ul class="nav navbar-nav">
+
+<li class="dropdown">
+<a href="/login/" class="dropdown-toggle" >ورود</a>
+</li>
+<li class="dropdown">
+<a href="/signup/" class="dropdown-toggle" >ثبت نام</a>
+</li>
+<li class="dropdown">
+	<a href="/advanced-search/" >لیست پروژه ها</a>
+</li>
+</ul>
+<ul class="nav navbar-nav navbar-right navbar-user">
+<li class="dropdown messages-dropdown">
+</li>
+<li class="dropdown user-dropdown">
+</li>
+</ul>
+
+
+<div class="col-sm-3 col-md-3 pull-right">
+	<form  class="navbar-form" role="search" action="/advanced-search/"  method="POST" >
+		<div class="input-group"> 
+			<input id="-1" type="text" name="text" class="form-control"  placeholder="جستجو در پروژه ها">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="submit">بگرد</button>
+			</span> 
+		</div>
+		{% csrf_token %}
+	</form>
+</div>
+
+
+
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>
+{% endif %}

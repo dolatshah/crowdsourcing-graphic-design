@@ -1,0 +1,67 @@
+{% include "header.html" %}
+<div class="container container-sm" > 
+	<div class="panel panel-default">
+	<div class="col-md-3" >
+	</div>
+		<div class="panel-body col-md-6" style="border:solid 2px"  > 
+			<h3 class="text-center">ثبت نام</h3>
+			<hr>
+			{{form.errors}}
+			<form id="myForm" class="form-horizontal" role="form" action="/signup/" method="post">
+				{% csrf_token %} 
+				<div class="form-group">
+					
+					<div class="col-sm-8">
+						<input onblur="user()" type="text" class="form-control ltr" id="user_name" maxlength="20" name="user_name" placeholder="user name" >
+					</div>
+					<label for="user_name" class="col-sm-4 control-label">نام کاربری</label>
+					<div id="user-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='استفاده از این نام کاربری مجاز نیست'></span> </div>
+				</div>
+				<div class="form-group">
+					
+					<div class="col-sm-8">
+						<input onblur="mail()" type="email" class="form-control ltr" id="email" name="email" placeholder="email" >
+					</div>
+					<label for="email" class="col-sm-4 control-label">ایمیل</label>
+					<div id="mail-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='این ایمیل قبلا به ثبت رسیده است'></span> </div>
+				</div>
+				<div class="form-group">
+					
+					<div class="col-sm-8">
+						<input onblur="pass()" type="password" class="form-control ltr" id="password" name="password" placeholder="password" >
+					</div>
+					<label for="password" class="col-sm-4 control-label">رمز عبور</label>
+					<div id="pass-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='رمز عبور شما باید بیشتر از 6 کارکتر باشد' ></span> </div>
+				</div>
+				<div class="form-group">
+					
+					<div class="col-sm-8">
+						<input onblur="repass()" type="password" class="form-control ltr" id="confirm_password" name="confirm_password" placeholder="confirm password" >
+					</div>
+					<label for="confirm_password" class="col-sm-4 control-label">تکرار رمز عبور</label>
+					<div id="repass-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='رمز عبور وارد شده مطابقت ندارد'></span> </div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-12">
+						<label class="radio-inline">
+							<input type="radio" id="male" name="is_designer" value="f" checked  >
+							به دیزاین نیاز دارم</label>
+						<label class="radio-inline">
+							<input type="radio" id="female" name="is_designer"  value="t" >
+							دیزاینر هستم </label>
+					</div>
+				</div>
+				
+				<hr>
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-6">
+						<button type="submit" id="submit" class="btn  btn-block">تایید</button>
+						<span class="help-block"></span> </div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-3" >
+	</div>
+	</div>
+</div>

@@ -1,0 +1,84 @@
+{% include "header.html" %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>مکالمه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	
+</head>
+<body>
+{% block style %}
+<style>
+.popover {
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	max-width: 500px;
+	clear:both;
+}
+
+.popover.left {
+
+	margin-left: 10px;
+	float:right;
+}
+.popover.right {
+
+	margin-left: 10px;
+	float:left
+}
+.popover-title {
+	text-align: center
+}
+#messagesframe {
+	overflow: auto;
+	max-height: 300px;
+}
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="container container-md">
+<div class="panel panel-default">
+	<div class="panel-body" >
+	<div class="panel panel-info">
+		<div style="text-align:center" class="panel-heading">{{form.other}} گفتگوی شما و  </div>
+		<div  id="messagesframe" class="panel-body"> 
+			{% for message in form.messages %}
+			<div class="popover {% ifequal message.sender user %} right {% else %} left {% endifequal %}">
+				<div class="arrow"></div>
+				<h3 class="popover-title">{{message.sentTime}}</h3>
+				<div class="popover-content">
+					<p>{{message.text}} </p>
+				</div>
+			</div>
+			{% endfor %} </div>
+	</div>
+	<hr>
+	<form class="form" role="form" action="/conversation/{{form.messageid}}/" method="POST">
+		{% csrf_token %}
+		<div class="form-group">
+			<textarea name="text" class="form-control" placeholder="پیام خود را بنویسید"></textarea>
+			<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-default">ارسال</button>
+		</div>
+	</form>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script type="text/javascript">
+
+$(document).ready(function(){
+	var height = document.getElementById('messagesframe').scrollHeight;
+	$( "#messagesframe" ).scrollTop(height);
+})
+</script> 
+{% endblock %} 
+</body>
+</html>

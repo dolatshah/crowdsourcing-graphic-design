@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>پروژه ها</title>
+
+{% load staticfiles %}
+<link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}" />
+<script src="{% static "js/jquery-2.1.1.min.js"%}"></script>
+<script src="{% static "js/script.js"%}"></script>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                
+                $('.blah')
+                    .attr('src', event.target.result)
+                    .width(220)
+                    .height(220);
+            };
+            $('.upload_image').attr('value', $('input[type=file]').val());
+       reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+</script>
+</head>
+<style type="text/css">
+table div
+{
+    text-align: center;
+      word-wrap: break-word;
+      width: 210px;
+}
+</style>
+
+{% ifequal form.offer_finished False %}
+
+<body>
+{% include "header.html" %}
+
+<div class="containers">
+
+{% include "projectDescription.html" %}
+
+{% include "separator.html" %}
+
+{% ifequal form.offered True %}
+    <div class="alert alert-info" style="text-align:center; margin-top:20px; ">شما برای این پروژه پیشنهاد ارسال کرده اید</div>
+{% endifequal %}
+
+{% if not form.project.is_wait_for_employee %}
+<div id="new-offer">
+{% ifequal form.offered True %}
+<a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#edit" style="text-align:center; margin-left: 425px;">ویرایش پیشنهاد</a>
+{% else %}
+{% if form.user.userprofile.is_designer %}
+<a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#offer" style="text-align:center; margin-left: 425px;">ثبت پیشنهاد</a>
+{% else %}
+<div class="alert alert-info" style="text-align:center; margin-top:20px;">برای ثبت پیشنهاد باید به عنوان طراح ثبت نام کرده و وارد سایت شوید</div>
+{% endif %}
+{% endifequal %}
+</div>
+{% endif %}
+
+{% if form.project.is_wait_for_employee %}
+{% ifequal form.choosedOffer.offerer.id user.id %}
+    <div class="alert alert-success" style="text-align:center; direction: rtl;"> کارفرما شما را برای انجام پروژه انتخاب کرده است :
+        <form method='post' action="" style="display:inline">
+            {% csrf_token %}
+            <input   class="btn btn-default"  type="submit"   value="قبول می کنم" name="accept" >
+            <input class="btn btn-default"   type="submit"   value="قبول نمی کنم" name="cancel" >
+        </form>
+    </div>
+    {% endifequal %}
+    {% endif %}
+
+{% include "offers.html" %}
+
+</div>
+
+<div class="modal fade" id="zoom" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body zoomed-img">
+                <img src="../static/images/design.jpg" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن				</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% if form.user.userprofile.is_designer %}
+{% ifequal form.offered False %}
+<div class="modal fade" id="offer" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+       
+            <h4 class="modal-title" id="myModalLabel">ثبت پیشنهاد</h4>
+            </div>
+            <div class="modal-body">
+            <form role="form" class="form-popover" method='post' action="/project/{{form.project.id}}/">
+            	{% csrf_token %}
+                <div class="right">
+                <div class="sedning-files">
+                        <input type="file" name="input_image" onchange="readURL(this);">
+                        <div class="img">
+                        <img class="blah" src="#" alt=""/>
+                        </div>
+                    </div>
+                    <input  name="image" class="upload_image" value="" style="visibility:hidden;">
+            </div>
+            
+            <div class="left">
+                      <label for="bid-value">قیمت پیشنهادی:</label>
+                      <input type="text" class="form-control" id="totallValue" name="totallValue" placeholder="فقط عدد وارد کنید" pattern="[0-9]+" required >
+                      <label for="bid-value">پیش پرداخت درخواستی:</label>
+                      <input type="text" class="form-control"  id="bid-value" name="value" placeholder="فقط عدد وارد کنید" pattern="[0-9]+" required >
+                      <label for="offer-day">تعداد روزهای لازم برای انجام پروژه:</label>
+                      <input type="text" class="form-control" id="offer-day" name="offerDay" placeholder="فقط عدد وارد کنید" pattern="[0-9]+" pattern="^[1-9][0-9]*$" required >
+                    <label for="des" >توضیحات:</label>
+                    <textarea data-toggle="popover" class="form-control"  id="des" name="text" rows="3"
+                    placeholder="توضیحات شما در رابطه با پیشنهادتان ..." required></textarea>
+                </div>
+                <div id="submit-offer">
+                <button type="submit"  class="btn btn-success" onclick="/project/form.project.id/">ثبت پیشنهاد</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">انصراف               </button>
+                </div>
+                </form>
+            </div>
+            
+    </div>
+  </div>
+</div>	
+{% endifequal %}
+{% endif %}
+
+{% ifequal form.offered True %}
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+       
+            <h4 class="modal-title" id="myModalLabel">ویرایش پیشنهاد</h4>
+            </div>
+            <div class="modal-body">
+            <form role="form" class="form-popover" method='post' action="/changeOffer/{{form.project.id}}/{{form.youroffer.id}}/">
+                {% csrf_token %}
+                <div class="right">
+                <div class="sedning-files">
+                        <input type="file" name="input_image" onchange="readURL(this);">
+                        <div class="img">
+                        <img class="blah" src="#" alt=""/>
+                        </div>
+                    </div>
+                    <input  name="image" class="upload_image" value="" style="visibility:hidden;">
+            </div>
+            
+            <div class="left">
+                      <label for="bid-value">قیمت پیشنهادی:</label>
+                      <input type="text" class="form-control" id="totallValue" name="totallValue" placeholder="فقط عدد وارد کنید" pattern="[0-9]+"  value="{{form.totallValue}}"  required >
+                      <label for="bid-value">پیش پرداخت درخواستی:</label>
+                      <input type="text" class="form-control"  id="bid-value" name="value" placeholder="فقط عدد وارد کنید" pattern="[0-9]+"  value="{{form.value}}"  required >
+                      <label for="offer-day">تعداد روزهای لازم برای انجام پروژه:</label>
+                      <input type="text" class="form-control" id="offer-day" name="offerDay" placeholder="فقط عدد وارد کنید" pattern="[0-9]+" pattern="^[1-9][0-9]*$" value="{{form.offerDay}}" required >
+                    <label for="des" >توضیحات:</label>
+                    <textarea data-toggle="popover" class="form-control"  id="des" name="text" rows="3"
+                    placeholder="توضیحات شما در رابطه با پیشنهادتان ..." required>{{form.text}}</textarea>
+                </div>
+                <div id="submit-offer">
+                <button type="submit"  class="btn btn-success" onclick="/project/form.project.id/">ذخیره تغییرات</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">انصراف               </button>
+                </div>
+                </form>
+            </div>
+            
+    </div>
+  </div>
+</div>  
+{% endifequal %}
+
+<script type="text/javascript">
+    $("#offers").css({height:$(".col-offers").height()});
+    $(".inner").mouseover(function(){$(".zoomed-img").find("img").attr('src', $(this).find(".offered_image").attr('src'))});
+</script>
+
+{% else %}
+
+<div class="alert alert-info" style="text-align:center; margin-top:20px; ">پیمانکار این پروژه انتخاب شده است و دیگر قادر به مشاهده ی پروژه نمی باشید</div>
+
+{% endifequal %}
+
+</body>
+
+</html>

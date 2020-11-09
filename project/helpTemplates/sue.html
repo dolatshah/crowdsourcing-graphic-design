@@ -1,0 +1,29 @@
+{% extends "head-tag.html" %}
+{% block title %}شکایت{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+	<p style="color: red;"> لطفا خطا های زیر را برطرف کنید
+		{{ form.errors|pluralize }} </p>
+</div>
+{% endif %}
+<form action="" method="post">
+{% csrf_token %}
+
+	
+	
+	دلیل اصلی شکایت:
+<select name="reason" >
+	<option value="0">لطفا یکی از موارد زیر را انتخاب کنید</option>
+	<option value="does not answer me">جواب من را نمیدهد</option>
+	<option value="about money">شکایت در مورد مبلغ قرارداد</option>
+	<option value="does not complete project">پروژه را انجام شده نمیداند</option>
+</select>
+توضیحات :
+<textarea name="explanation" rows="5" cols="100"></textarea>
+<br>
+<br>
+<input type="submit" value="تایید">
+</input>
+{% endblock %}

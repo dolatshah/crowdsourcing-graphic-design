@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+	<div class="panel-body"><span class="h4">توضیحات </span>
+		<hr>
+		{% if userprofile.text %}
+		{{userprofile.text|linebreaks}}
+		{% else %}
+		اطلاعاتی وارد نشده است
+		{% endif %} </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body"><span class="h4">تحصیلات </span>
+		<hr>
+		{% if userprofile.education %}‏
+		
+		{% if userprofile.education.licence %}
+		مدرک : {{userprofile.education.licence}}<br>
+		{% endif %}
+		
+		{% if userprofile.education.school %}
+		محل دریافت مدرک: {{userprofile.education.school}}<br>
+		{% endif %}
+		
+		{% if userprofile.education.currentTerm %}
+		ترم کنونی : {{userprofile.education.currentTerm}}<br>
+		{% endif %}
+		
+		{% if userprofile.education.startDate %}
+		سال شروع تحصیل :{{userprofile.education.startDate.year }}<br>
+		{% endif %}
+		
+		{% if userprofile.education.endDate %}
+		سال پایان تحصیل :{{userprofile.education.endDate.year }}<br>
+		{% endif %}
+		
+		
+		{% else %}
+		اطلاعاتی وارد نشده است
+		{% endif %} </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body"><span class="h4">مهارت ها </span>
+		<hr>
+		{% if userprofile.skill.count %}
+		{% for skill in userprofile.skill.all %}
+		<button type="button" style="margin-bottom:5px" class="btn btn-info btn-sm skill" onclick="window.location.href='/advanced-search/skill/{{skill}}';" > {{skill}} </button>
+		{% endfor %} 
+		{% else %}
+		مهارتی وارد نشده است
+		{% endif %} </div>
+</div>

@@ -1,0 +1,72 @@
+{% ifequal form.done True %}
+<div class="panel panel-primary">
+ <div class="panel-heading">
+  <h3 style="display:inline" class="panel-title">ﻩژﻭﺭپ ﻥاﻮﻨﻋ: {{form.project.title}} ( ﺕیﻊﺿﻭ: {% include "projectstatus.html" with project=form.project %} ) </h3>
+  <span class=" pull-left"> <a title="ﺩیﻥک ﻩﺭیﺥﺫ اﺭ ﺩﻮﺧ ﺯایﻥ ﺩﺭﻮﻣ ﺕﺎﻋﻼﻃا ﺩییﺎﺗ ﺯا ﻞﺒﻗ ﺱپ ﺩﻮﺑ ﺪﻫاﻮﺨﻧ یﺱﺮﺘﺳﺩ ﻞﺑﺎﻗ ﺭگیﺩ ﻩژﻭﺭپ ﺭاک ﻕﺎﺗا ﺭﺩ ﺎﻤﺷ ﺕﺎﻤﻟاکﻡ ﻭ ﺎﻫ ﻝیﺎﻓ ﺩییﺎﺗ ﺯا ﺱپ .ﺪﺷ ﺪﻫاﻮﺧ ﻞﻘﺘﻣ ﺭاکﻥﺎﻣیپ ﺏﺎﺴﺣ ﻪﺑ ﺎﻤﺷ یﺯیﺭاﻭ ﻪﻧﺎﻋیﺏ ﺎﻤﺷ ﻂﺳﻮﺗ ﻩژﻭﺭپ ﺩییﺎﺗ ﺎﺑ .ﺩیﻥک ﺩییﺎﺗ اﺭ ﻩژﻭﺭپ ﻡﺎﻤﺗا ﺖﻤﺴﻗ ﻥیا ﺯا ﺩیﻥاﻮﺗ یﻡ ﺪﺷﺎﺑ یﻡ ﺎﻤﺷ ﺩییﺎﺗ ﺩﺭﻮﻣ ﻩژﻭﺭپ ﻭ ﺩیا ﻩﺩﻮﻤﻧ ﺖﻓایﺭﺩ ﻞﻣاک ﺭﻮﻃ ﻪﺑ اﺭ ﻩژﻭﺭپ ﻩک یﺕﺭﻮﺻ ﺭﺩ." href="#" onclick="done({{form.project.id}})"><span class="glyphicon glyphicon-ok"></span> ﻩژﻭﺭپ ﻡﺎﻤﺗا ﺩییﺎﺗ</a> <a href="#" onclick="cancel({{form.project.id}})" ><span class="glyphicon glyphicon-remove"></span> ﻩژﻭﺭپ ﻮﻐﻟ</a> <a title="ﺩیﻥک ﺖﺒﺛ ﺕیاکﺵ کی ﺖﻤﺴﻗ ﻥیا ﺭﺩ ﺩیﻥاﻮﺗ یﻡ ﻡﻭﺰﻟ ﺕﺭﻮﺻ ﺭﺩ ﺱپﺱ ﺩیﺭاﺫگﺏ ﻥایﻡ ﺭﺩ ﺕیﺎﺳ یﻥﺎﺑیﺖﺷپ ﺎﺑ اﺭ ﻉﻮﺿﻮﻣ اﺪﺘﺑا ﺩیﺭاﺩ یﺕیاکﺵ ﺩﻮﺧ ﺭاکﻥﺎﻣیپ ﺯا ﻩک یﺕﺭﻮﺻ ﺭﺩ." href="#" onclick="sue({{form.project.id}})"><span class="glyphicon glyphicon-screenshot"></span> ﺕیاکﺵ</a> </span> </div>
+</div>
+<div class="row">
+ <div class="col-sm-4">
+  <div style="height:171px" class="panel panel-default " title="ﺩﺩﺭگ یﻡ ﺯیﺭاﻭ ﺭاکﻥﺎﻣیپ ﺏﺎﺴﺣ ﻪﺑ ﻎﻠﺒﻣ ﻥیا ﺎﻤﺷ ﻑﺮﻃ ﺯا ﻩژﻭﺭپ ﺕیﻑیک ﺩییﺎﺗ ﻭ ﻩژﻭﺭپ ﻥایاپ ﺯا ﺱپ ﻭ ﺪﺷﺎﺑ یﻢﻧ ﺖﺷاﺩﺮﺑ ﻞﺑﺎﻗ ﺭاکﻥﺎﻣیپ یاﺮﺑ ﻩژﻭﺭپ ﻥایاپ ﺎﺗ ﻎﻠﺒﻣ ﻥیا.">
+   <div class="panel-body"> <span> ﺭاکﻥﺎﻣیپ یاﺮﺑ ﺎﻤﺷ ﻂﺳﻮﺗ ﻩﺪﺷ ﺯیﺭاﻭ ﻪﻧﺎﻋیﺏ: </span>
+	<button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#mortgage-increase-Modal" > <span class="glyphicon glyphicon-plus"></span> ﺵیاﺰﻓا </button>
+	<hr>
+	<div class="alert alert-success">{{form.project.employer_cashed_money}} ﻥﺎﻣﻮﺗ</div>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-4">
+  <div class="panel panel-default " title="ﺩیﻥک ﺩیﺪﻤﺗ اﺭ ﻥﺎﻣﺯ ﻥیا ﺩیﻥاﻮﺗ یﻡ ﻡﻭﺰﻟ ﺕﺭﻮﺻ ﺭﺩ .ﺪﻫﺩ ﻝیﻮﺤﺗ ﺎﻤﺷ ﻪﺑ اﺭ ﻩژﻭﺭپ ﺎﺗ ﺩﺭاﺩ ﺖﺻﺮﻓ ﻥﺎﻣﺯ ﻥیا ﻥایاپ ﺎﺗ ﺭاکﻥﺎﻣیپ.">
+   <div class="panel-body"> <span>ﻩﺪﻧﺎﻣیﻕﺎﺑ ﻥﺎﻣﺯ:</span>
+	<button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#time-increase-Modal"> <span class="glyphicon glyphicon-plus"></span> ﺩیﺪﻤﺗ </button>
+	<hr>
+	{% if form.seconds_remain > 0 %}
+	<div  style="height:75px" class="countdown" data-timer="{{form.seconds_remain}}"></div>
+	{% else %} <span>ﺩیﻥک ﺩیﺪﻤﺗ اﺮﻧﺁ ﺩیﻥاﻮﺗیﻡ یﻝﻭ ﺖﺳا ﻩﺩیﺱﺭ ﻡﺎﻤﺗا ﻪﺑ ﺩیﺩﻮﺑ ﻩﺩﺭک ﻥییﻊﺗ ﻩک یﻥﺎﻣﺯ. </span> {% endif %} </div>
+  </div>
+ </div>
+ <div class="col-sm-4">
+  <div style="height:171px" class="panel panel-default">
+   <div class="panel-body">
+	<p>ﺭاکﻥﺎﻣیپ ﺕﺎﺼﺨﺸﻣ</p>
+	<hr>
+	یﺮﺑﺭاک ﻡﺎﻧ: <a href="/{{form.project.employee.userprofile.user.username}}/">{{form.project.employee.userprofile.user.username}}</a> </div>
+  </div>
+ </div>
+</div>
+{% include "project-description.html" %}
+{% endifequal %}
+		 
+	 
+{% ifequal form.done False %}
+<div class="panel panel-primary">
+ <div class="panel-heading">
+  <h3 class="panel-title">ﻩژﻭﺭپ ﻥاﻮﻨﻋ: {{form.project.title}} ( ﺕیﻊﺿﻭ: {% include "projectstatus.html" with project=form.project %} ) </h3>
+  <span class=" pull-left"> <a title="ﺩیﻥک ﺵیاﺭیﻭ اﺭ ﺩیا ﻩﺩﺭک ﺖﺒﺛ ﻩژﻭﺭپ ﺵﺭﺎﻔﺳ ﻡﺮﻓ ﺭﺩ ﻩک اﺭ یﺕﺎﺼﺨﺸﻣ ﺩیﻥاﻮﺗ یﻡ ﺎﺠﻧیا ﺯا." href="/editProject/{{form.project.id}}" ><span class="glyphicon glyphicon-pencil"></span> ﻩژﻭﺭپ ﺕﺎﺼﺨﺸﻣ ﺵیاﺭیﻭ</a> <a href="#" title="ﺩیﻥک ﻡاﺪﻗا ﺖﻤﺴﻗ ﻥیا ﺯا ﺩیﻥک ﻮﻐﻟ اﺭ ﺩﻮﺧ ﺵﺭﺎﻔﺳ ﺩیﻩاﻮﺧ یﻡ ﻩک یﺕﺭﻮﺻ ﺭﺩ." onclick="cancel({{form.project.id}})" ><span class="glyphicon glyphicon-remove"></span> ﻩژﻭﺭپ ﻮﻐﻟ</a> </span> </div>
+</div>
+<div class="row">
+ <div class="col-sm-4">
+  <div style="height:190px" class="panel panel-default ">
+   <div class="panel-body"> <span class="h4">ﻪﻧﺎﻋیﺏ: </span><span>{{form.project.employer_cashed_money}} ﻥﺎﻣﻮﺗ</span>
+	<button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#mortgage-increase-Modal" > <span class="glyphicon glyphicon-plus"></span> ﺵیاﺰﻓا </button>
+	</p>
+	<hr>
+	<span class="h4">ﻪﺟﺩﻮﺑ ﻩﺩﻭﺪﺤﻣ </span><span class="pull-left">{{form.project.startBid|money_tag}} - {{form.project.endBid|money_tag}} ﻥﺎﻣﻮﺗ</span>
+	<hr>
+	<span class="h4">ﻩژﻭﺭپ ﻡﺎﺠﻧا ﺖﻠﻬﻣ</span><span class="pull-left">{{form.project.offerDay}} ﺯﻭﺭ</span> </div>
+  </div>
+ </div>
+ <div class="col-sm-4">
+  <div class="panel panel-default " style="height:190px" title="ﺩیﻥک ﺩیﺪﻤﺗ اﺭ ﻥﺎﻣﺯ ﻥیا ﺩیﻥاﻮﺗ یﻡ ﺯایﻥ ﺕﺭﻮﺻ ﺭﺩ .ﺪﻨﻧک ﻝﺎﺳﺭا ﺩﺎﻬﻨﺷیپ ﺎﻤﺷ ﻩژﻭﺭپ یاﺮﺑ ﺪﻨﻧاﻮﺗ یﻡ ﻥﺎﻣﺯ ﻥیا ﻥایاپ ﺎﺗ ﺕیﺎﺳ ﻥاﺭاکﻥﺎﻣیپ.">
+   <div class="panel-body"> <span id="countdown-lable" > <span  class="h4">ﻩﺪﻧﺎﻣیﻕﺎﺑ ﻥﺎﻣﺯ</span>
+	<button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#time-increase-Modal"> <span class="glyphicon glyphicon-plus"></span> تمدید </button>
+	<hr>
+	{% ifequal form.is_time_remain_forOffer True %}
+	<div  style="height:75px" class="countdown" data-timer="{{form.seconds_remain_forOffer}}"></div>
+	{% else %} 
+	ﺖﺳا ﻩﺪﺷ ﻡﺎﻤﺗ ﻥﺩاﺩ ﺩﺎﻬﻨﺷیپ ﺖﻠﻬﻣ
+	{% endifequal %} </div>
+  </div>
+ </div>
+</div>
+{% include "project-description.html" %}
+{% endifequal %} 

@@ -1,0 +1,78 @@
+{% extends "head-tag.html" %}
+{% block title %}دسته بندی پروژه ها{% endblock %}
+{% block meta %}
+<meta name="description" content="دسته بندی پروژه های موجود در سایت بر اساس مهارت های شما">
+<meta name="keywords" content="پروژه,دانشجویی,نرم افزار,مهندسی,کامپیوتر,عمران,معماری,مکانیک,برق,صنایع">
+{% endblock %}
+{% block sources %}
+{% load staticfiles %} 
+<script src="{% static 'js/jquery.sieve.js'  %} "  ></script> 
+{% endblock %}
+{% block style %}
+<style>
+.skill-list .col-md-3 {
+	margin-bottom: 20px;
+}
+#accordion {
+	margin: 20px 0px;
+}
+#accordion .row {
+	font-family:Tahoma
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h4>دسته بندی پروژه ها بر اساس مهارت ها :</h4>
+			<hr>
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="filter" class="col-md-2 control-label">جستجو در لیست زیر:</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control" id="filter" placeholder="برای جستجوی مهارت های مورد نظر بخشی از نام آنها را تایپ کنید.">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="sieve">
+		<div id="accordion" class="panel-group"> {% for category,list in form.categories.items %}
+			<div class="panel panel-info category">
+				<div class="panel-heading">
+					<h4 class="panel-title"> {{category.name}} </h4>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="skill-list">
+						<div class="row"> {% for skill in list %}
+							<div class="col-md-3">
+								<button type="button" class="btn btn-default btn-block skill" onclick="window.location.href='/advanced-search/skill/{{skill}}';" > {{skill}}</button>
+							</div>
+							{% if forloop.last %} </div>
+						{% else %}
+						{% if forloop.counter|divisibleby:"4" %} </div>
+					<div class="row"> {% endif %}
+						{% endif %}
+						{% endfor %} </div>
+				</div>
+			</div>
+			{% endfor %} </div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+$(document).ready(function() {
+  $(".sieve").sieve({ itemSelector: ".row .col-md-3" });
+  $("input:last").parent().hide();
+  $("#filter").keyup(function() {
+  value=$(this).val();
+  $("input:last").val(value).keyup();
+  }); 
+
+})
+</script> 
+{% endblock %} 

@@ -1,0 +1,99 @@
+#head
+{
+	width:auto;
+	height:100px;
+	text-align:center;
+}
+
+#head p
+{
+	font-size:36px;
+}
+
+#how-to
+{
+	width:auto;
+	height:400px;
+	text-align:center;
+}
+
+#create-project, #offer, #choose, #pay
+{
+	width:200px;
+	height:200px;
+	float:left;	
+}
+
+#create-project .background
+{
+	width:200px;
+	height:200px;
+	background-image:url(../images/createProject.png);
+	border:thick solid #90C;
+	border-radius: 15px;
+}
+
+#offer .background
+{
+	width:200px;
+	height:200px;
+	background-image:url(../images/offerDesign.png);
+	border:thick solid #90C;
+	border-radius: 15px;
+}
+
+#choose .background
+{
+	width:200px;
+	height:200px;
+	background-image:url(../images/chooseDesign.png);
+	border:thick solid #90C;
+	border-radius: 15px;
+}
+
+#pay .background
+{
+	width:200px;
+	height:200px;
+	background-image:url(../images/payment.png);
+	border:thick solid #90C;
+	border-radius: 15px;
+}
+
+.next
+{
+	width:30px;
+	height:350px;
+	margin-right:10px;
+	margin-left:10px;
+	float:left;
+	background-image:url(../images/next.png);
+	background-repeat:no-repeat;
+	margin-top:50px;
+}
+
+#create-project .header, #offer .header, #choose .header, #pay .header
+{
+	width:200px;
+	height:50px;
+	background-image:url(../images/number.png);
+	text-align:center;
+	line-height:50px;
+}
+
+.digest
+{
+	margin-top:20px;
+}
+
+#more-help
+{
+	width:auto;
+	margin-top:20px;
+	text-align:center;
+	direction:rtl;
+	font-weight:bold;
+	border-top:thin solid #CCC;
+	font-size:24px;
+	padding-top:10px;
+}

@@ -1,0 +1,23 @@
+
+<div id="contact">
+<div id="slider">
+<div id="my-slideshow">
+    <ul class="bjqs">
+    {% for image in form.images %}
+        <li>
+            <div class="image">
+                <div class="img"><img class="offered_image" src="{{STATIC_URL}}offeringfiles/{{image}}" alt=""/></div>
+                <div class="hover"><a href="#" data-toggle="modal" data-target="#zoom"><img src="{{STATIC_URL}}images/zoom.png" /></a></div>
+                </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>  
+{% ifequal form.is_employer False %}
+<div id="add-file">
+    <a href="#" data-toggle="modal" data-target="#file"><div><img src="/static/images/addfile.jpg" /></div></a>
+</div>
+{% endifequal %}
+</div>
+<div id="chat"></div>
+</div>

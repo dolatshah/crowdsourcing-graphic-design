@@ -1,0 +1,86 @@
+<div class="panel panel-default">
+ <div class="panel-heading" >
+  <h3 style="display:inline; margin-left:500px;" class="panel-title">وضعیت پروژه : {% include "projectstatus.html" with project=form.project %}  </h3>
+  <span class=" pull-left" style="margin-top:0px;"> <a title="در صورتی که پروژه را به طور کامل انجام داده اید و آن را برای پیمانکار بارگذاری نموده اید باید اتمام کار را از این قسمت به کارفرما اطلاع دهید. پس از تایید اتمام پروژه توسط کارفرما مبلغ بیعانه واریزی کارفرما به حساب شما منتقل می گردد." href="#" onclick="complete({{form.project.id}})"><span class="glyphicon glyphicon-ok"></span> اعلام اتمام پروژه</a> <a href="#" onclick="cancel({{form.project.id}})" title="در صورتی که قصد انصراف از انجام پروژه را دارید می توانید از این قسمت اقدام کنید. "><span class="glyphicon glyphicon-remove"></span> لغو پروژه</a> <a title="در صورتی که از کارفرمای خود شکایتی دارید ابتدا موضوع را با پشتیبانی سایت در میان بگذارید سپس در صورت لزوم می توانید در این قسمت یک شکایت ثبت کنید." href="#" onclick="sue({{form.project.id}})"><span class="glyphicon glyphicon-screenshot"></span> شکایت</a> </span> </div>
+</div>
+<div id="project">
+     
+    <div id="accordion" class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">ﻣﺸﺨﺼﺎﺕ</a>
+                </h1>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table id="descriptionss" class="table table-hover">
+                        <tr>
+                        <td>عنوان پروژه</td>
+                        <td>{{form.project.title}}</td>
+                        <td style="width:150px;"></td>
+                        <td>ﺩﺳﺘﻪ ﺑﻨﺪی</td>
+                        <td>{{form.project.category}}</td>
+                        <td></td>
+                        </tr>
+                        <tr>
+                        <td>حداکثر میزان بودجه</td>
+                        <td>{{form.project.endBid}} تومان</td>
+                        <td></td>
+                        <td>زمان باقیمانده</td>
+                        <td><div style="direction:ltr; float:right;">{% ifequal form.is_time_remain True %}
+                                        {{form.time_remain}}
+                                    {% else %}
+                                        زمان ارسال پیشنهاد به پایان رسیده است.
+                                    {% endifequal %}</div></td>
+                        <td></td>
+                        </tr>
+                        <tr>
+                        <td>مهلت انجام پروژه</td>
+                        <td>{{form.project.offerDay}} روز</td>
+                        <td></td>
+                        <td>بیعانه واریز شده توسط کارفرما</td>
+                        <td><div>{{form.project.employer_cashed_money}} ﺗﻮﻣﺎﻥ</div></td>
+                        <td></td>
+                        </tr>
+                        <tr>
+                        <td>مشخصات کارفرما</td>
+                        <td>{{form.project.employer.user.username}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+     <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">شرح پروژه</a>
+                </h1>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>{{form.project.description |linebreaks }} </p>
+                </div>
+            </div>
+        </div>
+        
+ <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">فایل ها</a>
+                </h1>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                {% if form.attachedUrl %}
+                <p> <a href = "{{form.attachedUrl}}" ><span class="glyphicon glyphicon-file"></span>فایل ضمیمه شده</a> </p>
+                {% endif %} 
+                    
+                </div>
+            </div>
+        </div>
+    </div>

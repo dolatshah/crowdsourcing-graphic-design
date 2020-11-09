@@ -1,0 +1,111 @@
+﻿{% extends "head-tag.html" %}
+{% block title %}{{userprofile}} پروفایل{% endblock %}
+{% block meta %}
+<meta name="description" content="پروفایل شخصی کاربر ، سابقه ، رزومه و نمونه کار ها">
+<meta name="keywords" content="پروژه,سفارش,استخدام,نمونه کار,رزومه">
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<ul class="nav nav-tabs" id="myTab">
+						<li><a id="overviewtab" href="#overview" data-toggle="tab"><span class="glyphicon glyphicon-user"></span><span> درباره</span></a></li>
+						<li><a id="activitiestab" href="#activities" data-toggle="tab"><span class="glyphicon glyphicon-time"></span><span> فعالیت ها</span></a></li>
+						<li><a id="resumetab" href="#resume" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span><span> نمونه کارها</span></a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="overview"> {% include "about.html" with userprofile=userprofile %} </div>
+						<div class="tab-pane" id="activities">
+						{% include "activities.html" %}
+						</div>
+						<div class="tab-pane active" id="resume">
+							{% if form.resumes.all.count %}
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<ul class="list-unstyled">
+									
+										{% for file in form.resumes.all %}
+										<li>
+											<ul class="list-inline">
+												<li> {{file.description}}</li>
+												<li>تاریخ ثبت: {{file.uploadTime|cdatetime}}</li>
+												<li> <a href="/static/resume/{{file.id}}.zip">دریافت</a></li>
+											</ul>
+										</li>
+										<hr>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							{% else %}
+								<div class="alert alert-info">فایلی برای نمایش وجود ندارد.</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body" >
+					<div style="width:100px;margin:20px" class="pull-right"> {% include "image.html" with user=userprofile %} </div>
+					<ul class="list-unstyled">
+						<br>
+						<li >
+							<a href="/{{userprofile}}/">
+								<h3 style="margin-top:20px">{{userprofile}}</h3>
+							</a>
+						</li>
+						<br>
+						<li style="padding-top:40px;" >{% if userprofile.is_ban %}اکانت کاربری این کاربر به دلیل نقض قوانین سایت مسدود شده است{% endif %}</li> 
+					</ul>
+					<hr>
+					<p>تاریخ عضویت : <span class="pull-left">{{userprofile.user.date_joined|cdatetime}}</span></p>
+					<p>آخرین ورود : <span class="pull-left"> {{userprofile.user.last_login|since }}</span></p>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body" >
+					<p> <span>رتبه در میان کارفرمایان:</span> <span class="pull-left">{{form.employerPoint}}</span> </p>
+					<p> <span>میانگین امتیاز:</span>{% include "showStar.html" with star=form.employerTotalRank  %} </p>
+					<hr>
+					<p> <span>رتبه در میان پیمانکاران:</span> <span class="pull-left">{{form.employeePoint}}</span> </p>
+					<p> <span>میانگین امتیاز:</span>{% include "showStar.html" with star=form.employeeTotalRank  %} </p>
+				</div>
+			</div>
+			{% comment %}
+			<button href="/editProfile/" class="btn btn-default pull-left"> <span>اضافه به علاقه مندی ها</span> </button>
+			{% endcomment %}
+			{% comment %}
+			<button type="button" class="btn btn-default pull-right"> <span>دعوت به کار</span> </button>
+			{% endcomment %} </div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+$(function () {
+
+$('#myTab a:first').tab('show')
+
+
+//footable
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+if ($(e.target).attr("id") === "activitiestab") { $('.footable').footable();}
+})
+
+
+//activities table
+{% for project in form.employeeProjects %}
+$( "#project-{{project.id}}" ).load( "/showRank/{{project.id}}/0/");
+{% endfor %}
+{% for project in form.employerProjects %}
+$( "#project-{{project.id}}" ).load( "/showRank/{{project.id}}/1/");
+{% endfor %}
+
+
+  })
+</script> 
+{% endblock %}

@@ -1,0 +1,75 @@
+<div class="container">
+	<form class="form-horizontal" id="rating-form" role="form" action="/rank/{{form.project.id}}/" method="post">
+		{% csrf_token %}
+		{% for case in form.cases %}
+		<div class="form-group">
+			<label for="{{case}}" class="col-md-3 control-label"> {% include "convertCase.html" with item=case %} </label>
+			<div class="col-md-5 ltr text-right" >
+				<input type="number" class="rating" id="{{case}}" name="{{case}}" data-size="xs" data-stars="5" min=0 max=5 step=1 data-rtl="true" data-show-caption="false"  data-show-clear="false"
+					{% if form.valueCases %}
+						{% for k,v in form.valueCases.items %}
+							{% ifequal k case %}
+								value="{{v}}"
+							{% endifequal %}
+						{% endfor %}
+					{% else %}
+						value="0"
+					{% endif %}
+					>
+			</div>
+		</div>
+		<hr>
+		{% endfor %}
+		<div class="form-group"> {% if form.is_employer %}
+			<label class="col-md-3 control-label">نظر شما در مورد پیمانکار:</label>
+			<div class="col-md-5" >
+				<textarea name='rankText' class="form-control"  rows="5" title="نظر شما در صفحه پروفایل پیمانکار برای تمام بازدید کنندگان به نمایش در می آید." placeholder="تجربه خود را از همکاری با این پیمانکار را بنویسید." required>{{form.project.employee.rankTextForEmployee}}</textarea>
+			</div>
+			{% else %}
+			<label class="col-md-3 control-label">نظر شما در مورد کارفرما:</label>
+			<div class="col-md-5" >
+				<textarea name='rankText' class="form-control"  rows="5" title="نظر شما در صفحه پروفایل کارفرما برای تمام بازدید کنندگان به نمایش در می آید." placeholder="تجربه خود را از همکاری با این کارفرما را بنویسید." required>{{form.project.employee.rankTextForEmployer}}</textarea>
+			 </div>	
+			{% endif %}
+		</div>
+		<hr>
+		<div class="form-group">
+			<div class="col-md-offset-4 col-md-4" >
+				<button type="submit" id="rank-submit" class="btn btn-success btn-block" disabled>ثبت</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+function defer(method) {
+    if (window.$)
+        method();
+    else
+        setTimeout(function() { defer(method) }, 50);
+}
+
+defer(function () {
+//rating
+$('#ratingtab').on('shown.bs.tab', function () {
+$(".rating").rating('reset');
+});
+
+function rateValid() {
+var fill =true;
+$("#rating-form .rating").each(function() { 
+	value = parseInt( $(this).val() ) 
+	if (value==0) 
+	{fill=false}
+	})
+if (fill) 
+{ $("#rank-submit").attr("disabled",false); }
+}
+
+$('.rating').on('rating.change', function() { rateValid() });
+
+rateValid();
+
+})
+
+</script> 

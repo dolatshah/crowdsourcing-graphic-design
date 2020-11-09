@@ -1,0 +1,123 @@
+{% if employee %}
+{% if project.employee.rankForEmployee %}
+	<div class="row">
+	{% for item,key in project.employee.rankForEmployee %}
+	
+	{% ifequal item "connectivity" %}
+	<div class="col-md-4 ">تماس با کارفرما</div>
+	<div class="col-md-8" >
+	<div id="connectivity" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+			
+		
+		{% ifequal item "pace" %}
+		<div class="col-md-4 ">سرعت عمل</div>
+		<div class="col-md-8" >
+	<div id="pace" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "quality" %}
+		<div class="col-md-4 ">کیفیت</div>
+		<div class="col-md-8" >
+	<div id="quality" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "tact" %}
+		<div class="col-md-4 ">مهارت</div>
+		<div class="col-md-8" >
+	<div id="tact" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "willing" %}
+		<div class="col-md-4 ">علاقه مندی به ادامه همکاری</div>
+		<div class="col-md-8" >
+	<div id="willing" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+	{% endfor %}
+	{% if project.employee.rankTextForEmployee %}
+		<div class="col-md-4 ">نظر کارفرما:</div>
+		<div class="col-md-8" >
+		{{ project.employee.rankTextForEmployee }}
+		</div>
+	{% endif %}
+	
+{% else %}
+	هنوز ارزیابی نشده است
+	
+</div>
+{% endif %} 
+<script>
+{% for item,key in project.employee.rankForEmployee %}
+$("#{{ item }} i:lt({{ key }})").attr("class" , "glyphicon glyphicon-star")
+{% endfor %}
+</script> 
+{% else %}
+{% if project.employee.rankForEmployer %}
+<div class="row">	
+	{% for item,key in project.employee.rankForEmployer %}
+	
+		{% ifequal item "connectivity" %}
+		<div class="col-md-5 ">تماس با کارمند</div>
+		<div class="col-md-7" >
+	<div id="connectivity" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+			
+		
+		{% ifequal item "paceInPay" %}
+		<div class="col-md-5 ">سرعت در پرداخت</div>
+		<div class="col-md-7" >
+	<div id="paceInPay" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "clarity" %}
+		<div class="col-md-5 ">شفافیت در توضیحات</div>
+		<div class="col-md-7" >
+	<div id="clarity" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "tact" %}
+		<div class="col-md-5 ">مهارت</div>
+		<div class="col-md-7" >
+	<div id="tact" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+		
+		
+		{% ifequal item "willing" %}
+		<div class="col-md-5 ">علاقه مندی به ادامه همکاری</div>
+		<div class="col-md-7" >
+	<div id="willing" class="rate-stars"> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> <i class='glyphicon glyphicon-star-empty'></i> </div>
+</div>
+{% endifequal %}
+	{% endfor %}
+	{% if project.employee.rankTextForEmployer %}
+		<div class="col-md-4 ">نظر پیمانکار:</div>
+		<div class="col-md-8" >
+		{{ project.employee.rankTextForEmployer }}
+		</div>	
+		{% endif %}
+{% else %}
+	هنوز ارزیابی نشده است
+</div>
+{% endif %} 
+<script>
+{% for item,key in project.employee.rankForEmployer %}
+$("#{{ item }} i:lt({{ key }})").attr("class" , "glyphicon glyphicon-star")
+{% endfor %}
+</script> 
+{% endif %}

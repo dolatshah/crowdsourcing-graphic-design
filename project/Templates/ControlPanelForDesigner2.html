@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>پنل کاربری ...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.min.css" />
+
+    <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+	
+</head>
+<body>
+{% include "header.html" %}
+<div class="container">
+
+<hr></hr>
+
+<!-- Satisfaction Panel - START -->
+<div class="container" id="cnt1">
+    <div class="col-md-3">
+    </div>
+
+    <div class="col-md-12" id="panel1">
+        <div class="panel panel-default" style="text-align: center">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <button type="button" class="btn btn-primary btn-lg" style="text-align: right">پنل طراح</button>
+				</h1>
+            </div>
+			
+            <div class="panel-body two-col">
+				
+				<div class="col-lg-4">
+						<div class="form_hover " style="background-color: #428BCA;">
+							<p style="text-align: center; margin-top: 20px;">
+								<i class="fa fa-user" style="font-size: 147px;"></i>
+							</p>
+					<div class="header">
+						<div class="blur"></div>
+							<div class="header-text">
+								<div class="panel panel-success" style="height: 247px;">
+										<div class="panel-heading">
+											<h2  id="title" style="color: #428BCA;">نمایش اطلاعات کاربری</h2>
+										</div>
+								<div class="panel-body">
+									<div class="form-group">
+										آخرین روز ورود:<b>{{form.lastlogin}}</b>
+									</div>
+									<div class="form-group">
+										امتیاز کاربر<br />
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+									</div>
+								</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+                
+                   <div class="col-lg-7" style="text-align: right">
+                
+                <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+				
+                   
+					
+					<li class="active"><a href="#home" data-toggle="tab">پیام ها</a></li>
+					
+					<li class="profile"><a href="#profile1" data-toggle="tab">اطلاعیه ها</a></li>
+					
+                    
+					<li class="profile"><a href="#profile2" data-toggle="tab">کسب درآمد</a></li>
+                    
+					<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">پروژه <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#dropdown1" data-toggle="tab">پروژه من</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+					
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active in" id="home">
+                        <div id="message"></div>
+                    </div>
+                    <div class="tab-pane fade" id="profile1">
+                        <div id="notifications"></div>
+                    </div>
+					<div class="tab-pane fade" id="profile2">
+                    <p><h2>با ما درآمدتان را بهبود بخشید<h2/></p>
+					</div>
+                    <div class="tab-pane fade" id="dropdown1">
+					{% if not form.employeeProjects|length and not form.employerProjects|length %}
+					<div class="alert alert-info">پروژه ای برای نمایش وجود ندارد</div>
+					{% endif %}
+						{% for project in form.employeeProjects %}
+							<tr>
+								<td class="table-name">{{project.title}}</td>
+								<td class="table-employer"><a href="/{{project.employee.userprofile.user.username}}/">{{project.employee.userprofile.user.username}}</a></td>
+								<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+								<td class="table-startdate">{{project.offerTime}}</td>
+								<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-log-in"></span> اتاق کار پروژه </a></td>
+							</tr>
+						{% endfor %}
+                    </div>
+                </div>
+				
+				<p>
+                    <h2><a class="btn btn-default btn-lg btn-block" href="/resume/">ورود به بخش نمونه کار</a></h2>
+                </p>
+            </div>
+			
+		
+				
+				
+				
+				
+			
+            </div>
+        </div>
+               
+
+	</div>
+            
+	</div>
+
+<style>
+#cnt1 {
+    background-color: rgba(215, 212, 212, 0.88);
+    margin-bottom: 70px;
+}
+
+#panel1 {
+    padding:20px;
+}
+
+.panel-body:not(.two-col) {
+    padding: 0px;
+}
+
+.panel-body .radio, .panel-body .checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.panel-body .list-group {
+    margin-bottom: 0;
+}
+
+.margin-bottom-none {
+    margin-bottom: 0;
+}
+</style>
+
+
+<style>
+.panel-heading span {
+    margin-top: -20px;
+    font-size: 15px;
+}
+.row {
+    margin-top: 40px;
+    padding: 0 10px;
+}
+.clickable {
+    cursor: pointer;
+}    
+</style>
+
+<!-- For Information of Person><-->
+
+<style>
+    .form_hover {
+        padding: 0px;
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+    }
+
+        .form_hover:hover .header {
+            opacity: 1;
+            transform: translateY(-172px);
+            -webkit-transform: translateY(-172px);
+            -moz-transform: translateY(-172px);
+            -ms-transform: translateY(-172px);
+            -o-transform: translateY(-172px);
+        }
+
+        .form_hover img {
+            z-index: 4;
+        }
+
+        .form_hover .header {
+            position: absolute;
+            top: 170px;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form_hover .blur {
+            height: 240px;
+            z-index: 5;
+            position: absolute;
+            width: 100%;
+        }
+
+        .form_hover .caption-text {
+            z-index: 10;
+            color: #fff;
+            position: absolute;
+            height: 240px;
+            text-align: center;
+            top: -20px;
+            width: 100%;
+        }
+</style>
+
+
+
+</div>
+
+
+</body>
+<script>
+
+
+$(function () {
+
+$( "#notifications" ).load( "/notifications/");
+$( "#message" ).load( "/messagesList/");
+
+
+  })
+</script> 
+</html>
+
+
+
+
+

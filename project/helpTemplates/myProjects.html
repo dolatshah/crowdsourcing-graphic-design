@@ -1,0 +1,78 @@
+{% if not form.employeeProjects|length and not form.employerProjects|length %}
+<div class="alert alert-info">پروژه ای برای نمایش وجود ندارد.</div>
+{% endif %}
+{% if form.employeeProjects|length %}
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h4 class="panel-title">به عنوان پیمانکار</h4>
+</div>
+</div>
+		<div class="panel panel-default">
+			<table class="table footable as-employee-table" data-page-size="1000" data-limit-navigation="3">
+				<thead>
+					<tr class="active">
+						<th >عنوان پروژه</th>
+						<th data-hide="phone,tablet" >کارفرما</th>
+						<th >وضعیت</th>
+						<th data-hide="phone,tablet">شروع</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				{% for project in form.employeeProjects %}
+				<tr>
+					<td class="table-name">{{project.title}}</td>
+					<td class="table-employer"><a href="/{{project.employer.user.username}}/">{{project.employer.user.username}}</a></td>
+					<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+					<td class="table-startdate">{{project.offerTime | cdate }} </td>
+					<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-log-in"></span> اتاق کار پروژه</a></td>
+				</tr>
+				{% endfor %}
+					</tbody>
+				
+			</table>	
+		</div>
+		<hr>
+{% endif %}
+{% if form.employerProjects|length %}
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h4 class="panel-title">به عنوان کارفرما</h4>
+</div>
+</div>
+		<div class="panel panel-default">
+			<table class="table footable as-employer-table" data-page-size="1000" data-limit-navigation="3">
+				<thead>
+					<tr class="active">
+						<th >عنوان پروژه</th>
+						<th data-hide="phone,tablet" >پیمانکار</th>
+						<th >وضعیت</th>
+						<th data-hide="phone,tablet">شروع</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				{% for project in form.employerProjects %}
+				<tr>
+					<td class="table-name">{{project.title}}</td>
+					<td class="table-employer"><a href="/{{project.employee.userprofile.user.username}}/">{{project.employee.userprofile.user.username}}</a></td>
+					<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+					<td class="table-startdate">{{project.offerTime | cdate }}</td>
+					<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-log-in"></span> اتاق کار پروژه </a></td>
+				</tr>
+				{% endfor %}
+					</tbody>
+				
+			</table>
+		</div>
+{% endif %}
+<script type="text/javascript">
+$(document).ready(function(){
+ 
+$('.as-employee-table').footable();
+$('.as-employer-table').footable();
+
+});
+</script> 

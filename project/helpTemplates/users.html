@@ -1,0 +1,42 @@
+{% extends "head-tag.html" %}
+{% block title %}کاربران{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li class="active">کاربران</li>
+	</ol>
+</div>
+<div class="container container-md">
+		<div class="panel panel-default">
+<table class="table table-hover footable" data-page-size="10" data-limit-navigation="3">
+	<thead>
+		<tr class="active">
+			<th >نام کاربری</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for userprofile in userprofiles %}	
+	<tr>
+		<td class="table-username"><a href="/{{userprofile}}/" >{{userprofile}}</a></td>
+	</tr>
+{% endfor %}
+		</tbody>
+
+</table>
+<ul  class="pagination pull-left hide-if-no-paging">
+</ul>	
+</div>
+			
+			
+		
+</div>
+{% endblock %} 
+{% block javascript %} 
+<script>
+ $(document).ready(function(){
+//foo table
+$('.footable').footable();
+});
+</script> 
+{% endblock %}

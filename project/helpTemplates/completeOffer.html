@@ -1,0 +1,197 @@
+{% extends "head-tag.html" %}
+{% block title %}پیشنهاد{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li><a href="/controlPanel/">پنل مدیریت</a></li>
+		<li><a href="/project/{{form.offer.project.id}}/">اتاق کار پروژه</a></li>
+		<li class="active">مشاهده کامل پیشنهاد</li>
+	</ol>
+</div>
+<div class="container container-md">
+	<div class="panel panel-default">
+		<div class="panel-body" >
+			<div class="row">
+				<div class="col-md-6">
+					<div style="height:75px ; float:right ; margin-left:10px;"> {% include "image.html" with user=form.view %} </div>
+					<ul style="height:75px;" class="list-unstyled">
+						<li ><a href="/{{form.view.user.username}}/">
+							<h3 style="dispalay:inline ; margin-top:0px">{{form.view.user.username}}</h3>
+							</a></li>
+						{% if not form.view.account.is_verified %}
+						<li> اکانت این کاربر فعال نیست </li>
+						{% endif %}
+						<li style="padding-top:15px;" >تاریخ عضویت : {{form.view.user.date_joined|cdate}}</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<p> <span>رتبه در میان پیمانکاران:</span> <span class="pull-left">{{form.employeeRank}}</span> </p>
+					<p>
+					<p> <span>میانگین امتیاز:</span>{% include "showStar.html" with star=form.totalRank  %} </p>
+					</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body" >
+			<ul class="nav nav-tabs" id="myTab">
+				<li><a id="offertab" href="#offer" data-toggle="tab">پیشنهاد</a></li>
+				<li><a id="overviewtab" href="#overview" data-toggle="tab">درباره</a></li>
+				<li><a id="activitiestab" href="#activities" data-toggle="tab">فعالیت ها</a></li>
+				<li><a id="resumetab" href="#resume" data-toggle="tab">نمونه کارها</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="offer">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="panel panel-default dashed">
+								<div class="panel-body">
+									<ul class="list-unstyled">
+										<li> <span>مبلغ پیشنهاد:</span> <span class="pull-left">{{form.offer.totallValue|money_tag}} تومان</span> </li>
+										<hr>
+										<li> <span>تعداد روزهای انجام پروژه : </span> <span class="pull-left">{{form.offer.offerDay}}</span> </li>
+										<hr>
+										<li> <span>بیعانه درخواست شده از شما برای شروع:</span> <span class="pull-left">{{form.offer.value}} تومان</span> </li>
+										<hr>
+										<li> <span>مبلغ ضمانت (هنگام شروع از پیمانکار گرفته خواهد شد):</span> <span class="pull-left">{{form.offer.bayane}} تومان</span> </li>
+										<hr>
+										<li> <span>تاریخ ارسال پیشنهاد:</span> <span class="pull-left">{{form.offer.offerTime|since}}</span> </li>
+									</ul>
+									<hr>
+									{% comment %} <a href="/editProfile/" class="btn btn-default pull-left"> <span class="glyphicon glyphicon-eye-close"></span><span> مخفی کردن پیشنهاد</span> </a> {% endcomment %}
+									{% comment %}<a href="/acceptOffer/{{form.offer.id}}/" type="button" class="btn btn-success pull-right  btn-block"><span class="glyphicon glyphicon-ok-sign"></span> <span> استخدام</span></a> {% endcomment %} </div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="panel panel-default dashed">
+								<div class="panel-body"> توضیحات:
+									<hr>
+									{{form.offer.text}} </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane active" id="overview"> {% include "about.html" with userprofile=form.offer.offerer %} </div>
+				<div class="tab-pane" id="activities">
+					<div class="panel panel-default">
+						<div class="panel-body"> به عنوان پیمانکار
+							<hr>
+							<div class="panel panel-default">
+								<table class="table table-hover footable no-table">
+									<thead>
+										<tr class="active">
+											<th >عنوان پروژه</th>
+											<th >کارفرما</th>
+											<th >وضعیت</th>
+											<th >شروع</th>
+											<th data-hide="all"></th>
+											<th ></th>
+										</tr>
+									</thead>
+									<tbody>
+									
+									{% for project in form.employeeProjects %}
+									<tr>
+										<td class="table-name">{{project.title}}</td>
+										<td class="table-employer"><a href="/{{project.employer.user.username}}/">{{project.employer.user.username}}</a></td>
+										<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+										<td class="table-startdate">{{project.offerTime|cdate}}</td>
+										<td id="project-{{project.id}}" class="table-rank"></td>
+										<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-share-alt"></span> اتاق کار پروژه</a></td>
+									</tr>
+									{% endfor %}
+										</tbody>
+									
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-body"> به عنوان کارفرما
+							<hr>
+							<div class="panel panel-default">
+								<table class="table table-hover footable">
+									<thead>
+										<tr class="active">
+											<th >عنوان پروژه</th>
+											<th >پیمانکار</th>
+											<th >وضعیت</th>
+											<th >شروع</th>
+											<th data-hide="all"></th>
+											<th ></th>
+										</tr>
+									</thead>
+									<tbody>
+									
+									{% for project in form.employerProjects %}
+									<tr>
+										<td class="table-name">{{project.title}}</td>
+										<td class="table-employer"><a href="/{{project.employee.userprofile.user.username}}/">{{project.employee.userprofile.user.username}}</a></td>
+										<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+										<td class="table-startdate">{{project.startDate}}</td>
+										<td id="project-{{project.id}}" class="table-rank"></td>
+										<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-share-alt"></span> اتاق کار پروژه</a></td>
+									</tr>
+									{% endfor %}
+										</tbody>
+									
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane active" id="resume">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<ul class="list-unstyled">
+								{% for file in form.offer.offerer.files.all %}
+								<li>
+									<ul class="list-inline">
+										<li> {{file.description}}</li>
+										<li>تاریخ ثبت: {{file.uploadTime|cdatetime}}</li>
+										<li> <a href="/static/resume/{{file.id}}.zip">دریافت</a></li>
+									</ul>
+								</li>
+								<hr>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+$(function () {
+
+$('#myTab a:first').tab('show')
+
+
+
+//footable
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+if ($(e.target).attr("id") === "activitiestab") { $('.footable').footable();}
+})
+$(".footable tr ").mouseenter( function() {
+		$(".footable-detail-show").trigger('footable_toggle_row')
+		$(this).trigger('footable_toggle_row');
+	});
+$(".footable").mouseleave( function() { $(".footable-detail-show").trigger('footable_toggle_row') });
+
+//activities table
+{% for project in form.employeeProjects %}
+$( "#project-{{project.id}}" ).load( "/showRank/{{project.id}}/");
+{% endfor %}
+{% for project in form.employerProjects %}
+$( "#project-{{project.id}}" ).load( "/showRank/{{project.id}}/");
+{% endfor %}
+
+  })
+</script> 
+{% endblock %}

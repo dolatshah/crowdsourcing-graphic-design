@@ -1,0 +1,13 @@
+<span class="pull-left text-left" > {% ifequal star -1 %}
+	هنوز امتیازی داده نشده
+{% else %}<span class="rate-stars" >
+{% for i in "xxxxx" %}
+    {% if forloop.counter <= star %}
+	<i class='glyphicon glyphicon-star'></i>
+	{% else %}
+	<i class='glyphicon glyphicon-star-empty'></i>
+	{% endif %} 
+{% endfor %}
+</span> 
+{% endifequal %} 
+</span> 

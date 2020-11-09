@@ -1,0 +1,258 @@
+{% extends "head-tag.html" %}
+{% block title %}ثبت نام{% endblock %}
+{% block sources %}
+	{% load staticfiles %}
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script> 
+<script type="text/javascript" src="{% static 'captcha/captcha/jquery.captcha.js' %}"></script>
+<link href="{% static 'captcha/captcha/captcha.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<input hidden id="is1">
+<input hidden id="is2">
+<input hidden id="is3">
+<input hidden id="is4">
+<div class="container container-sm" > {% if form.errors %}
+	<div class="alert alert-danger">
+		<p style="color: red;"> لطفا خطا های زیر را برطرف کنید
+			{{ form.errors|pluralize }} </p>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3 class="text-center">ثبت نام</h3>
+			<hr>
+			<form id="myForm" class="form-horizontal" role="form" action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="user_name" class="col-sm-4 control-label">نام کاربری:</label>
+					<div class="col-sm-6">
+						<input onblur="user()" type="text" class="form-control ltr" id="user_name" name="user_name" placeholder="user name" >
+					</div>
+					<div id="user-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='استفاده از این نام کاربری مجاز نیست'></span> </div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-sm-4 control-label">ایمیل:</label>
+					<div class="col-sm-6">
+						<input onblur="mail()" type="email" class="form-control ltr" id="email" name="email" placeholder="email" >
+					</div>
+					<div id="mail-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='این ایمیل قبلا به ثبت رسیده است'></span> </div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-4 control-label">رمز عبور:</label>
+					<div class="col-sm-6">
+						<input onblur="pass()" type="password" class="form-control ltr" id="password" name="password" placeholder="password" >
+					</div>
+					<div id="pass-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='رمز عبور شما باید بیشتر از 6 کارکتر باشد' ></span> </div>
+				</div>
+				<div class="form-group">
+					<label for="confirm_password" class="col-sm-4 control-label">تکرار رمز عبور:</label>
+					<div class="col-sm-6">
+						<input onblur="repass()" type="password" class="form-control ltr" id="confirm_password" name="confirm_password" placeholder="confirm password" >
+					</div>
+					<div id="repass-image" class="col-sm-2 "> <span data-trigger="manual" data-placement='left' data-container='body' title='رمز عبور وارد شده مطابقت ندارد'></span> </div>
+				</div>
+				<p style="text-align:center">ثبت نام شما به منزله قبول <a href="../terms">قوانین سایت</a> می باشد.</p>
+				<hr>
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-6">
+						<button type="submit" id="submit" disabled class="btn btn-success btn-block">ثبت نام</button>
+						<span class="help-block">{{form.errors}}</span> </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
+	{% block javascript %} 
+<script type="text/javascript" charset="utf-8">
+	//spiner
+		var opts = {
+		lines: 11, // The number of lines to draw
+		length:5, // The length of each line
+		width: 5, // The line thickness
+		radius: 7, // The radius of the inner circle
+		};	
+		
+	//captcha
+		$(function() {
+			$(".ajax-fc-container").captcha({
+				borderColor: "silver",
+				text: " لطفا <span>چاقو</span> را به داخل دایره بکشید."
+			});
+		});
+		
+	$(document).ready(function()
+	{
+		$("#is1").val("0");
+		$("#is2").val("0");
+		$("#is3").val("0");
+		$("#is4").val("0");	
+		$("#user_name , #email , #password , #confirm_password").blur(function(){ checkAll() });
+
+	})
+	
+	function checkAll()
+	{
+		if ( $("#is1").val()=="1" && $("#is2").val()=="1" && $("#is3").val()=="1" && $("#is4").val()=="1") 
+		{$("#submit").attr("disabled",false);}
+		else {$("#submit").attr("disabled",true);}
+		
+	}
+	
+	function checkUser(username)
+	{
+		
+		re = /^\w+$/;
+		if (!isNaN(parseInt(username[0],10))) 
+			return false
+			
+		if(username == "" || !re.test(username) ) 
+			return false;
+		else
+			return true;
+		
+	}
+	
+	function user()
+	{
+		
+		var target = document.getElementById('user-image');
+		var spinner = new Spinner(opts).spin(target);
+		
+		var user = $("#user_name").val()
+		
+		if ( ! checkUser(user) )
+		{	
+			$("#is1").val("0");
+			$("#user-image .spinner").remove()
+			$("#user-image span").removeAttr('class')
+			$("#user-image span").addClass("glyphicon glyphicon-remove");
+			$('#user-image span').tooltip('show')
+			return;
+		}
+		
+		$.ajax({
+			url: "/check_user/"+user+"/",
+	  
+			cache: false,
+      
+	  
+	  
+			success: function(html)
+			{
+				if (html == "yes")
+				{
+					$("#is1").val("1");
+					$("#user-image .spinner").remove()
+					$('#user-image span').tooltip('hide')
+					$("#user-image span").removeAttr('class')
+					$("#user-image span").addClass("glyphicon glyphicon-ok");
+					checkAll();
+				}
+				else
+				{	
+					$("#is1").val("0");
+					$("#user-image .spinner").remove()
+					$("#user-image span").removeAttr('class')
+					$("#user-image span").addClass("glyphicon glyphicon-remove");
+					$('#user-image span').tooltip('show')
+				}
+			}
+			
+		});
+		
+	}
+	
+	function mail()
+	{
+		var target = document.getElementById('mail-image');
+		var spinner = new Spinner(opts).spin(target);
+		
+		var mail = $("#email").val()
+		
+		$.ajax({
+			url: "/check_mail/"+mail+"/",
+	  
+			cache: false,
+      
+			success: function(html)
+			{
+				if (html == "yes")
+				{
+					$("#is2").val("1");
+					$("#mail-image .spinner").remove()
+					$('#mail-image span').tooltip('hide')
+					$("#mail-image span").removeAttr('class')
+					$("#mail-image span").addClass("glyphicon glyphicon-ok");
+					checkAll();
+				}
+				else
+				{
+					$("#is2").val("0");
+					$("#mail-image .spinner").remove()
+					$("#mail-image span").removeAttr('class')
+					$("#mail-image span").addClass("glyphicon glyphicon-remove");
+					$('#mail-image span').tooltip('show')
+				
+				}
+			}
+			
+		});
+		
+	}
+	
+	
+	function pass()
+	{
+		
+		var pass = $("#password").val()
+		
+		if (pass.length >5 )
+		{
+			$("#is3").val("1");
+			$('#pass-image span').tooltip('hide')
+			$("#pass-image span").removeAttr('class')
+			$("#pass-image span").addClass("glyphicon glyphicon-ok");
+			checkAll();
+		}
+		else
+		{
+			$("#is3").val("0");
+			$("#pass-image span").removeAttr('class')
+			$("#pass-image span").addClass("glyphicon glyphicon-remove");
+			$('#pass-image span').tooltip('show')
+		}
+			
+	}
+	
+	function repass()
+	{
+		
+		var repass = $("#confirm_password").val()
+		var pass = $("#password").val()
+		
+		if (pass == repass )
+		{
+			$("#is4").val("1");
+			$('#repass-image span').tooltip('hide')
+			$('#repass-image span').removeAttr('class')
+			$('#repass-image span').addClass("glyphicon glyphicon-ok");
+			checkAll();
+			
+		}
+		else
+		{
+			$("#is4").val("0");
+			$("#repass-image span").removeAttr('class')
+			$("#repass-image span").addClass("glyphicon glyphicon-remove");
+			$('#repass-image span').tooltip('show')
+		
+		}
+			
+	}
+	
+	
+	</script> 
+{% endblock %} 

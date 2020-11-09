@@ -1,0 +1,228 @@
+{% extends "head-tag.html" %}
+{% block title %}
+پنل مدیریت
+{% endblock %}
+{% block sources %}
+<link href="/static/css/trip.min.css" rel="stylesheet" media="screen">
+<script src="/static/js/trip.min.zirend.js" ></script> 
+{% endblock %}
+{% block content %}
+<div id="content" class="container container-lg">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default" style="min-height:553px">
+				<div class="panel-body" >
+					<ul class="nav nav-tabs" role="tablist" id="myTab">
+						<li><a id="home-tab" href="#home" data-toggle="tab"><span class=" glyphicon glyphicon-bell"></span> اطلاعیه ها</a></li>
+						<li><a id="my-projects-tab" href="#my-projects" data-toggle="tab"  title="پروژه هایی که در آنها شرکت داشته اید یا برای آنها پیشنهاد ارسال کرده ابد."><span class="glyphicon glyphicon-briefcase"></span> پروژه های من</a></li>
+						<li><a id="messages-tab" href="#messages" data-toggle="tab"  title="پیام های دریافتی ؛ پیام های ارسالی "><span class="glyphicon glyphicon-envelope"></span> پیام ها </a></li>
+						<li><a id="projectsforoffer-tab" href="#projectsforoffer" data-toggle="tab"  title="پروژه هایی که با مهارت های موجود در پروفایل شما متناسب است می توانید برای آنها پیشنهاد ارسال کنید">	<span class="glyphicon glyphicon-hand-up"></span> پیشنهاد دهید</a></li>
+				     	<li><a id="affiliate-tab" href="#affiliate" data-toggle="tab"  title="لیست افرادی که تا کنون به سایت دعوت نموده اید."><span class="glyphicon glyphicon-send"></span> کسب درآمد </a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="home"> </div>
+						<div class="tab-pane" id="my-projects"> </div>
+						<div class="tab-pane" id="messages"> </div>
+						<div class="tab-pane" id="projectsforoffer">
+							<div class="panel panel-default">
+								<table class="table forOffer-table" data-page-size="10" data-limit-navigation="3">
+									<thead>
+										<tr class="active">
+											<th >عنوان پروژه</th>
+											<th >وضعیت</th>
+											<th data-hide="all"> محدوده بودجه</th>
+											<th data-hide="all">زمان ثبت پروژه</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+									
+									{% for project,key in form.projectsForOffer %}
+									<tr>
+										<td class="table-name">{{project.title}}</td>
+										<td class="table-status">{% include 'projectstatus.html' with project=project %}</td>
+										<td class="table-bid">{{project.startBid|money_tag}} - {{project.endBid|money_tag}} تومان</td>
+										<td class="table-deadline">{{project.offerTime|cdate}}</td>
+										<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon-log-in"></span> صفحه پروژه</a></td>
+									</tr>
+									{% endfor %}
+										</tbody>
+									
+								</table>
+								<ul  class="pagination pull-left hide-if-no-paging"></ul>	
+							</div>
+						</div>
+						<div class="tab-pane" id="affiliate"> 
+						
+						<div class="panel panel-primary">
+<div class="panel-heading">
+<h4 class="panel-title">لیست افرادی که از طریق شما به زیرند آمده اند</h4>
+</div>
+</div>
+													<div class="panel panel-default">
+								<table class="table">
+									<thead>
+										<tr class="active">
+											<th >نام کاربری</th>
+											<th > <span> وضعیت </span><span title="اگر یک کاربر چه به عنوان کارفرما و چه پیمانکار پروژه ای را با موفقیت به اتمام برساند کاربر فعال در نظر گرفته میشود و کمیسیون مربوط به آن به حساب شما واریز می شود." class="glyphicon glyphicon-question-sign orange"></span> </th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for affer,is_active in form.affers.items %}
+											<tr>
+												<td class="table-name"><a href="/{{affer}}/">{{affer}}</a></td>
+												<td class="table-status">
+													{% if is_active %}
+														فعال
+													{% else %}
+														غیر فعال
+													{% endif %}
+												</td>
+											</tr>
+											
+										{% endfor %} 
+										
+							
+									</tbody>
+									
+								</table>
+							</div>
+							<div class="row">
+							<div class="col-sm-6">
+							<a href="/affiliate/" class="btn btn-success btn-block btn-lg" ><span>درآمد شما تا کنون:</span> <span class="">0 تومان<span></a>
+							</div>
+							<div class="col-sm-6">
+							<a href="/affiliate/" class="btn btn-info btn-block btn-lg" >راهنمای سیستم کسب درآمد</a>
+							</div>
+							</div>
+						
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body" >
+					<div style="width:100px;margin:20px" class="pull-right"> {% include "image.html" with user=userprofile %} </div>
+					<ul class="list-unstyled">
+						<li ><a href="/{{user.username}}/">
+							<h3 style="margin-top:20px"> {{user.username}}</h3>
+							</a></li>
+						<li style="padding-top:5px;color:green" >
+							<h3>خوش آمدید!</h3>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel panel-default help-step1">
+				<div class="panel-body"> وضعیت پروفایل: <a class="pull-left" href="/profile/" title="تکمیل اطلاعات پروفایل ؛ ویرایش مهارت ها ؛ افزودن نمونه کار" ><span class="glyphicon glyphicon-pencil"></span> <span> ویرایش </span> </a>
+					<hr>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{form.progress}}%;"> <span>{{form.progress}}% تکمیل</span> </div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body"> حساب مالی:<a class="pull-left" href="/account/" title="تکمیل اطلاعات حساب بانکی ؛ مشاهده صورتحساب " ><span class="glyphicon glyphicon-pencil"></span> <span> ویرایش </span> </a>
+					<hr>
+					<div class="alert alert-success text-right"><span>موجودی:</span> <span class="pull-left">{{userprofile.account.money}} تومان<span> </div>
+					<a href="/account/withdraw-tab/" class="btn btn-default pull-left"  title="پول موجود در حساب زیرند خود را برداشت کنید"> <span class="glyphicon glyphicon-minus-sign "></span> برداشت از حساب </a> <a href="/account/deposit-tab/" class="btn btn-default pull-right" title="به حساب زیرند خود پول واریز کنید"> <span class="glyphicon glyphicon-plus-sign"></span> سپرده گذاری </a> </div>
+			</div>
+		</div>
+	</div>
+</div>
+<img id="help-icon" title="با این صفحه بیشتر آشنا شوید!" src="/static/img/help-icon.png" >
+{% endblock %}
+{% block javascript %} 
+<script>
+$(document).ready(function(){
+
+
+//trip
+var trip = new Trip([
+  { sel : $(".help-step1"), content : "لطفا اطلاعات پروفایل و مهارت های خود را در این قسمت تکمیل کنید.<br>توجه داشته باشید اطلاع رسانی سفارش پروژه های جدید به بر اساس مهارت های ثبت شده در این قسمت می باشد.",position : "n" ,expose : true},
+  { sel : $(".help-nav0"), content : "از اینجا می توانید اطلاعات شخصی، رمز عبور و تنظیمات ایمیل خود را ویرایش کنید.",position : "s" ,expose : true},
+  { sel : $(".help-nav1"), content : "اگر می خواهید یک پروژه سفارش دهید می توانید از این قسمت اقدام کنید.",position : "s" ,expose : true}
+  ], {
+  showNavigation : true,
+  delay : -1,
+  tripTheme : "yeti",
+  onTripEnd : function(i, tripData) {
+  if ( i === 1 ) {
+  if (screen.width<768) { $(".navbar-toggle").click(); }
+  }
+  if ( i === 2 ) {
+  if (screen.width<768) { $(".navbar-toggle").click(); }
+  }
+  }
+});
+
+
+function hit()
+{
+	$.ajax({
+      url: "/help1/",      
+      success: function(html)
+		{
+		if (html=='true'){ trip.start(); }
+		}
+    });	
+}
+hit();
+$("#help-icon").click( function() {trip.start();} )
+
+//spiner
+var opts = {
+  lines: 11, // The number of lines to draw
+  length: 10, // The length of each line
+  width: 5, // The line thickness
+  radius: 15, // The radius of the inner circle
+  top: '150px', // Top position relative to parent in px
+
+};
+
+
+//tab
+
+
+$("#home-tab").click(function () {
+var target = document.getElementById('messages');
+var spinner = new Spinner(opts).spin(target);
+$( "#home" ).load( "/notifications/")});
+
+$("#home-tab").click();
+
+var target = document.getElementById('home');
+var spinner = new Spinner(opts).spin(target);
+
+$("#messages-tab").click(function () {
+var target = document.getElementById('messages');
+var spinner = new Spinner(opts).spin(target);
+$( "#messages" ).load( "/messagesList/")});
+
+$("#my-projects-tab").click(function () {
+var target = document.getElementById('my-projects');
+var spinner = new Spinner(opts).spin(target);
+$( "#my-projects" ).load( "/myProjects/")});
+
+//tab-selection
+$("#myTab a").each( function (){
+if ( "{{form.tabId}}" == $(this).attr("id") ) { 
+$(this).click();
+}
+})
+
+
+//foo table	
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+if ($(e.target).attr("id") === "projectsforoffer-tab") { $('.forOffer-table').footable();}
+})
+
+
+});
+
+
+</script> 
+{% endblock %} 

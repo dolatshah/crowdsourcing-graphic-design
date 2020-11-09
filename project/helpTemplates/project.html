@@ -1,0 +1,68 @@
+<script type="text/javascript" src="zxml.js"></script>
+<script type="text/javascript ">
+
+    function offer()
+    {
+	//var val=confirm("Are you sure");
+	//if (val>0)
+		//{
+		document.getElementById("1").hidden = true;
+		document.getElementById("2").hidden = false;
+		
+		//}
+	
+    }
+</script>
+
+{% include 'header.html' %} 
+
+{{form.project.title}}</br>
+{{form.employer}}</br>
+{{form.project.offerDay}}</br>
+{{form.project.description}}</br>
+{{form.project.offerTime}}</br>
+{{form.project.offerValue}}</br>
+{{form.project.employer_cashed_money}}</br>
+{% ifequal form.done True %}
+
+	{% ifequal form.project.is_running True %}
+	
+		{% ifequal form.project.employee form.user.userprofile %}
+			this project is running by you</br>
+you can <a href="/upload/{{form.project.id}}/">upload</a> a file to show to your employer
+			
+		{% else %}
+			this project is running by {{form.project.employee}}
+		{% endifequal %}
+		
+		
+	{% else %}
+	
+		you have already offered succesfully
+
+	{% endifequal %}
+	
+{% endifequal %}
+
+
+
+{% ifequal form.done False %}
+<button id='1' name="offer" value="offer" onclick="offer()" >add offer</button>
+<div id='2'  hidden >
+	<form method='post' action="/project/{{form.project.id}}/">
+		{% csrf_token %}
+		
+		value:
+		<input  type="text" name="value"  >
+		</br>
+		OfferDay:
+		<input  type="text" name="offerDay"  >
+		</br>
+		Text:
+		<textarea  name="text" rows="10" cols="50"  ></textarea>
+		</br>
+		<input    type="submit" onclick="/project/form.project.id/"  value="submit" >
+		</br>
+	</form>
+</div>
+{% endifequal %}

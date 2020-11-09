@@ -1,0 +1,54 @@
+<div class="panel panel-default">
+	<table class="table footable">
+		<thead>
+			<tr class="active">
+				<th >نام پیمانکار</th>
+				<th >پیشنهاد</th>
+				<th >مبلغ درخواستی برای شروع</th>
+				<th data-hide="phone,tablet"  >مبلغ ضمانت پیمانکار</th>
+				<th data-hide="phone,tablet" >زمان ارسال پیشنهاد</th>
+				<th data-hide="all" >رتبه پیمانکار</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		
+		{%  for offer in form.offerlist %}
+		{% ifequal offer.id form.project.choosedOffer_id%}
+		<tr class="accepted">
+			<td class="table-employee" ><a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a></td>
+			<td class="table-Bid"><p>{{offer.totallValue|money_tag}} تومان در {{offer.offerDay}} روز</p></td>
+			<td class="table-guaranty">{{offer.value|money_tag}} تومان</td>
+			<td class="table-guaranty">{{offer.bayane|money_tag}} تومان</td>
+			<td class="table-offer-date">{{offer.offerTime|since}}</td>
+			<td class="table-rank"> {% if offer.offerer.rankForEmployee %} 
+				{{ offer.offerer.rankForEmployee.totalRank }} 
+				{% else %}
+				هنوز رتبه ای نگرفته است
+				{% endif %} </td>
+			<td class="action"><ul class="list-unstyled">
+			<li><span class="glyphicon glyphicon-ok-sign"></span> پذیرفته شد! </li>
+				</ul></td>
+		</tr>
+		{% else %}
+		<tr>
+			<td class="table-employee" ><a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a></td>
+			<td class="table-Bid"><p>{{offer.totallValue|money_tag}} تومان در {{offer.offerDay}} روز</p></td>
+			<td class="table-guaranty">{{offer.value|money_tag}} تومان</td>
+			<td class="table-guaranty">{{offer.bayane|money_tag}} تومان</td>
+			<td class="table-offer-date">{{offer.offerTime|since}}</td>
+			<td class="table-rank"> {% if offer.offerer.rankForEmployee %} 
+				{{ offer.offerer.rankForEmployee.totalRank }} 
+				{% else %}
+				هنوز رتبه ای نگرفته است
+				{% endif %} </td>
+			<td></td>
+		</tr>
+		{% endifequal %}
+		{% endfor %}
+			</tbody>
+		
+	</table>
+
+</div>

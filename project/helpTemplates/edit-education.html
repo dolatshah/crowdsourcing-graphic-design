@@ -1,0 +1,55 @@
+<form class="form-horizontal" role="form" action="/edit-education/" method="post" enctype="multipart/form-data" >
+	{% csrf_token %}
+	<div class="form-group">
+		<label  class="col-md-3 control-label">تحصیلات:</label>
+		<div class="col-md-9">
+			<select class="form-control" name="licence">
+				
+					
+				{% if not checked2.count %}
+					
+				<option name = "licence" value ="0" selected>لطفا یکی از رشته های زیر را انتخاب کنید</option>
+				
+				{% endif %}
+				
+				{% for item in licences %}
+					{% if item.name in checked2 %}
+						
+				<option name = "licence" value ="{{item}}" selected>{{item}}</option>
+				
+					{% else %}
+						
+				<option name = "licence" value ="{{item}}" >{{item}}</option>
+				
+					{% endif %}
+				{% endfor %}
+				
+			</select>
+			<span class="help-block"><a href="/askForNewTask/">رشته مورد نظرتان در اینجا وجود ندارد؟</a></span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="school" class="col-md-3 control-label">محل تحصیل</label>
+		<div class="col-md-5">
+			<input type="text" class="form-control" id="school" name="school" placeholder="دانشگاه ..." value="{{form.school}}"  title="این قسمت در پروفایل شما به نمایش در می آید">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="start" class="col-md-3 control-label">سال شروع</label>
+		<div class="col-md-5">
+			<input type="text"  class="form-control" id="start" name="start" placeholder="**13" value="{{form.start}}"  title="این قسمت در پروفایل شما به نمایش در می آید">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="end" class="col-md-3 control-label">سال پایان</label>
+		<div class="col-md-5">
+			<input type="text"  class="form-control" id="end" name="end" placeholder="**13" value="{{form.end}}" title="این قسمت در پروفایل شما به نمایش در می آید" >
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
+		<div class="col-md-offset-3 col-md-9">
+			<button type="submit" class="btn btn-default">ثبت کن</button>
+		</div>
+	</div>
+</form>

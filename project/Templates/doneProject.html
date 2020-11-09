@@ -1,0 +1,21 @@
+<meta name="description" content="انجام پروژه {{form.project.title}}">
+<meta name="keywords" content="پروژه,دانشجویی,سفارش,انجام,استخدام,رایگان">
+{% load staticfiles %}
+
+
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+<div class="container container-lg">
+{% if form.project.is_finished %}
+
+	<div class="alert alert-success" style="text-align:center; dirction:rtl; margin-top:50px">این پروژه با موفقیت به پایان رسیده است!</div>
+	{% else %}
+	<div class="alert alert-info" style="text-align:center; dirction:rtl; margin-top:50px">این پروژه لغو شده است.</div>
+	{% endif %}
+</div>
+
+
+
+	
+	
+	
+	

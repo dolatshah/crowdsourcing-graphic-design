@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>پنل کاربری ...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/font-awesome/css/font-awesome.min.css" />
+
+    <script type="text/javascript" src="../static/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+<hr></hr>
+
+<!-- Satisfaction Panel - START -->
+<div class="container" id="cnt1">
+    <div class="col-md-3">
+    </div>
+
+    <div class="col-md-12" id="panel1">
+        <div class="panel panel-default" style="text-align: center">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    <h2 id="title">پنل کارفرما</h2>
+				</h1>
+            </div>
+            <div class="panel-body two-col">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="well well-sm">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+									<h2 id="title">ایجاد پروژه جدید</h2>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="well well-sm">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                    <h2 id="title">ورود به بخش پیام ها</h2>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="well well-sm margin-bottom-none">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                                    <h2 id="title">ورود به حساب کاربری</h2>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="well well-sm margin-bottom-none">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">
+                                    <h2 id="title">ویرایش پروفایل</h2>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="well well-sm margin-bottom-none">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios5" value="option5">
+                                    <h2 id="title">لغو پروژه جدید</h2>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+					<div class="col-lg-4">
+						<div class="form_hover " style="background-color: #428BCA;">
+							<p style="text-align: center; margin-top: 20px;">
+								<i class="fa fa-user" style="font-size: 147px;"></i>
+							</p>
+					<div class="header">
+						<div class="blur"></div>
+							<div class="header-text">
+								<div class="panel panel-success" style="height: 247px;">
+										<div class="panel-heading">
+											<h2  id="title" style="color: #428BCA;">نمایش اطلاعات کاربری</h2>
+										</div>
+								<div class="panel-body">
+									<div class="form-group">
+										آخرین روز ورود:<b>01/09/2013</b>
+									</div>
+									<div class="form-group">
+										ساعت ورود:<b>7/43</b>
+									</div>
+									<div class="form-group">
+										امتیاز کاربر<br />
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+									</div>
+								</div>
+								</div>
+							</div>
+					</div>
+				</div>
+				</div>
+               </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-success btn-lg btn-block">
+                            <span class="fa fa-send"></span>تأیید</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+#cnt1 {
+    background-color: rgba(215, 212, 212, 0.88);
+    margin-bottom: 70px;
+}
+
+#panel1 {
+    padding:20px;
+}
+
+.panel-body:not(.two-col) {
+    padding: 0px;
+}
+
+.panel-body .radio, .panel-body .checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.panel-body .list-group {
+    margin-bottom: 0;
+}
+
+.margin-bottom-none {
+    margin-bottom: 0;
+}
+</style>
+
+
+<style>
+.panel-heading span {
+    margin-top: -20px;
+    font-size: 15px;
+}
+.row {
+    margin-top: 40px;
+    padding: 0 10px;
+}
+.clickable {
+    cursor: pointer;
+}    
+</style>
+
+<!-- For Information of Person><-->
+
+<style>
+    .form_hover {
+        padding: 0px;
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+    }
+
+        .form_hover:hover .header {
+            opacity: 1;
+            transform: translateY(-172px);
+            -webkit-transform: translateY(-172px);
+            -moz-transform: translateY(-172px);
+            -ms-transform: translateY(-172px);
+            -o-transform: translateY(-172px);
+        }
+
+        .form_hover img {
+            z-index: 4;
+        }
+
+        .form_hover .header {
+            position: absolute;
+            top: 170px;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form_hover .blur {
+            height: 240px;
+            z-index: 5;
+            position: absolute;
+            width: 100%;
+        }
+
+        .form_hover .caption-text {
+            z-index: 10;
+            color: #fff;
+            position: absolute;
+            height: 240px;
+            text-align: center;
+            top: -20px;
+            width: 100%;
+        }
+</style>
+<!--><-->
+
+<!-- Satisfaction Panel - END -->
+
+</div>
+
+</body>
+</html>

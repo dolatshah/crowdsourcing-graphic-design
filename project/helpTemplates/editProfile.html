@@ -1,0 +1,93 @@
+{% extends "head-tag.html" %}
+{% block title %}ویرایش اطلاعات شخصی{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/bootstrap-tokenfield.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.js' %}" ></script> 
+<script src="{% static 'js/jquery.inputmask.js' %}" ></script> 
+{% endblock %}
+{% block content %}
+<div  id="content" class="container container-md">
+	<div class="alert alert-info" style="text-align:center"> توجه داشته باشید که هیچ یک از اطلاعات این فرم به کاربران دیگر سایت نمایش داده نخواهد شد. <br>
+		این اطلاعات به صورت محرمانه نزد ما باقی میماند تا در صورت نیاز برای تماس با شما از آنها استفاده شود. </div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form class="form-horizontal" role="form" action="/editProfile/" method="post" enctype="multipart/form-data" >
+				{% csrf_token %}
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="firstname" class="col-md-6 control-label">نام:</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="firstname" name="firstname" value="{{form.firstname}}"  >
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="lastname" class="col-md-6 control-label">نام خانوادگی:</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="lastname"  name="lastname"  value="{{form.lastname}}"  >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" >
+					<div class="col-md-6">
+						<div class="form-group" >
+							<label for="birthday"  class="col-md-6 control-label" >تاریخ تولد:</label>
+							<div class="col-md-6" >
+								<input type="text" style="direction:ltr"   placeholder="روز-ماه-سال" class="form-control" id="birthday" name="birthday" value="{{form.birthday}}"  >
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="mobile" class="col-md-6 control-label">تلفن همراه:</label>
+							<div class="col-md-6">
+								<input type="number" class="form-control" id="mobile" title="در صورت نیاز به برقراری تماس با شما از این شماره استفاده خواهد شد و محتویات آن کاملا محرمانه بوده و نزد سایت محفوظ است" name="mobile" value={{form.mobile}} >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="address" class="col-md-2 control-label">آدرس:</label>
+						<div class="col-md-10">
+							<textarea class="form-control" id="address" name="address" rows="3">{% if form.address %}{{form.address}}{% else %}Iran{% endif %}</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-md-2 control-label">جنسیت:</label>
+					<div class="col-md-3">
+						<label class="radio-inline">
+							<input type="radio" id="male" name="gender" value="m" {% ifequal form.gender "m" %} checked {% endifequal %} >
+							مرد</label>
+						<label class="radio-inline">
+							<input type="radio" id="female" name="gender"  value="f" {% ifequal form.gender "f" %} checked {% endifequal %} >
+							زن </label>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<button type="submit" class="btn btn-default">ثبت کن</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+ $(document).ready(function(){
+ 
+
+$("#birthday").inputmask("9999/99/99"); 
+
+});
+
+</script> 
+{% endblock %} 

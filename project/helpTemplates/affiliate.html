@@ -1,0 +1,118 @@
+{% extends "head-tag.html" %}
+{% block title %}سیستم کسب درآمد{% endblock %}
+
+{% block source %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-md">
+<div class="panel panel-default" style="text-align:justify">
+<div class="panel-body">
+<img style="width:100%;" src="/static/img/affiliate.jpg" alt="سیستم بازاریابی کسب درآمد" class="img-thumbnail">
+<h2  class="heading">با معرفی سایت ما به دیگران کسب درآمد کنید!</h2>
+<hr>
+
+<p>
+سیستم کسب درآمد یا Affiliate Marketing یک روش بازاریابی است که در آن بازاریاب خدمات یک سایت را در فضای مجازی به دیگران معرفی می کند و در قبال ارجاع مشتری به سایت مورد نظر مبلغی به عنوان کمیسیون دریافت می کند.
+این روش یکی از متداول ترین روش های کسب درآمد از اینترنت در سراسر جهان می باشد. نخستین و معروف ترین سیستم Affiliate Marketing متعلق به سایت بزرگ Amazon می باشد.
+</p>
+
+<h3>سیستم کسب درآمد زیرند چگونه کار میکند؟</h3>
+<p>
+برای معرفی زیرند یک لینک اختصاصی به شما تعلق می گیرد که شامل نام کاربری شما می باشد. شما می توانید برای معرفی زیرند از این لینک در سایت یا وبلاگ خود و یا شبکه های اجتماعی استفاده کنید.
+در صورتی که کاربری از طریق لینک شما وارد سایت شود و ثبت نام کند سیستم ما به طور خودکار این کاربر را در لیست کاربران معرفی شده توسط شما قرار می دهد و پس از اولین فعالیت وی در سایت کمیسیون شما پرداخت می گردد.
+</p>
+
+<h3>درآمد من چگونه محاسبه می شود؟</h3>
+<p>
+در صورتی که افراد موجود در لیست کسب درآمد شما به عنوان کارفرما یا پیمانکار فعالیت خود را آغاز کنند پس از اتمام اولین پروژه آن ها مبلغ 2،500 تومان به حساب شما واریز می گردد.
+به عنوان مثال اگر شما در ماه 100 عضو فعال را به زیرند معرفی کنید شما ماهیانه 250،000 تومان درآمد کسب می کنید.
+</p>
+<h3>همین حالا شروع کنید!</h3>
+<br>
+<div id="first-step">
+{% if not form.login %}
+<div class="alert alert-danger">
+توجه: در صورتی که در سایت ما عضو نیستید ابتدا باید <a href="/signup/">ثبت نام</a> کنید.
+</div>
+{% endif %}
+<div class="alert alert-info">
+نام کاربری خود را وارد کنید تا لینک اختصاصی شما ایجاد شود.
+</div>
+<hr>
+<div class="form-horizontal">
+	<div class="form-group">
+		<label for="username" class="col-sm-2 control-label">نام کاربری:</label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control ltr" id="username" placeholder="user name" value="{{form.user.username}}">
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-6">
+			<button id="next-step" class="btn btn-success">مرحله بعد</button>
+			<span class="help-block">{{form.errors}}</span> </div>
+	</div>	
+
+</div>
+</div>
+
+
+<div id="share-buttons" hidden>
+<div class="alert alert-success">می توانید از لینک زیر برای معرفی زیرند به دیگران استفاده کنید.</div>
+<div class="row">
+<div class="col-sm-4">
+لینک اختصاصی شما:
+</div>
+<div class="col-sm-8">
+<pre class="ltr" id="user-link"></pre>
+</div>
+</div>
+<hr>
+<div class="alert alert-success">از طریق دکمه های زیر می توانید لینک خود را در شبکه های اجتماعی به اشتراک بگذارید یا برای دوستان خود ایمیل کنید. کافی است شبکه اجتماعی مورد نظر خود را انتخاب کنید و مراحل خواسته شده را طی کنید.</div>
+<div class="text-center">
+<span class='st_facebook_large' displayText='Facebook'></span>
+<span class='st_googleplus_large' displayText='Google +'></span>
+<span class='st_twitter_large' displayText='Tweet'></span>
+<span class='st_linkedin_large' displayText='LinkedIn'></span>
+<span class='st_email_large' displayText='Email'></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %} 
+{% block javascript %} 
+<script>
+var switchTo5x=true;
+$("#next-step").click( function(){ 
+	$("#first-step").slideUp() 
+	$("#share-buttons").slideDown() 
+	$("#share-buttons span").each( function() {
+	username=$("#username").val()
+	url="http://www.zirend.ir/affiliate/"+username
+		$(this).attr("st_url",url)
+		})
+	$("#user-link").text(url)
+	$.ajax({  
+    url: 'http://w.sharethis.com/button/buttons.js',  
+    dataType: 'script',  
+    success: function(){  
+    stLight.options({  
+    publisher: "ur-2956e5e8-17d1-219-d3c0-d15564bac6b4",
+	doNotHash: true,
+	doNotCopy: true,
+	hashAddressBar: false
+    });  
+    },  
+    cache: true  
+});  
+	
+	})
+</script>
+{% endblock %}
+
+

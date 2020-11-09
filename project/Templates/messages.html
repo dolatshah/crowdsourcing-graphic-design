@@ -1,0 +1,16 @@
+
+<div value="maximum" class="{{max}}" data="{{myStatus}}||{{otherStatus}}"  ></div>
+{% for m in messages %}
+<div id="{{m.id}}" class="popover {% if m.is_sender %} right {% else %} left {% endif %}" >
+	<div class="arrow"></div>
+				<h3 class="popover-title"> {% if m.is_sender %} 
+					<span>شما - {{ m.date }}</span>
+					{% else %}
+					<span>{{ m.date }} - {{m.otherSideUser.username}}</span>
+					
+					{% endif %} </h3>
+	<div dir="auto" class="popover-content">
+		<p>{{ m.text }}</p>
+	</div>
+</div>
+{% endfor %} 

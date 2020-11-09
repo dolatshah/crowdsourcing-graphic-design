@@ -1,0 +1,71 @@
+ {% if form.errors %}
+<p style="color: red;"> Please correct the error{{ form.errors|pluralize }} below. </p>
+{% endif %} 
+			{% ifequal form.is_time_remain True %}
+				{% if form.project.is_wait_for_employee %}
+<div class="alert alert-danger">کار فرما پیشنهاد شما را انتخاب کرده است شما نمی توانید آن را تغییر دهید</div>
+<script>
+					$(document).ready(function(){
+					$( "#offeredit input , #offeredit textarea   " ).attr("disabled" ,"disabled" );
+					$( "#offeredit button " ).hide();
+					})
+			</script> 
+{% endif %}
+			
+			{% else %}
+<div class="alert alert-danger"> زمان ثبت پیشنهاد به پایان رسیده است شما نمی توانید پیشنهاد خود را تغییر دهید</div>
+<script>
+					$(document).ready(function(){
+					$( "#offeredit input , #offeredit textarea " ).attr("disabled" ,"disabled" );
+					$( "#offeredit button " ).hide();
+					})
+			</script> 
+{% endifequal %}
+<form id="offeredit" class="form-horizontal" role="form" method='post' action="/changeOffer/{{form.project.id}}/{{form.youroffer.id}}/">
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="bid-value" class="col-md-3 control-label">مبلغ پیشنهادی برای انجام پروژه:</label>
+		<div class="col-md-2">
+			<div class="input-group">
+				<input type="number" title="مبلغی که برای انجام کل پروژه از کارفرما انتظار دارید." class="form-control" id="totallValue" name="totallValue" value="{{form.totallValue}}"  required>
+				<span class="input-group-addon">تومان</span> </div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="bid-value" class="col-md-3 control-label">پیش پرداخت در خواستی:</label>
+		<div class="col-md-2">
+			<div class="input-group">
+				<input type="number" title="مبلغی که از کارفرما انتظار دارید برای شروع در سایت به صورت ودیعه قرار دهد , کارفرما برای شروع پروژه حتما باید این مبلغ را واریز کند "  class="form-control" id="bid-value" name="value" value="{{form.value}}" required>
+				<span class="input-group-addon">تومان</span> </div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="offer-day" class="col-md-3 control-label">تعداد روزهای لازم برای انجام پروژه</label>
+		<div class="col-md-2">
+			<div class="input-group">
+				<input type="number"  title="تعداد روزهایی که برای انجام پروژه نیاز دارید"  class="form-control" id="offer-day" name="offerDay" value="{{form.offerDay}}" required>
+				<span class="input-group-addon">روز</span> </div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="guaranty" class="col-md-3 control-label">مبلغ ضمانت انجام پروژه(اختیاری):</label>
+		<div class="col-md-2">
+			<div class="input-group">
+				<input type="number"  title="شما میتوانید مبلغی را به عنوان ضمانت انچام پروژه در سایت به امانت بگذارید؛این مبلغ بعد از قبول شدن پیشنهاد شما توسط کارفرما در صورت موافقتتان از حساب شما کاسته خواهد شد و در صورتی که پروژه با موفقیت انجام شود این مبلغ به حساب شما باز خواهد گشت."  class="form-control" id="guaranty" name="bayane" value="{{form.bayane}}" required >
+				<span class="input-group-addon">تومان</span> </div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="description" class="col-md-3 control-label">توضیحات</label>
+		<div class="col-md-5">
+			<textarea class="form-control" id="description" name="text" rows="3" placeholder="توضیحات شما در رابطه با پیشنهادتان ..." title="این توضیحات فقط به صورت خصوصی برای کارفرما به نمایش در می آید." required>{{form.text}}</textarea>
+			<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-3 col-md-8">
+			<button type="submit"  class="btn btn-default" onclick="/project/form.project.id/">ثبت پیشنهاد</button>
+		</div>
+	</div>
+</form>
+</body></html>

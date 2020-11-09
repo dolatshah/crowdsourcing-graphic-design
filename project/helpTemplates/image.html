@@ -1,0 +1,2 @@
+{% load staticfiles %}
+{% if user.is_image_uploaded %} <img style="width:100px; height:100px;" src="/static/files/profile/{{user.id}}.jpg"  alt="Profile picture" class="img-thumbnail"> {% else %} <img style="width:100px; height:100px;"  src="{% static  'files/profile/default.jpg' %}"  alt="Profile picture" class="img-thumbnail"> {% endif %} 

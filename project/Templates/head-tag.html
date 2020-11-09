@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+{% load staticfiles %}
+<html lang="fa">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="VuZBaWnlNiGDpGf6c2g6OXkN0gV4D6FcG4ksRoVHUlo" />
+<meta property="fb:admins" content="527270067390183" />
+<link rel="publisher" href="https://plus.google.com/114444562260247103875"/>
+<meta name="geo.region" content="IR-07" />
+<meta name="geo.placename" content="Tehran" />
+<meta property="og:locale" content="fa_IR" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="انجام پروژه دانشجویی" />
+<meta property="og:description" content="انجام پروژه های دانشجویی مهندسی و نرم افزاری در تمامی رشته ها از جمله برق کامپیوتر مکانیک عمران معماری صنایع شیمی هوافضا" />
+<meta itemprop="description" content="انجام پروژه های دانشجویی مهندسی و نرم افزاری در تمامی رشته ها از جمله برق کامپیوتر مکانیک عمران معماری صنایع شیمی هوافضا" />
+<meta property="og:url" content="http://zirend.ir" />
+<meta property="og:site_name" content="انجام پروژه های دانشجویی" />
+<meta property="article:publisher" content="https://www.facebook.com/zirend.ir" />
+<meta property="og:image" content="{% static "img/og.png" %}" />
+{% block meta %}{% endblock %}
+<link href="{% static "css/bootstrap.min.zirend0.css" %}" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="{% static "img/favicon.png" %}" type="image/x-icon">
+<link rel="icon" href="{% static "img/favicon.png" %}" type="image/x-icon">
+<link href="{% static "css/footable.core.min.zirend.css" %}" rel="stylesheet" media="screen">
+<title>{% block title %}{% endblock %}</title>
+{% block style %}{% endblock %}
+</head><body>
+<div id="wrapper"> {% include "header.html" %}
+	<div id="content" style="padding-top:150px"> {% block content %}{% endblock %} </div>
+	<div id="push"></div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script defer src="{% static "js/bootstrap.min.js" %}" ></script> 
+{% block sources %}{% endblock %} 
+<script src="{% static "js/bootstrap-tabdrop.js" %}"></script>
+<script src="{% static "js/spin.js" %}"></script>
+<script src="{% static "js/jquery-ui.effects.min.js" %}"></script>
+<script src="{% static "js/footable.min.js" %} "  ></script> 
+<script src="{% static "js/footable.paginate.min.js" %} "  ></script> 
+<script>
+ jQuery(document).ready(function(){
+ 
+	//help-icon
+	$( "#help-icon" ).effect( "shake", { distance:10,times:10 }, 2000  );
+ 
+ 
+{% if form.login or login %}
+	$.ajax({
+	    url: "/unreadMessage/",
+
+	    success: function(html) {
+	        $("#alert1").text(html);
+	        if (html != '0') {
+	            $("#alert1").effect("pulsate", {
+	                times: 10
+	            }, 3000);
+	        }
+
+	    }
+	});
+
+
+
+	$.ajax({
+	    url: "/unreadNotif/",
+
+	    success: function(html) {
+	        $("#alert2").text(html);
+	        if (html != '0') {
+	            $("#alert2").effect("pulsate", {
+	                times: 10
+	            }, 3000);
+	        }
+
+	    }
+	});
+{% endif %}
+ 
+//active navbar link
+var pathname = window.location.pathname;
+$("nav li > a").each(function() {
+    length = $(this).attr("href").length;
+    href = pathname.substr(0, length);
+    if ($(this).attr("href") == href) {
+        $(this).parent().addClass("active");
+        $(this).parents().filter(".dropdown").addClass("active");
+
+    }
+})
+
+
+//tooltip
+$("[title]").tooltip();
+
+//tab-drop
+$('.nav-tabs').tabdrop({ text:'گزینه ها' })
+
+//currency format
+Number.prototype.formatMoney = function(c, d, t) {
+    var n = this,
+        c = isNaN(c = Math.abs(c)) ? 2 : c,
+        d = d == undefined ? "." : d,
+        t = t == undefined ? "," : t,
+        s = n < 0 ? "-" : "",
+        i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+//footer
+navHeight = $("#footer-nav").height();
+$("#social").css("height", navHeight);
+
+});
+</script> 
+{% block javascript %}{% endblock %} 
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js",'ga');
+
+ga('create', 'UA-50719522-1', 'zirend.ir');
+ga('send', 'pageview');
+</script> 
+<script type="text/javascript">
+//support
+ jQuery(document).ready(function(){
+ $.getScript("http://mylivechat.com/chatinline.aspx?hccid=23758992");
+ })
+</script>
+</body>
+</html>

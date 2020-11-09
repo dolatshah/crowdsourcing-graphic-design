@@ -1,0 +1,135 @@
+{% load staticfiles %}
+<link href="{% static 'css/uploadfile.css' %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery.uploadfile.js' %}"></script> 
+<script src="{% static 'js/jquery.form.js' %}"></script>
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<ul class="list-unstyled">
+				{% for file in form.resumes.all %}
+				<li>
+					<ul class="list-inline">
+						<li> {{file.description}}</li>
+						<li>تاریخ ثبت: {{file.uploadTime|cdatetime}}</li>
+						<li> <a href="/static/resume/{{file.id}}.zip">دریافت</a></li>
+						<li> <a href="/remove-resume/{{file.id}}/">پاک کردن</a></li>
+					</ul>
+				</li>
+				<hr>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body"> افزودن نمونه کار:
+			<hr>
+			{% if login %}
+			<div name="files" id="fileuploader" >انتخاب فایل</div>
+			<div class="form-group">
+				<textarea class="form-control" id="description" name="description" placeholder="توضیحات" rows="1" style="display:none" ></textarea>
+			</div>
+			<button class="btn btn-info" id="startUpload" style="display:none">بارگزاری</button>
+			{% endif %} </div>
+	</div>
+</div>
+<script>
+
+
+
+$(document).ready(function()
+{
+	var uploadObj = $("#fileuploader").uploadFile
+	({
+	
+	url:"/uploadResume/",
+	fileName:"myfile",
+	formData: {"description":$("#description").val().toString()},
+	multiple:false,
+	autoSubmit:false,
+	showCancel:true,
+	showAbort:true,
+	showDone:true,
+	showDelete:true,
+	showProgress:true,
+	uploadButtonClass:"btn btn-default",
+	allowedTypes: "zip",
+	extErrorStr: "فرمت فایل انتخاب شده مجاز نمیباشد. فرمت مجاز:",
+	sizeErrorStr: "حجم فایل انتخاب شده بیشتر از 5 مگابایت میباشد",
+	
+	maxFileSize:5*1049*999.5,
+	maxFileCount:1,
+	
+	onSelect:function(files)
+	{
+		$("#description").show();
+		$("#startUpload").show();
+		
+		files[0].name;
+		return true; //to allow file submission.
+	},
+	
+	dynamicFormData: function()
+	{
+		//$("#description").show();
+		//$("#startUpload").show();
+		//var data ={ location:"INDIA"}
+		var data ={"description":$("#description").val().toString()}
+		return data;
+	},
+	showStatusAfterSuccess:true,
+	dragDropStr: "<span><b> میتوانید فایلهای رزومه خود را با فرمت zip فشرده کرده و با موس به این ناحیه بکشید.(حداکثر حجم هر فایل 5 مگابایت) </b></span>",
+	abortStr:"خارج شدن",
+	cancelStr:"لغو کردن",
+	doneStr:"با موفقیت انجام شد",
+	deleteStr:"پاک کردن",
+	
+	onSuccess:function(files,data,xhr)
+	{
+		$("#description").hide();
+		$("#startUpload").hide();
+	},
+	
+	
+	afterUploadAll:function()
+	{
+		window.location.href="/profile/resumetab/";
+	
+	},
+
+	deleteCallback: function(data,pd)
+	{
+		//for(var i=0;i<data.length;i++)
+		//{
+			//console.log(data);
+			//console.log(pd);
+			
+			//$.post("/delete/5/",{op:"delete",name:data[i]},
+			$.post("/deleteResume/",{op:"delete",name:data},
+			function(resp, textStatus, jqXHR)
+			{
+				//Show Message	
+				alert("فایل با موفقیت پاک شد");	    
+			});
+		 //}		
+		pd.statusbar.hide(); //You choice to hide/not.
+
+	}
+	
+	
+	});
+	
+	$("#startUpload").click(function()
+	{
+		uploadObj.formData={"description":$("#description").val().toString()};
+		uploadObj.startUpload();
+	});	
+	
+	
+	
+});
+
+
+
+
+
+</script> 

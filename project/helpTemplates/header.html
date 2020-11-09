@@ -1,0 +1,124 @@
+{% load staticfiles %}
+{% if form.login or login %}
+<div class="navbar-wrapper">
+	<div class="container">
+		<div class="navbar navbar-default navbar-static-top" role="navigation">
+			<div class="container" >
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+					<a class="navbar-brand" href="/"><img height="40" src="/static/img/logo.png" alt="انجام پروژه دانشجویی زیرند zirend"></a> </div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right" >
+						<li><a href="/controlPanel/" data-container="body" title="مدیریت پروژه ها ؛ پیام ها ؛ حساب کاربری"><span class=" glyphicon glyphicon-home"></span> پنل مدیریت</a></li>
+						<li class="hidden-sm" ><a href="/profile/"><span class=" glyphicon glyphicon-user"></span> پروفایل</a></li>
+						<li class="help-nav1"><a href="/new-project/"><strong><span class="glyphicon glyphicon-shopping-cart"></span> سفارش پروژه</strong></a></li>
+						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" glyphicon glyphicon-th-list"> </span> لیست پروژه ها <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li> <a href="/advanced-search/my-skill/">بر اساس مهارت های من</a> </li>
+								<li><a href="/category/">دسته بندی بر اساس مهارت ها</a></li>
+								<li><a href="/advanced-search/last-projects/">آخرین پروژه ها</a></li>
+							</ul>
+						</li>
+						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-info-sign"></span> راهنما <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/employer-slide-help/" target="_blank" >میخواهم پروژه سفارش دهم</a></li>
+								<li><a href="/employee-slide-help/" target="_blank" >دنبال کار می گردم</a></li>
+								<li><a href="/how-it-works/">زیرند چطور کار می کند؟</a></li>
+								<li><a href="/faq/">پرسش های متداول</a></li>
+								<li><a href="/terms/">قوانین</a></li>
+							</ul>
+						</li>
+											
+					</ul>
+					<div class="navbar-left hidden-md hidden-sm">
+						<form style="max-width: 230px;margin-left:-15px;" class="navbar-form" role="search" action="/advanced-search/"  method="POST" >
+							<div class="input-group"> 
+								<input id="-1" type="text" name="text" class="form-control"  placeholder="جستجو در پروژه ها">
+								<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">بگرد!</button>
+								</span> </div>
+								{% csrf_token %}
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="nav-wrapper">
+	<div class="container" style="text-align:left">
+		<div class="btn-group">
+			<div class="btn-group"> {% if user.username %}
+				<button  type="button" id="btn-username" class="btn btn-default dropdown-toggle help-nav0" data-toggle="dropdown"> {{user.username}}&nbsp; <span class="glyphicon glyphicon-user"> </span> <span class="caret"></span></button>
+				{% else %}
+				<button  type="button" id="btn-username" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> {{form.user.username}}&nbsp; <span class="glyphicon glyphicon-user"> </span> <span class="caret"></span></button>
+				{% endif %}
+				<ul class="dropdown-menu " role="menu">
+					<li><a href="/setting/">تغییر ایمیل یا رمز عبور</a></li>
+					<li><a href="/editProfile/">ویرایش اطلاعات شخصی</a></li>
+					<li><a href="/logout/">خروج</a></li>
+				</ul>
+			</div>
+			<a title="پیام جدید" data-placement="bottom"  class="btn btn-default" href="/controlPanel/messages-tab/"> <span id="alert1" class="badge pull-right"> </span>&nbsp; <span class="glyphicon glyphicon-comment"> </span> </a> <a  title="اطلاعیه جدید" data-placement="bottom" class="btn btn-default" href="/controlPanel/"> <span id="alert2" class="badge pull-right"> </span>&nbsp; <span class="glyphicon glyphicon-bell"> </span></a> </div>
+	 </div>
+</div>
+{% else %}
+<div class="navbar-wrapper">
+	<div class="container">
+		<div class="navbar navbar-default navbar-static-top" role="navigation">
+			<div class="container" >
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+					<a class="navbar-brand" href="/"><img height="40" src="/static/img/logo.png" alt="انجام پروژه دانشجویی زیرند zirend"></a> </div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right" >
+						<li class="help-nav1"><a href="/new-project/"><strong><span class="glyphicon glyphicon-shopping-cart"></span> سفارش پروژه</strong></a></li>
+						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" glyphicon glyphicon-th-list"> </span> لیست پروژه ها <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/category/">دسته بندی بر اساس مهارت ها</a></li>
+								<li><a href="/advanced-search/last-projects/">آخرین پروژه ها</a></li>
+							</ul>
+						</li>
+						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-info-sign"></span> راهنما <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/employer-slide-help/" target="_blank" >میخواهم پروژه سفارش دهم</a></li>
+								<li><a href="/employee-slide-help/" target="_blank" >دنبال کار می گردم</a></li>
+								<li><a href="/how-it-works/">زیرند چطور کار می کند؟</a></li>
+								<li><a href="/faq/">پرسش های متداول</a></li>
+								<li><a href="/terms/">قوانین</a></li>
+							</ul>
+						</li>
+						<li class="hidden-sm"><a href="/affiliate/"><span class="glyphicon glyphicon-send"></span> سیستم کسب درآمد</a></li>	
+						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">رشته ها<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/blog/مهندسی-کامپیوتر/">رشته مهندسی کامپیوتر</a></li>
+								<li><a href="/blog/مهندسی-مکانیک/">رشته مهندسی مکانیک</a></li>
+								<li><a href="/blog/مهندسی-عمران/">رشته مهندسی عمران</a></li>
+								<li><a href="/blog/مهندسی-شیمی/">رشته مهندسی شیمی</a></li>
+								<li><a href="/blog/مهندسی-صنایع/">رشته مهندسی صنایع</a></li>
+								<li><a href="/blog/مهندسی-برق/">رشته مهندسی برق</a></li>	
+								<li><a href="/blog/مهندسی-هوافضا/">رشته مهندسی هوافضا</a></li>	
+							</ul>
+						</li>							
+						<li><a href="/blog/" >وبلاگ</a></li>
+					</ul>
+					<div class="navbar-left hidden-md hidden-sm ">
+						<form style="max-width: 300px;margin-left:-15px;" class="navbar-form" role="search" action="/advanced-search/"  method="POST" >
+							<div class="input-group"> {% csrf_token %}
+								<input id="-1" type="text" name="text" class="form-control"  placeholder="جستجو در پروژه ها">
+								<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">بگرد!</button>
+								</span> </div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="nav-wrapper">
+	<div class="container" style="text-align:left">
+		<div class="btn-group"> {% if form.new %} <a class="btn btn-default" href="/signup/{{form.new}}/">ثبت نام</a> {% else %} <a class="btn btn-default" href="/signup">ثبت نام</a> {% endif %} <a class="btn btn-default" href="/login/">ورود</a> </div>
+	</div>
+</div>
+{% endif %}

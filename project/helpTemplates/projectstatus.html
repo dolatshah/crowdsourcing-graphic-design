@@ -1,0 +1,17 @@
+ {% ifequal  project.is_canceled True %}
+			<span class=" glyphicon glyphicon-remove text-warning"></span><span> متوقف شده</span>	
+		{% else %}
+			{% ifequal  project.is_failed True %}
+				<span>لغو شده</span>
+			{% else %}
+				{% ifequal  project.is_finished True %}
+						<span class=" glyphicon glyphicon-ok text-success"></span><span> با موفقیت به پایان رسیده</span>	
+				{% else %}
+					{% ifequal  project.is_running True %}
+						<span class="glyphicon glyphicon-refresh text-primary"></span><span> در حال اجرا</span>	
+					{% else %}
+						<span class="glyphicon glyphicon-time text-info"></span><span> در حال دریافت پیشنهاد</span>	
+					{% endifequal %}
+				{% endifequal %}
+			{% endifequal %}
+		{% endifequal %} 

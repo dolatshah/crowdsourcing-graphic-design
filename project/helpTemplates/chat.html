@@ -1,0 +1,267 @@
+<script type="text/javascript">
+	
+	
+	//window.onbeforeunload = off;
+	
+
+  window.onbeforeunload = confirmExit;
+  window.onunload = off;
+  
+
+
+	function sub() 
+	{
+		
+		$.post( "/chat/{{other.id}}/{{projectId}}/", { text: $("#text").val() })
+		.done(function( data ) 
+		{
+			$("#text").val("");
+			getMessages();
+		});
+	}
+
+	
+	function on()
+	{
+	
+		$.ajax({
+      url: "/online/{{projectId}}/",
+	  
+      cache: false,
+      
+		success: function(html)
+		{
+			alert("شما آنلاین هستید");
+      }
+    });
+	
+	
+	}
+	
+	function off()
+	{
+	
+		$.ajax({
+      url: "/offline/{{projectId}}/",
+	  
+      cache: false,
+      
+		success: function(html)
+		{
+			alert("شما آفلاین هستید");
+      }
+    });
+	
+	
+	}
+	
+	
+	function changestatus () 
+	{
+		var s = $("#status-select").val();
+		if (s == "1" ) { on(); }
+		else { off(); }
+		
+		
+	}
+	function confirmExit()
+  {
+		
+  }
+
+
+  function getMessages() 
+  {
+	
+	
+    $.ajax({
+      url: "/chats/{{other.id}}/{{user.id}}/{{projectId}}/",
+	  
+      cache: false,
+      
+		success: function(html)
+		{
+			var res = html.substr(0,1);
+			
+			if (res=="n")
+			{
+				$("#newmessages").append(html.substr(4));
+				
+			}
+			else
+			{
+				$("#newmessages").append(html );
+				//scrolldown
+				var height = document.getElementById('messagesframe').scrollHeight;
+				$( "#messagesframe" ).scrollTop(height);
+			}
+	
+			
+      }
+    });
+	
+	
+	var max={{form.max}};
+	
+	var myStatus="";
+	var otherStatus="";
+	
+	$("[value='maximum']").each(function()
+	{
+	
+	
+		str=$(this).attr("data");
+		
+		myStatus=str.substr (0,str.indexOf('|')) ;
+		otherStatus=str.substr (str.indexOf('|')+2) ;
+		
+		
+		if ( parseInt( $(this).attr('class') )  > max )
+		{
+			max=parseInt( $(this).attr('class') );
+			
+		}
+	
+	});
+	
+	$("#myState").html(myStatus);
+	$("#otherState").html(otherStatus);
+	
+	$(".popover").each(function()
+	{
+			var string = $(this).attr('id') ; 
+			if (parseInt(string)>max+1)
+			{
+				$(this).not(".right").effect(  "highlight" , 2000);
+			}
+
+	});
+
+	setTimeout("getMessages()", 3000);
+  }
+  getMessages();
+  
+$(document).ready(function(){
+
+var height = document.getElementById('messagesframe').scrollHeight;
+$( "#messagesframe" ).scrollTop(height);
+	
+//tooltip
+$("[title]").tooltip();
+
+
+})
+</script>
+<style>
+.popover {
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	max-width: 70%;
+	clear: both;
+	text-align:initial;
+}
+.popover.left {
+	margin-left: 10px;
+	float: right;
+}
+.popover.right {
+	margin-left: 10px;
+	float: left
+}
+.popover-title {
+	text-align: center
+}
+#messagesframe {
+	overflow: auto;
+	max-height: 300px;
+}
+.popover-content {
+overflow:auto;
+}
+.popover.left + .popover.right , .popover.right + .popover.left {
+margin-top:20px;
+}
+</style>
+		<div class="panel panel-primary" onUnload="javascript:confirmExit();">
+			<div class="panel-heading">
+				<h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> چت</h3>
+				</div>
+		</div>
+				
+<div class="panel panel-default" id="messagesframe">
+		<div id="messages" class="panel-body"> {% for m in messages %}
+			<div id="{{m.id}}" class="popover {% if m.is_sender %} right {% else %} left {% endif %}" >
+				<div class="arrow"></div>
+				<h3 class="popover-title"> {% if m.is_sender %} 
+					<span>شما - {{ m.date|since }}</span>
+					{% else %}
+					<span>{{ m.date|since }} - {{m.otherSideUser.username}}</span>
+					
+					{% endif %} </h3>
+				<div dir="auto" class="popover-content">
+					<p >{{ m.text }}</p>
+				</div>
+			</div>
+			{% endfor %}
+			<div  id="newmessages"> </div>
+		</div>
+	</div>
+	<div class="row">
+	<div class="col-sm-4">
+					<div class="panel panel-default">
+		<div class="panel-body">
+		<span>وضعیت</span><span title="در این قسمت می توانید وضیعیت خود را تغییر دهید و وضعیت مخاطب خود را مشاهده کنید. برای اینکه مخاطب متوجه حضور شما شود باید وضعیت خود را به «آنلاین» تغییر دهید." class="glyphicon glyphicon-question-sign pull-left orange"></span>
+		<hr>
+			<div class="form-horizontal">
+	<div class="form-group">
+		<label for="status-select" class="col-sm-6 control-label">شما</label>
+		<div class="col-sm-6">
+									<select class="form-control"  id="status-select" onchange="changestatus()" >
+						<option value="1"> آنلاین </option>
+						<option value="2" selected > آفلاین </option>
+					</select>  
+
+		</div>
+	</div>
+		<div class="form-group">
+		<label for="otherState" class="col-sm-6 control-label"><a href="/{{form.otherSideUser.username}}/">{{form.otherSideUser.username}}</a></label>
+		<div class="col-sm-6">
+	<p id = "otherState" class="form-control"></p>
+
+		</div>
+	</div>
+	</div>
+	
+				{% comment %}
+				<div id = "myState" > </div>
+				{% endcomment %}
+
+			</div>
+			</div>
+
+	</div>
+	<div class="col-sm-8">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="form">
+				<div class="form-group">
+					<textarea dir="auto" class="form-control" rows="4" id="text" placeholder="پیام خود را بنویسید"></textarea>
+					<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-info" onclick="sub()">ارسال</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	</div>
+	
+	</div>	
+<div class="alert alert-warning">
+	هنگام ورود به صفحه وضعیت خود را به آنلاین و هنگام خروج به آفلاین تغییر دهید.
+</div>	
+				
+
+	

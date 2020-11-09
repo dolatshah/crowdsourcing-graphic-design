@@ -1,0 +1,38 @@
+{% extends "head-tag.html" %}
+{% block title %}ارسال دوباره ایمیل{% endblock %}
+{% block content %}
+<div class="container container-sm">
+	<div class="alert alert-warning">در صورت عدم مشاهده ایمیل زیرند در inbox ، فولدرهای spam و facebook (در صورت وجود) را نیز بررسی کنید.</div>
+</div>
+<div class="container container-sm"> {% if form.errors %}
+	<div class="alert alert-danger">
+		<p style="color: red;"> لطفا خطاهای زیر را برطرف کنید </p>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3 class="text-center">ارسال ایمیل فعال سازی</h3>
+			<hr>
+			لطفا ایمیل خود را وارد کنید تا کد فعال سازی ارسال شود
+			<hr>
+			<form class="form-horizontal" role="form" action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="username" class="col-md-4 control-label">ایمیل:</label>
+					<div class="col-md-8">
+						<input type="email" class="form-control" id="username" name="ail" placeholder="email" >
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-4 col-md-8">
+						<button type="submit" class="btn btn-default">ارسال ایمیل</button>
+						{% if done %} <span class="help-block">ایمیل فعال سازی ارسال شد</span> {% endif %}
+						
+						{% if done2 %} <span class="help-block">چنین ایمیلی در سیستم ثبت نشده است</span> {% endif %} </div>
+				</div>
+			</form>
+			<hr>
+		</div>
+	</div>
+</div>
+{% endblock %} 

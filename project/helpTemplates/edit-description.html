@@ -1,0 +1,15 @@
+<form class="form-horizontal" role="form" action="/edit-description/" method="post" enctype="multipart/form-data" >
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="description" class="col-md-2 control-label">شرح:</label>
+		<div class="col-md-10">
+			<textarea class="form-control" id="description" name="desc" placeholder="توضیحاتی در مورد خودتان و سابقه کار خود بنویسید!" rows="3" title="این قسمت در پروفایل شما به نمایش در می آید">{% if form.desc %}{{form.desc}}{% endif %}</textarea>
+			<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<button type="submit" class="btn btn-default">ثبت کن</button>
+		</div>
+	</div>
+</form>

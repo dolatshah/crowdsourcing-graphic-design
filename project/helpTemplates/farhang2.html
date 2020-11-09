@@ -1,0 +1,228 @@
+{% load staticfiles %}
+<link href="{% static "css/bootstrap.min.zirend.css" %} " rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script defer src="{% static 'js/bootstrap.min.js' %}" ></script>
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script>
+<link href="{% static "css/bootstrap-tokenfield.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.min.js' %}" ></script>
+<style>
+.select {
+font-weight:bold;
+color:red;
+}
+.ui-autocomplete {
+z-index:10000;
+}
+</style>
+
+{% if form.before %}
+<div class="container" id="myArea">
+	متن خود را در کادر زیر وارد کنید
+	<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<textarea class="form-control" id="input" name="input" rows="25" cols="150"></textarea>
+		<br>
+		<button type="submit" class="btn btn-success btn-block">شروع</button>
+	</form>
+
+{% else %}
+	<div class="container container-md" >
+	<br><br>
+	<div class="panel panel-default">
+	<div class="panel-body">
+
+	  <div class="form-group">
+		<label for="word">کلمه انتخاب شده :</label>
+		<input type="text" class="form-control" id='word' placeholder="کلید ctrl را نگه دارید و کلمه مورد نظر را انتخاب کنید" disabled>
+	  </div>
+	  <div class="form-group">
+		<label  for="replace">کلمه جایگزین :</label>
+		<div class="input-group">
+		<input type="text" class="form-control" id='replace'></input>
+			  <span class="input-group-addon">
+		   <span id ="status">
+		  </span>
+		  </span>
+		  </div>
+	  </div>
+	  <button id='submit' onClick='replace()' class='btn btn-success'>اصلاح</button>
+  <button  onClick='semiSpace()' class='btn btn-success'>تبدیل به نیم فاصله</button>
+	<input id='endPosition'  type='text' hidden></input>
+	<input id='startPosition'  type='text' hidden></input>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-body">
+<div class="text" contenteditable="true" >
+	<br>
+	{% for word in form.dic %}
+		{% ifequal word 'break' %}
+			<br>
+		{% else %}
+			{% if word in form.high %}
+
+				<span class="found mark" style="color:green">{{word}}</span>
+			{% else %}
+				{{word}}
+			{% endif %}
+		{% endifequal %}
+		
+	{% endfor %}
+</div>
+
+	</div>
+	</div>
+	</div>
+	
+	
+{% endif %}
+
+
+
+<script>
+
+function surroundSelection() {
+    $('.text .select').contents().unwrap()
+    var span = document.createElement("span");
+	span.className = 'select'
+    if (window.getSelection) {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var range = sel.getRangeAt(0).cloneRange();
+            range.surroundContents(span);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+}
+
+function semiSpace () {
+semi = $(".text .select").text().replace(/\s/g, '&zwnj;')
+$(".text .select").html( semi )
+}
+
+function replace () {
+
+$(".text .select").text( $("#replace").val() )
+
+dota = $("#word").val() + "-" + $("#replace").val()
+dota = String(dota);
+
+$.post( "/farhang-replace/", { text: dota})
+.done(function( data ) {	
+	console.log(dota);
+});
+
+}
+
+function autofill (suggestion) 
+{
+
+$('#replace1').autocomplete({
+    source: suggestion,
+    minLength: 0,
+    scroll: true
+}).focus(function() {
+    $(this).autocomplete("search", "");
+});
+}
+
+function search(text)
+{
+	text = String(text);
+	$.post( "/farhang-search/", { input: text})
+	.done(function( data ) {
+		
+		var arr = new Array();
+		arr = data.split("-");
+		autofill(arr);
+		$("#status").addClass("glyphicon glyphicon-ok")
+	});
+	
+}
+
+
+$('html').mouseup(function(e){
+var isCtrlPressed = e.ctrlKey;
+if (isCtrlPressed) {
+surroundSelection()
+selection = $(".text .select").text()
+update()
+search(selection);
+}
+});
+//////////////////////////////////////////
+
+$(document).ready(function(){
+
+$(".text .mark").popover({
+content:"<input id='replace1' type='text'></input><button onClick='replace1()' class='btn btn-success btn-block'>اصلاح</button>",
+html:true,
+placement:'top',
+trigger:'manual',
+})
+
+$('.mark').click(function(event){
+event.stopPropagation();
+})
+
+
+//$(document).click( function () {
+//$(".text .active").popover('hide')
+//$(".text .active").removeClass("active")
+//})
+
+$(".text .mark").click(function () { 
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+$(this).addClass("active")
+$(".active").popover('show')
+$("#word").val( $(".active").text() )
+search( $(".active").text() );
+})
+
+})
+
+function update () {
+$(".text .select").popover({
+content:"<input id='replace' type='text'></input><button id='submit' onClick='replace1()' class='btn btn-success btn-block'>اصلاح</button>",
+html:true,
+placement:'top',
+trigger:'manual',
+})
+
+$(".text .select").click(function () { 
+$(".text .active").popover('hide')
+$(".text .active").removeClass("active")
+$(this).addClass("active")
+$(".active").popover('show').on('shown.bs.popover', function () {
+alert("done")
+})
+
+$("#word").val( $(".active").text() )
+search( $(".active").text() );
+})
+}
+
+function eventStop() {
+$('.popover').click(function(event){
+event.stopPropagation();
+})
+}
+function replace1 () {
+
+$(".text .active").text( $("#replace1").val() )
+
+dota = $("#word").val() + "-" + $("#replace1").val()
+dota = String(dota);
+
+$.post( "/farhang-replace/", { text: dota})
+.done(function( data ) {	
+	console.log(dota);
+});
+
+}
+//////////////////////////////////////////
+</script> 
+

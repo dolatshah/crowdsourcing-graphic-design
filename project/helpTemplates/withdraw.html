@@ -1,0 +1,32 @@
+ {% if form.errors %}
+<div class="alert alert-danger">
+	<p style="color: red;"> لطفا خطا های زیر را برطرف کنید
+		{{ form.errors|pluralize }} </p>
+</div>
+{% endif %}
+<form class="form-horizontal" action="/withdraw/" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="text" class="col-md-3 control-label">مبلغ برداشت :</label>
+		<div class="col-md-5">
+			<input type="number"  title="مبلغ 500 تومان بابت کارمزد انتقال وجه از مبلغی که وارد می کنید کسر خواهد شد." class="form-control" id="text" name="text" placeholder="مبلغ به ریال" min="5000" required>
+			<span class="help-block">{{ form.text.errors }} </span> </div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-3 col-md-10">
+			<button type="submit" title="عملیات انتقال وجه حداکثر تا ۲۴ ساعت آینده انجام خواهد شد" class="btn btn-default">تایید</button>
+		</div>
+	</div>
+</form>
+<div class="container">
+	<div class="alert alert-warning">
+		قبل از اقدام به برداشت از حساب , اطلاعات شخصی شامل نام و نام خانوادگی و اطلاعات حساب شامل شماره کارت و نام بانک خود را تکمیل کنید.
+		</div>
+<div class="alert alert-info">
+		عملیات انتقال وجه حداکثر تا 48 ساعت آینده انجام خواهد شد .
+	</div>
+</div>
+<script>
+//tooltip
+$("[title]").tooltip();
+</script>

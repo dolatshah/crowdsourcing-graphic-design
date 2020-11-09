@@ -1,0 +1,21 @@
+	
+.carousel-demo {
+	width:100%;
+}
+.carousel-demo-vertical {
+	height:250px;
+	width:100%;
+}
+.carousel-demo li {
+	border:1px solid #fff;
+	font-weight:bold;
+	height:250px;
+	direction:rtl;
+	list-style:none;
+	padding:20px 0 0 0;
+	margin:0 10px 0 0;
+	width:100%;
+}
+.carousel-demo-vertical li {
+	margin:0 0 10px 0;
+}

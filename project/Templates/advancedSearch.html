@@ -1,0 +1,396 @@
+<title> جست و جو </title>
+{% include "header.html" %}
+{% block meta %}
+<meta name="description" content="جستجو در میان پروژه های موجود در سایت">
+<meta name="keywords" content="پروژه,دانشجویی,نرم افزار,مهندسی,کامپیوتر,عمران,معماری,مکانیک,برق,صنایع,جستجو,پیشرفته">
+{% endblock %}
+
+{% block javascript %} 
+<script>
+
+function clickAdvaced()
+{
+	if (document.getElementById('isAdvanced').value == 1)
+		document.getElementById('isAdvanced').value = 0;
+	else
+		document.getElementById('isAdvanced').value = 1;
+
+}
+
+ $(document).ready(function(){
+
+//slider
+
+function eval (value) {
+if (value <= 20)             {var inputvalue = value * 5;}
+else if (value<=35 && value>20)  {var inputvalue = value * 10 - 100;}
+else if (value<=45 && value>35)  {var inputvalue = value * 25 - 625;}  
+else if (value<=55 && value>45)  {var inputvalue = value * 50 - 1750;}  
+else if (value<=70 && value>55)  {var inputvalue = value * 100 - 4500;}
+else if (value<=80 && value>70)  {var inputvalue = value * 250 - 15000;}  
+else if (value<=90 && value>80)  {var inputvalue = value * 500 - 35000;}  
+else if (value<=101 && value>90) {var inputvalue = value * 1000 - 80000;}  
+return inputvalue * 1000;  
+}
+
+$( "#slider-range" ).slider({
+range: true,
+min: 0,
+max: 101,
+step: 1,
+values: [ {{form.start}} , {{form.end}} ],
+slide: function( event, ui ) {
+$( "#budgetrange" ).val( "" + eval(ui.values[ 0 ]) + " - " + eval(ui.values[ 1 ]) );
+
+$( "#budgetrange-slider" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+
+if (ui.values[ 1 ] == 101) { smax = "بی نهایت" } else {smax = eval(ui.values[ 1 ]).formatMoney(0)}
+$( "#showrange" ).text( "" + eval(ui.values[ 0 ]).formatMoney(0) + " - " + smax );
+}
+});
+$( "#budgetrange" ).val( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ) +
+" - " + eval( $( "#slider-range" ).slider( "values", 1 ) ) );
+if ( $( "#slider-range" ).slider( "values", 1 ) == 101 ) { imax = "بی نهایت" } else { imax = eval( $( "#slider-range" ).slider( "values", 1 ) ).formatMoney(0) }
+$( "#showrange" ).text( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ).formatMoney(0) +
+" - " + imax );
+
+
+
+//tokenfield
+
+$('#skills').tokenfield({
+  autocomplete: {
+    source: [
+	
+	{% for item in form.skills %}
+          '{{item}}',
+	{% endfor %}
+	
+	
+	],
+    delay: 100
+  },
+  showAutocompleteOnFocus: true,
+  minWidth: 260
+});
+
+$('#skills').tokenfield('setTokens', [
+
+	{% for item in form.formSkillList %}
+		'{{item}}',
+	{% endfor %}
+]);
+
+
+$(".skill").click(function(){
+  var tag= $(this).text();
+  $('#skills').tokenfield('createToken', tag );
+}); 
+
+//foo table
+$('.footable').footable();
+});
+</script> 
+{% endblock %}
+{% block style %}
+<style>
+.ui-autocomplete {
+max-height: 100px;
+overflow-y: auto;
+overflow-x: hidden;
+direction:ltr;
+}
+.ui-autocomplete li {
+direction:rtl;
+}
+* html .ui-autocomplete {
+height: 100px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li class="active">جستجو در پروژه ها</li>
+	</ol>
+</div>
+<div  id="content" class="container container-md">
+	<form role="search" action="" method="post" name="1">
+		<input id="isAdvanced" type="text" name="test" value="{{form.isAdvancedSearch}}" hidden >
+		<div class="panel panel-default">
+			<div class="panel-body"> {% csrf_token %}
+				<div class="form-group col-md-12">
+					<div class="input-group">
+						<input type="text"  class="form-control"  name="text" value="{{form.query}}">
+						<span class="input-group-btn">
+						<button type="submit" id="sub" class="btn btn-default"  >جستجو</button>
+						</span> </div>
+				</div>
+				
+			</div>
+		</div>
+		<div id="advancedsearch" class="panel panel-default collapse {% ifequal form.isAdvancedSearch '1' %} in {% endifequal %} ">
+			<div class="panel-body">
+				<div class="form-horizontal">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="status" class="col-md-6 control-label">وضعیت پروژه:</label>
+								<div class="col-md-6">
+									<select class="form-control" id="status" name="status">
+										<option value="0" {% ifequal form.checkedStatus "0" %} selected {% endifequal %}>
+										
+										فعال
+										
+										</option>
+										<option value="1" {% ifequal form.checkedStatus "1" %} selected {% endifequal %} >
+										
+										تکمیل شده
+										
+										</option>
+										<option value="2" {% ifequal form.checkedStatus "2" %} selected {% endifequal %} >
+										
+										لغو شده
+										
+										</option>
+										<option value="3" {% ifequal form.checkedStatus "3" %} selected {% endifequal %} >
+										
+										در حال اجرا
+										
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="postedfrom" class="col-md-6 control-label">زمان باقیمانده برای پیشنهاد:</label>
+								<div class="col-md-6">
+									<select class="form-control" id="offerTime" name="offerTime" >
+										<option value="4" {% ifequal form.offerTime "4" %} selected {% endifequal %} >
+										
+										همه
+										
+										</option>
+										<option value="0" {% ifequal form.offerTime "0" %} selected {% endifequal %} >
+										
+										کمتر از 1 ساعت
+										
+										</option>
+										<option value="1" {% ifequal form.offerTime "1" %} selected {% endifequal %} >
+										
+										کمتر از 1 روز
+										
+										</option>
+										<option value="2" {% ifequal form.offerTime "2" %} selected {% endifequal %} >
+										
+										کمتر از 1 هفته
+										
+										</option>
+										<option value="3" {% ifequal form.offerTime "3" %} selected {% endifequal %} >
+										
+										بیشتر از 1 هفته
+										
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" style="display:none">
+						<label for="from" class="col-md-2 control-label">زمان ثبت پروژه</label>
+						<div class="col-md-4">
+							<input type="date" class="form-control" id="from">
+						</div>
+						<label for="to" class="col-md-1 control-label">تا</label>
+						<div class="col-md-4">
+							<input type="date" class="form-control" id="to">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="postedfrom" class="col-md-6 control-label">زمان ایجاد:</label>
+								<div class="col-md-6">
+									<select class="form-control" id="postedTime" name="postedTime" >
+										<option value="0" {% ifequal form.postedTime "0" %} selected {% endifequal %} >
+										
+										همه زمان ها
+										
+										</option>
+										<option value="1" {% ifequal form.postedTime "1" %} selected {% endifequal %} >
+										
+										ساعت گذشته
+										
+										</option>
+										<option value="2" {% ifequal form.postedTime "2" %} selected {% endifequal %} >
+										
+										24 ساعت گذشته
+										
+										</option>
+										<option value="3" {% ifequal form.postedTime "3" %} selected {% endifequal %} >
+										
+										هفته گذشته
+										
+										</option>
+										<option value="4" {% ifequal form.postedTime "4" %} selected {% endifequal %} >
+										
+										ماه گذشته
+										
+										</option>
+										<option value="5" {% ifequal form.postedTime "5" %} selected {% endifequal %} >
+										
+										سال گذشته
+										
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="postedfrom" class="col-md-6 control-label">مهلت اجرای پروژه:</label>
+								<div class="col-md-6">
+									<select class="form-control" id="proposedTime" name="proposedTime" >
+										<option value="0" {% ifequal form.proposedTime "0" %} selected {% endifequal %} >
+										
+										همه
+										
+										</option>
+										<option value="1" {% ifequal form.proposedTime "1" %} selected {% endifequal %} >
+										
+										کمتر از 1 روز
+										
+										</option>
+										<option value="2" {% ifequal form.proposedTime "2" %} selected {% endifequal %} >
+										
+										1 تا 7 روز
+										
+										</option>
+										<option value="3" {% ifequal form.proposedTime "3" %} selected {% endifequal %} >
+										
+										1 تا 4 هفته
+										
+										</option>
+										<option value="4" {% ifequal form.proposedTime "4" %} selected {% endifequal %} >
+										
+										بیشتر از 1 ماه
+										
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">مهارت ها:</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" name="skillList" id="skills"  placeholder="بخشی از نام مهارت را تایپ کنید">
+						</div>
+					</div>
+					<div class="form-group"  >
+						<label for="budgetrange" class="col-md-3 control-label">محدوده بودجه:</label>
+						<div class="col-md-9">
+							<div class="input-group" >
+								<p style="direction:ltr" class="form-control"  id="showrange"></p>
+								<span class="input-group-addon">تومان</span></div>
+							<input type="text" id="budgetrange"  name="offerValue" style="display:none" >
+							<input type="text" id="budgetrange-slider"  name="slider" value="0 - 101"  hidden >
+						</div>
+					</div>
+					<div class="form-group"   >
+						<div class="col-md-offset-3 col-md-9" id="slider" >
+							<div style="margin:11px 0px" id="slider-range"></div>
+						</div>
+					</div>
+					<br>
+					<input id="order" type="text" name="o" value="{{form.order}}" hidden>
+					<input id="reverse" type="text" name="r" value="{{form.reverse}}" hidden>
+				</div>
+			</div>
+		</div>
+	</form>
+	{% if not login %}<div class="alert alert-warning" style="direction:rtl; text-align:center">برای مشاهده تمام پروژه های موجود در سایت باید ابتدا وارد حساب کاربری خود شوید.</div>{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-body" >
+			<div id="searchbox"> </div>
+			<div class="container">
+				<div style="margin:20px 0px" class="form-horizontal">
+					<div class="form-group">
+						<label for="sortby" class="col-sm-3 control-label">مرتب سازی بر اساس</label>
+						<div class="col-sm-3">
+							<select class="form-control" name="sortby" id="sortby" onchange=$(function(){$("#order").val($("#sortby").val());$("#sub").click();}) >
+								<option value="1" {% ifequal form.order "1" %} selected {% endifequal %}>
+								
+							بودجه
+							
+								</option>
+								<option value="2" {% ifequal form.order "2" %} selected {% endifequal %}>
+								
+							زمان ایجاد
+							
+								</option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+							<select class="form-control" name="reverseby" id="reverseby" onchange=$(function(){$("#reverse").val($("#reverseby").val());$("#sub").click();}) >
+								<option value="1" {% ifequal form.reverse "1" %} selected {% endifequal %}>
+								
+							صعودی
+							
+								</option>
+								<option value="2" {% ifequal form.reverse "2" %} selected {% endifequal %}>
+								
+							نزولی
+							
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% if form.projects %}
+			<div class="panel panel-default">
+				<table class="table footable" data-page-size="20">
+					<thead>
+						<tr class="active">
+							<th >عنوان پروژه</th>
+							<th data-hide="all">توضیحات</th>
+							<th data-hide="phone,tablet" >محدوده بودجه</th>
+							<th >وضعیت</th>
+							<th data-hide="all" >تعداد پیشنهاد</th>
+							<th data-hide="phone,tablet">مهارت مورد نیاز</th>
+							<th data-hide="all" >شروع</th>
+							<th data-hide="all">مهلت ثبت پیشنهاد</th>
+							<th ></th>
+						</tr>
+					</thead>
+					<tbody>
+					
+					{% for project in form.projects %}
+					<tr >
+						<td class="table-name">{{project.title}}</td>
+						<td class="table-discription">{{project.description|linebreaks|truncatechars:50}}<a href="/project/{{project.id}}"> ادامه</a></td>
+						<td class="table-budget">{{project.startBid}} - {{project.endBid}} تومان</td>
+						<td class="table-status"><span>{% include 'projectstatus.html' with project=project %}</span></td>
+						<td class="table-offernumber">{{project.offeringUsers.count}}</td>
+						<td class="table-skill">{% for skill in project.skill.all %} {{skill}} |{% endfor %}</td>
+						<td class="table-start">{{project.offerTime}}</td>
+						<td class="table-start">{{project.hourTimeForOffer}} ساعت</td>
+						<td class="table-link"><a href="/project/{{project.id}}"><span class="glyphicon glyphicon glyphicon-log-in"></span> صفحه پروژه</a></td>
+					</tr>
+					{% endfor %}
+						</tbody>
+					
+				</table>
+			</div>
+			{% else %}
+			<div class="alert alert-info" style="direction:rtl; text-align:center">جستجو هيچ نتيجه اي در بر نداشت!</div>
+			{% endif %}
+			<ul  class="pagination pull-left hide-if-no-paging">
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %} 

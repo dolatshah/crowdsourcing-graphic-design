@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<span class="h4">توضیحات</span>
+		<hr class="hr-title">
+		{{form.project.description |linebreaks }} 
+		{% if form.attachedUrl %}
+		<hr>
+		<p> <a href = "{{form.attachedUrl}}" ><span class="glyphicon glyphicon-file"></span> فایل ضمیمه شده</a> </p>
+		{% endif %} 
+		
+		{% if form.projectSkills.count %}
+			<hr>
+			<span class="h4">مهارتهای مورد نیاز:</span>
+			{% for skill in form.projectSkills %}
+				<button style="margin-bottom:5px" type="button" class="btn btn-info btn-sm skill" onclick="window.location.href='/advanced-search/skill/{{skill}}';" > {{skill}} </button>
+			{% endfor %}
+			<br>
+		{% endif %}
+		{% if form.projectLicences.count %}
+			<hr>
+			<span class="h4">رشته ی دانشگاهی مرتبط:</span>
+			{% for licence in form.projectLicences %}
+				{{licence}} 
+			{% endfor %}
+		{% endif %}	
+	</div>
+</div>

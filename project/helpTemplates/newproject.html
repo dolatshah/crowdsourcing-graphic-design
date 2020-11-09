@@ -1,0 +1,616 @@
+{% extends "head-tag.html" %}
+{% block title %}ایجاد پروژه جدید{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+
+<link href="{% static 'css/uploadfile.css' %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery.uploadfile.js' %}"></script> 
+<script src="{% static 'js/jquery.form.js' %}"></script>
+
+<link href="{% static "css/jquery-ui-1.10.4.custom.zirend.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/jquery-ui-1.10.4.custom.zirend.min.js' %}" ></script>
+<link href="{% static "css/bootstrap-tokenfield.min.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/bootstrap-tokenfield.min.js' %}" ></script> 
+{% endblock %}
+{% block style %}
+<style>
+.ui-autocomplete {
+max-height: 150px;
+overflow-y: auto;
+overflow-x: hidden;
+direction:ltr;
+}
+.ui-autocomplete li {
+direction:rtl;
+}
+* html .ui-autocomplete {
+height: 150px;
+}
+
+#slider {
+margin-top:20px;
+margin-left:10px;
+margin-right:10px;
+}
+.captcha-question {
+font-size:150%;
+font-family:tahoma !important;
+}
+.skill-list .col-md-3 {
+	margin-bottom: 10px;
+}
+#accordion .row {
+	font-family:Tahoma
+}
+.modal-dialog {
+width:80%;
+}
+.category + .panel {
+display:none;
+}
+.sieve .btn.active {
+background-color:#39B3D7 ;
+}
+</style>
+{% endblock %}
+{% block content %}
+ {% ifequal form.account "notactive" %}
+	your account information is not complete please <a href='/account' >complete</a> them in edit profile 
+{% endifequal %}
+	<div class="container container-lg"> {% if form.errors %}
+	<div class="alert alert-danger">
+			<p style="color: red;"> لطفا خطاهای زیر را برطرف کنید </p>
+			<p style="color: red;"> {{form.errors}} </p>
+		</div>
+	{% endif %}
+	<div class="panel panel-default">
+			<div class="panel-body">
+			<div class="container">
+					<h3 style="margin-top:30px ; margin-bottom:30px">سفارش پروژه جدید :</h3>
+					<hr>
+					<form role="form" class="form-popover" action="/new-project/" method="post" >
+					{% csrf_token %}
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label for="title" class="control-label">عنوان پروژه:</label>
+									<input type="text"  class="form-control" id="title" name="title" value="{{form.titleValue}}" data-toggle="popover" maxlength="50" required >
+									<span class="help-block">{{ form.title.errors }} </span> </div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label for="offerDay" class="control-label">مهلت انجام پروژه:</label>
+									<div class="input-group" data-toggle="popover">
+									<input type="number" class="form-control ltr" id="offerDay" name="offerDay" min="1" value="{{form.offerDayValue}}" required >
+									<span class="input-group-addon">روز</span></div>
+									<span class="help-block">{{ form.offerDay.errors }} </span> </div>
+						</div>
+
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group"  >
+									<label for="budgetrange" class="control-label">محدوده بودجه:</label>
+									<div class="input-group" data-toggle="popover">
+									<p style="direction:ltr" class="form-control"  id="showrange"></p>
+									<span class="input-group-addon">تومان</span></div>
+									<input type="text" id="budgetrange"  name="offerValue" style="display:none" value="{{form.offerValueValue}}">
+									<input type="text" id="budgetrange-slider"  name="slider" value="{{form.startSliderValue}} - {{form.endSliderValue}}"  hidden >
+									<div  id="slider" >
+									<div style="margin:11px 0px" id="slider-range"></div>
+								</div>
+								</div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label for="tel" class="control-label">تلفن تماس (اختیاری) :</label>
+									<input type="number"  class="form-control ltr" id="tel" name="tel" data-toggle="popover" value="{{form.telValue}}" >
+								</div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label for="description" class="control-label">توضیحات:</label>
+									<textarea class="form-control" id="description"  name="description" rows="10" data-toggle="popover" required>{{form.descriptionValue}}</textarea>
+									<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+									<span class="help-block">{{ form.description.errors }} </span> </div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label for="hourTimeForOffer" class="control-label">مهلت ارسال پیشنهاد:</label>
+									<div class="row" id="offering-time" data-toggle="popover">
+									<div class="col-md-5">
+											<div class="input-group" title="تعداد روزی که میخواهید پروژه برای پیشنهاد باز باشد.">
+											<input type="number"  class="form-control ltr" id="dayTimeForOffer" name="dayTimeForOffer" value="{{form.dayTimeForOfferValue}}" min="1" required>
+											<span class="input-group-addon">روز</span></div>
+											<span class="help-block">{{ form.dayTimeForOffer.errors }} </span> </div>
+									<div class="col-md-2" style="text-align:center">و</div>
+									<div class="col-md-5">
+											<div class="input-group" title="تعداد ساعتی که میخواهید پروژه برای پیشنهاد باز باشد.">
+											<input type="number"  class="form-control ltr" id="hourTimeForOffer"  name="hourTimeForOffer" value="{{form.hourTimeForOfferValue}}" min="0" required>
+											<span class="input-group-addon">ساعت</span></div>
+											<span class="help-block">{{ form.hourTimeForOffer.errors }} </span> </div>
+								</div>
+								</div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label  class="control-label">رشته ی دانشگاهی مرتبط:</label>
+									<select class="form-control" name="licence" id="licence" data-toggle="popover">
+									<option name = "licence" value ="0" selected>یکی از رشته های زیر را انتخاب کنید</option>
+									
+							
+					{% for item in licences %}
+							
+									<option name = "licence" value ="{{item.name}}" >{{item.name}}</option>
+									
+					{% endfor %}
+				
+						
+								</select>
+								</div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label class="control-label">مهارت های مورد نیاز:</label>
+									<div id="skills-container" data-toggle="popover">
+									<input type="text" class="form-control" name="typed-skills" id="skills"  placeholder="شروع به تایپ کنید تا گزینه ها پیشنهاد شوند!" >
+									</div>
+									
+								</div>
+								<a class="btn btn-block btn-info" title="می توانید همه مهارت های موجود در سایت را در این قسمت مشاهده کنید و مهارت مورد نظر خود را از بین آنها انتخاب کنید." href="#skills" data-toggle="modal" data-target="#SkillCat"><span class="glyphicon glyphicon-list"></span> مشاهده لیست کامل مهارت ها</a>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label  class="control-label">وضعیت نمایش پروژه:</label>
+									<div  class="radio" title="با انتخاب این گزینه افراد بیشتری پروژه شما را خواهند دید و شانس انجام پروژه شما در زمان کوتاهتر و با هزینه کمتر افزایش می یابد.">
+									<label>
+											<input type="radio" name="is_public" value="1" checked>
+											پروژه برای تمام بازدید کنندگان سایت نمایش داده شود.</label>
+								</div>
+									<div class="radio" title="در صورتی که می خواهید توضیحات و فایل هایی که در اینجا قرار میدهید فقط برای کاربران سایت نمایش داده شود این گزینه را انتخاب کنید.">
+									<label>
+											<input type="radio" name="is_public"  value="2">
+											پروژه فقط برای پیمانکاران سایت نمایش داده شود.</label>
+								</div>
+									<span class="help-block">{{ form.is_public.errors }}</span> </div>
+						</div>
+						</div>
+					<hr>
+					<div class="row">
+							<div class="col-sm-6">
+							<div class="form-group">
+									<label  class="control-label">فایل ضمیمه برای پروژه:</label>
+									<label class="checkbox-inline">
+									<div  name="files" id="fileuploader"  accept=".zip,application/zip" >انتخاب فایل</div>
+									<!-- <button class="btn btn-info" id="startUpload" style="display:none">شروع بارگزاری فایل انتخاب شده</button> --> 
+									
+									<span class="help-block">{{ form.file.errors }}</span>
+									</label>
+								</div>
+						</div>
+							<div class="col-sm-6">
+							<div class="hint">
+									<div class="alert alert-info">اگر فایلی (تصویر، سند، کاتالوگ و ...) مربوط به پروژه دارید همه فایل ها را در یک فایل فشرده با فرمت Zip قرار دهید و در اینجا بارگذاری کنید.</div>
+									<div class="alert alert-warning"> تمام فایل های لازم برای انجام پروژه را  در صورت وجود آپلود کنید توجه داشته باشید تا پیش از انتخاب پیمانکار دیگر امکان آپلود فایل وجود نخواهد داشت </div>
+								</div>
+						</div>
+						</div>
+					<hr>
+					<div class="form-group ltr" style="text-align:right">
+							<label  class="col-md-4 control-label rtl">عبارت امنیتی :</label>
+							{{form.captcha}} </div>
+					<hr>
+					<br>
+					<div class="form-group">
+							<div class="col-md-offset-4 col-md-4">
+							<button id="startUpload" type="submit" class="btn btn-success btn-block btn-lg">ثبت پروژه</button>
+						</div>
+						</div>
+				</form>
+				</div>
+		</div>
+		</div>
+</div>
+	<div class="modal fade" id="SkillCat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">می توانید با کلیک بر روی هر مهارت آن را انتخاب کنید.</h4>
+				</div>
+			<div class="modal-body">
+					<div class="sieve">
+					<div id="accordion" class="panel-group"> {% for category,list in form.categories.items %}
+							<div class="panel panel-info category">
+							<div class="panel-heading">
+									<h4 class="panel-title"> {{category.name}} </h4>
+								</div>
+						</div>
+							<div class="panel panel-default">
+							<div class="panel-body">
+									<div class="skill-list">
+									<div class="row"> {% for skill in list %}
+											<div class="col-md-3"> <a type="button" data-toggle="buttons" class="btn btn-default btn-sm btn-block skill" >{{skill}}</a> </div>
+											{% if forloop.last %} </div>
+									{% else %}
+									{% if forloop.counter|divisibleby:"4" %} </div>
+									<div class="row"> {% endif %}
+									{% endif %}
+									{% endfor %} </div>
+								</div>
+						</div>
+							{% endfor %} </div>
+				</div>
+				</div>
+			<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+				</div>
+		</div>
+		</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+
+ $(document).ready(function(){
+ 
+
+//category
+$(".category").click( function() {
+obj = $(this).next()
+$(".category").next().not(obj).slideUp();
+obj.slideToggle();
+})
+ 
+ 
+//slider
+
+function eval (value) {
+if (value <= 20)             {var inputvalue = value * 5;}
+else if (value<=35 && value>20)  {var inputvalue = value * 10 - 100;}
+else if (value<=45 && value>35)  {var inputvalue = value * 25 - 625;}  
+else if (value<=55 && value>45)  {var inputvalue = value * 50 - 1750;}  
+else if (value<=70 && value>55)  {var inputvalue = value * 100 - 4500;}
+else if (value<=80 && value>70)  {var inputvalue = value * 250 - 15000;}  
+else if (value<=90 && value>80)  {var inputvalue = value * 500 - 35000;}  
+else if (value<=101 && value>90) {var inputvalue = value * 1000 - 80000;}  
+return inputvalue * 1000;  
+}
+
+$( "#slider-range" ).slider({
+range: true,
+min: 0,
+max: 101,
+step: 1,
+values: [ 0 , 101 ],
+slide: function( event, ui ) {
+$( "#budgetrange" ).val( "" + eval(ui.values[ 0 ]) + " - " + eval(ui.values[ 1 ]) );
+
+$( "#budgetrange-slider" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+
+if (ui.values[ 1 ] == 101) { smax = "20,000,000" } else {smax = eval(ui.values[ 1 ]).formatMoney(0)}
+$( "#showrange" ).text( "" + eval(ui.values[ 0 ]).formatMoney(0) + " - " + smax );
+}
+});
+$( "#budgetrange" ).val( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ) +
+" - " + eval( $( "#slider-range" ).slider( "values", 1 ) ) );
+if ( $( "#slider-range" ).slider( "values", 1 ) == 101 ) { imax = "20,000,000" } else { imax = eval( $( "#slider-range" ).slider( "values", 1 ) ).formatMoney(0) }
+$( "#showrange" ).text( "" + eval( $( "#slider-range" ).slider( "values", 0 ) ).formatMoney(0) +
+" - " + imax );
+
+
+//tokenfield
+
+$('#skills').tokenfield({
+  autocomplete: {
+    source: [
+	
+	{% for item in form.skills %}
+          '{{item}}',
+	{% endfor %}
+	
+	],
+    delay: 100,
+	minLength:1
+  },
+  showAutocompleteOnFocus: false,
+  minWidth: 260,
+});
+
+$('#skills').tokenfield('setTokens', [
+
+	{% for item in form.formSkillList %}
+		'{{item}}',
+	{% endfor %}
+]);
+
+$(".skill").mouseup(function () {
+    setTimeout(function () {
+        var tag = [];
+        $(".skill-list .active").each(function () {
+            tag.push($(this).text());
+        })
+        $('#skills').tokenfield('setTokens', tag);
+    }, 100)
+
+});
+
+$('#skills').on('tokenfield:createtoken', function (event) {
+    var existingTokens = $(this).tokenfield('getTokens');
+    $.each(existingTokens, function (index, token) {
+        if (token.value === event.attrs.value) event.preventDefault();
+    });
+});
+
+$('#skills').on('tokenfield:removedtoken', function (e) {
+    $(".btn:contains('" + e.attrs.value + "')").filter(function (index) {
+        return $(this).text() === e.attrs.value
+    }).removeClass("active")
+}).tokenfield()
+
+$('#skills').on('tokenfield:createdtoken', function (e) {
+    $(".btn:contains('" + e.attrs.value + "')").filter(function (index) {
+        return $(this).text() === e.attrs.value
+    }).addClass("active")
+}).tokenfield()
+
+//initialize 
+$('#SkillCat').on('shown.bs.modal', function () {
+$.each($('#skills').tokenfield('getTokens'), function (index, value) {
+
+    $.each(value, function (ind, val) {
+        if (ind == 'value') {
+            $(".btn:contains('" + val + "')").filter(function (index) {
+                return $(this).text() === val
+            }).addClass("active")
+        }
+    });
+});
+});
+
+
+$('#SkillCat').on('hidden.bs.modal', function () {
+	setTimeout(function () {
+	window.scrollTo(0, $("#skills").offset().top - 100);
+	}, 100)
+});
+
+
+
+//form hints
+$('#title').popover({
+	animation:false,
+	placement:"left",
+	trigger:"focus",
+	html:true,
+	content:"<ul><li>عنوان پروژه در جلب توجه پیمانکاران سایت نقش مهمی دارد پس در انتخاب آن دقت کنید.</li><li>عنوان پروژه حداکثر می تواند 50 کاراکتر داشته باشد.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#title').tooltip({
+	title:"عنوانی انتخاب کنید که به صورت خلاصه و در چند کلمه نشان دهنده خواسته شما و هدف پروژه باشد."
+})
+
+$('#offerDay').parent().popover({
+	animation:false,
+	placement:"left",
+	trigger:"manual",
+	html:true,
+	content:"<ul><li>مهلت انجام پروژه بر روی هزینه انجام آن موثر است پس بیشترین مهلت ممکن را وارد کنید.</li><li>در آینده می توانید این مهلت را افزایش دهید.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#offerDay').focus(function(){ $('#offerDay').parent().popover('show')  })
+$('#offerDay').blur(function(){ $('#offerDay').parent().popover('hide')  })
+
+$('#offerDay').parent().tooltip({
+	title:"حداکثر تعداد روزی که انتظار دارید پروژه در آن مدت انجام شود."
+})
+
+$('#showrange').parent().tooltip({
+	title:"محدوده بودجه ای که برای پروژه در نظر گرفته اید را با حرکت دادن اسلایدر مشخص کنید."
+})
+
+$('#showrange').parent().popover({
+	animation:false,
+	placement:"left",
+	trigger:"manual",
+	html:true,
+	content:"<ul><li>این بودجه فقط برآورد تقریبی شما می باشد و هزینه انجام پروژه پس از بررسی پیمانکاران و بر اساس پیشنهاد آنها تعیین می شود.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$(".ui-slider-handle").focus(function(){ $('#showrange').parent().popover('show')  })
+$(".ui-slider-handle").blur(function(){ $('#showrange').parent().popover('hide')  })
+
+
+$('#tel').popover({
+	animation:false,
+	placement:"left",
+	trigger:"focus",
+	html:true,
+	content:"<ul><li>این شماره فقط برای تماس «مدیریت سایت» با شما جهت تایید پروژه شما و هماهنگی های بعدی مورد استفاده قرار می گیرد و در هیچ یک از قسمت های سایت به نمایش در نمی آید.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#tel').tooltip({
+	title:"شماره تلفن همراه خود را وارد نمایید."
+})
+
+$('#description').popover({
+	animation:false,
+	placement:"left",
+	trigger:"focus",
+	html:true,
+	content:"<ul><li>ذکر تمام پیش فرض ها و جزییات لازم برای انجام پروژه ضروری می باشد. در صورتی که توضیح تمام موارد در این قسمت برای شما امکان پذیر نمی باشد می توانید توضیحات خود را در قالب یک فایل در پایین همین فرم بارگذاری نمایید.</li><li class='text-danger'>تعیین هزینه انجام پروژه بر مبنای توضیحات موجود در این قسمت می باشد پس برای تسریع در انجام پروژه این قسمت را به طور دقیق تکمیل کنید.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#description').tooltip({
+	title:"به طور دقیق و کامل توضیح دهید که خواسته پروژه شما چیست و انتظار دارید که چه مواردی به شما تحویل داده شود."
+})
+
+$('#offering-time').popover({
+	animation:false,
+	placement:"left",
+	trigger:"manual",
+	html:true,
+	content:"<ul><li>در مدتی که برای ارسال پیشنهاد تعیین می کنید پروژه شما به مناقصه گذاشته می شود و پیمانکاران سایت می توانند پروژه شما را بررسی کنند و برای انجام پروژه شما پیشنهاد ارسال کنند.</li><li>در طول این مدت هر زمان که پیشنهاد مناسبی دریافت کردید می توانید روند انجام پروژه را آغاز کنید.</li><li>در صورت لزوم بعدا می توانید این مدت را تمدید کنید.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#hourTimeForOffer').focus(function(){ $('#offering-time').popover('show')  })
+$('#hourTimeForOffer').blur(function(){ $('#offering-time').popover('hide')  })
+$('#dayTimeForOffer').focus(function(){ $('#offering-time').popover('show')  })
+$('#dayTimeForOffer').blur(function(){ $('#offering-time').popover('hide')  })
+
+$('#licence').popover({
+	animation:false,
+	placement:"left",
+	trigger:"focus",
+	html:true,
+	content:"<ul><li>در صورتی که پروژه شما مربوط به رشته دانشگاهی خاصی می باشد یکی از رشته ها را انتخاب کنید در غیر این صورت می توانید این قسمت را خالی بگذارید.</li><li class='text-danger'>لطفا در انتخاب رشته ی تحصیلی دقت کنید زیرا امکان ویرایش آن بعد از ثبت پروژه امکان پذیر نخواهد بود.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$('#licence').tooltip({
+	title:"پیمانکارانی که رشته تحصیلی آن ها متناسب با پروژه شما باشد از پروژه شما مطلع خواهند شد."
+})
+
+$('#skills-container').popover({
+	animation:false,
+	placement:"left",
+	trigger:"manual",
+	html:true,
+	content:"<ul><li>مهارت ها و یا نرم افزار هایی که برای انجام پروژه شما لازم است انتخاب کنید.</li><li>فقط پیمانکارانی که مهارت آن ها متناسب با پروژه شما باشد از سفارش پروژه شما مطلع خواهند شد پس برای تسریع روند انجام پروژه سعی کنید تمام مهارت های مورد نیاز برای انجام پروژه را وارد کنید.</li><li class='text-danger'>ثبت مهارت برای پروژه فقط از طریق همین فرم قابل انجام است و بعد از ثبت پروژه دیگر قابل تغییر یا افزایش نخواهد بود.</li></ul> ",
+	title:"نکات قابل توجه"
+})
+
+$("#skills-tokenfield").focus(function(){ $('#skills-container').popover('show')  })
+$("#skills-tokenfield").blur(function(){ $('#skills-container').popover('hide')  })
+
+$('#skills-container').tooltip({
+	title:"بخشی از نام مهارت ها یا نرم افزارهای مورد نظر را تایپ کنید سپس آن را انتخاب کنید."
+})
+
+
+$('[data-toggle=popover]').on('shown.bs.popover', function () {
+  $('.popover').css('top',parseInt($('.popover').css('top')) + $('.popover').height() / 2 - 60 + 'px')
+})
+
+
+
+
+
+
+
+
+$("#id_captcha_0").addClass('form-control');
+$("#id_captcha_0").wrap("<div class='col-md-2'></div>");
+
+});
+</script> 
+
+<script>
+
+
+
+$(document).ready(function()
+{
+	var uploadObj = $("#fileuploader").uploadFile
+	({
+	
+	url:"/uploadProjectFile/",
+	fileName:"myfile",
+	multiple:false,
+	autoSubmit:true,
+	showCancel:true,
+	showAbort:true,
+	showDone:false,
+	showDelete:false,
+	showProgress:true,
+	uploadButtonClass:"btn btn-default",
+	allowedTypes: "zip",
+	extErrorStr: "فرمتی فایلی که انتخاب کرده اید zip نمیباشد",
+	sizeErrorStr: "حجم فایل انتخاب شده بیشتر از 5 مگابایت میباشد",
+	
+	maxFileSize:5*1049*999.5,
+	maxFileCount:1,
+	
+	onSelect:function(files)
+	{
+		//$("#submit").attr("disabled",true);
+		//$("#startUpload").show();
+		files[0].name;
+		return true; //to allow file submission.
+	},
+	
+	showStatusAfterSuccess:true,
+	dragDropStr: "<span><b> میتوانید فایلهای مربوط به پروژه را با فرمت zip فشرده کرده و با موس به این ناحیه بکشید ( حداکثر حجم 5 مگابایت ) </b></span>",
+	abortStr:"خارج شدن",
+	cancelStr:"لغو کردن",
+	doneStr:"شروع بارگزاری فایل",
+	deleteStr:"پاک کردن",
+	
+	onSuccess:function(files,data,xhr)
+	{
+		if (data=='-1')
+			alert('فایل با فرمت zip آپلود نشده است')
+		if (data=='-2')
+			alert('حجم فایل بیشتر از 5 مگابایت است')
+			
+		
+	},
+	
+	
+	afterUploadAll:function()
+	{
+		$("#submit").attr("disabled",false);
+	
+	},
+	
+	
+
+	
+	
+	});
+	
+	$("#startUpload").click(function()
+	{
+		uploadObj.startUpload();
+	});	
+	
+	
+	
+	
+});
+
+
+
+
+
+</script> 
+
+{% endblock %} 

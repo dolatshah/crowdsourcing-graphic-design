@@ -1,0 +1,74 @@
+@font-face {
+  font-family: kamran, koodak, nazanin, roya, arial;
+  src: local(../fonts);
+}
+
+*{
+	font-family:roya, kamran, koodak, nazanin, arial;
+}
+
+#footer
+{
+	width:100%;
+	height: 220px;
+	
+}
+
+#about
+{
+	width:24%;
+	height: 190px;
+	background-color: 	#00628B;
+	float: left;
+	margin-left: 10px;
+	margin-top: 5px;
+	border-radius: 10px;
+}
+
+#how
+{
+	width:24%;
+	height: 190px;
+	background-color: 	#00628B;
+	float: left;
+	margin-left: 10px;
+	margin-top: 5px;
+	border-radius: 10px;
+}
+
+#users
+{
+	width:24%;
+	height: 190px;
+	background-color: 	#00628B;
+	float: left;
+	margin-left: 10px;
+	margin-top: 5px;
+	border-radius: 10px;
+}
+
+#projects
+{
+	width:24%;
+	height: 190px;
+	background-color: 	#00628B;
+	float: left;
+	margin-left: 10px;
+	margin-top: 5px;
+	border-radius: 10px;
+}
+
+p
+{
+	direction: rtl;
+	font-size: 20px;
+	margin-right: 10px;
+	line-height: 15px;
+}
+
+#copyright
+{
+	width: 100%;
+	height: 10px;
+	text-align: center;
+}

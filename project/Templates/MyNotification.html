@@ -1,0 +1,25 @@
+{%if form.messages.count %}
+<div style="max-height:450px;overflow:auto;padding:10px;" class="ltr">
+<div class="rtl">
+	{% for message in form.messages %}
+	<div class="alert alert-success">
+	{% ifequal message.sender "admin" %}
+	{% else %}
+	{{message.sender}}
+	{% endifequal %}
+<div class="row">
+<div class="col-sm-9">
+{{message.text}}
+</div>
+<div class="col-sm-3">
+{{message.sentTime}}
+</div>
+
+</div>
+</div>
+{% endfor %}
+</div>	
+</div>
+{% else %}
+	<div class="alert alert-info">اطلاعیه ای برای نمایش وجود ندارد</div>
+{% endif %} 

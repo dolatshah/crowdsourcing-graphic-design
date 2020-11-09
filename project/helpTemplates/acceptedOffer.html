@@ -1,0 +1,14 @@
+
+<tr id="after_accept{{offer.id}}" class="accepted">
+	<td class="table-employee" >{{offer.offerer.user.username}}</td>
+	<td class="table-Bid"><p>{{offer.totallValue}} تومان در {{offer.offerDay}} روز</p></td>
+	<td class="table-guaranty"> {{offer.value}} تومان</td>
+	<td class="table-guaranty">{{form.acceptedOffer.bayane}} تومان <span class="glyphicon glyphicon-question-sign" title="این مبلغ ضمانت اجرای پروژه از سوی پیمانکار می باشد و با شروع اجرای پروژه این مبلغ از حساب پیمانکار کسر می شود و تا پایان اجرای پروژه نزد سایت باقی می ماند و در صورتی که پیمانکار پروژه را به درستی انجام ندهد این مبلغ به حساب شما واریز خواهد شد."></span></td>
+	<td class="table-offer-date">{{offer.offerTime}}</td>
+	<td class="table-offer-text">{{form.acceptedOffer.text}}</td>
+	<td class="action"><ul class="list-unstyled">
+			<li><span class="glyphicon glyphicon-info-sign"></span> شما این پیشنهاد را پذیرفته اید!</li>
+			<li><a href="#" onclick="canceling({{offer.id}})"><span class="glyphicon glyphicon-remove"></span> لغو پذیرش</a></li>
+			<li><a href="#"><span class="glyphicon glyphicon-envelope"></span> ارسال پیام خصوصی</a></li>
+		</ul></td>
+</tr>

@@ -1,0 +1,141 @@
+{% extends "head-tag.html" %}
+{% block title %}حساب مالی{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li><a href="/controlPanel/">پنل مدیریت</a></li>
+		<li class="active">حساب های مالی</li>
+	</ol>
+</div>
+<div class="container container-md">
+	<div class="panel panel-default" style="position:relative;min-height:300px">
+		<div class="panel-body" >
+			<ul class="nav nav-tabs" id="myTab">
+				<li><a id="account-info-tab"  href="#account-info" data-toggle="tab"><span class="glyphicon glyphicon-credit-card"></span><span> اطلاعات حساب</span></a></li>
+				<li><a id="account-history-tab" href="#account-history" data-toggle="tab"><span class=" glyphicon glyphicon-list-alt"></span><span> صورت حساب</span></a></li>
+				<li><a  id="deposit-tab" href="#deposit" data-toggle="tab"><span class="glyphicon glyphicon-plus-sign"></span><span> سپرده گذاری</span></a></li> 
+				<li><a id="withdraw-tab" href="#withdraw" data-toggle="tab"><span class="glyphicon glyphicon-minus-sign"></span><span> برداشت از حساب</span></a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="account-info">
+						<div class="alert alert-warning">واریز وجه به حساب شما از طریق این شماره حساب خواهد بود، در وارد کردن آن دقت فرمایید.<br>توجه داشته باشید که نام دارنده حساب باید با نام وارد شده در قسمت اطلاعات شخصی منطبق باشد.</div>
+					<form class="form-horizontal" role="form" method="POST" action="/account/" >
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="card-number" class="col-md-3 control-label">شماره کارت :</label>
+							<div class="col-md-5">
+								<input type="number" class="form-control" title="شماره کارت 16 رقمی وارد کنید" id="card-number" name="card-number" 
+										{% if form.account.bankName %}
+											value='{{form.account.kardNumber}}'
+										{% else %}
+											placeholder="0000000000000000"  
+										{% endif %}
+										required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="bank-name" class="col-md-3 control-label">نام بانک :</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" title="نام بانک خود را وارد کنید" id="bank-name" name="bank-name"  value='{{form.account.bankName}}' required>
+							</div>
+						</div>
+						<hr >
+						<div class="form-group">
+							<div class="col-md-offset-3 col-md-10">
+								<button type="submit" class="btn btn-default">ثبت</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane" id="account-history">
+					<div class="alert alert-success">موجودی شما: {{form.account.money}} تومان</div>
+					<hr>
+					<div class="panel panel-default">
+						<table class="table table-hover footable" data-page-size="1000">
+							<thead>
+								<tr  class="active">
+									<th >تاریخ</th>
+									<th>نوع عملیات</th>
+									<th data-hide="phone,tablet" >توضیح</th>
+									<th  >مبلغ</th>
+									{% comment %}
+									<th data-hide="phone,tablet" >مانده</th>
+									{% endcomment %} </tr>
+							</thead>
+							<tbody>
+							
+							{% for activity in form.account.accountActivity.all %}
+							<tr>
+								<td class="table-date">{{activity.transferTime|cdatetime}}</td>
+								<td class="table-type"> {% ifequal activity.activityType 'C' %}
+									واریز
+									{% else %}
+									برداشت
+									{% endifequal %} </td>
+								<td class="table-discription">{{activity.description}}</td>
+								<td class="table-transmitedmoney"> {% ifequal activity.activityType "W" %}
+									{{activity.transmitedMoney}}-
+									{% else %}
+									{{activity.transmitedMoney}}+
+									{% endifequal %} </td>
+								{% comment %}
+								<td class="table-balance">balance</td>
+								{% endcomment%} </tr>
+							{% endfor %}
+								</tbody>
+							
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane" id="deposit"> </div>
+				<div class="tab-pane" id="withdraw"> </div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script>
+$(document).ready(function(){
+//spiner
+var opts = {
+  lines: 11, // The number of lines to draw
+  length: 10, // The length of each line
+  width: 5, // The line thickness
+  radius: 15, // The radius of the inner circle
+  top: '150px', // Top position relative to parent in px
+
+};
+
+
+$('#myTab a:first').tab('show');
+
+$("#deposit-tab").click(function () {
+var target = document.getElementById('deposit');
+var spinner = new Spinner(opts).spin(target);
+$( "#deposit" ).load( "/deposit/")
+});
+
+$("#withdraw-tab").click(function () {
+var target = document.getElementById('withdraw');
+var spinner = new Spinner(opts).spin(target);
+$( "#withdraw" ).load( "/withdraw/")
+});
+
+
+$('.footable').footable();
+
+//tab-selection
+$("#myTab a").each( function (){
+if ( "{{form.tabId}}" == $(this).attr("id") ) { 
+$(this).click();
+}
+})
+
+
+});
+
+
+</script> 
+{% endblock %}

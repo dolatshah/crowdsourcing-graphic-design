@@ -1,0 +1,362 @@
+{% extends "head-tag.html" %}
+{% block title %}{{form.project.title}}{% endblock %}
+{% block meta %}
+<meta name="description" content="انجام پروژه {{form.project.title}}">
+<meta name="keywords" content="پروژه,دانشجویی,سفارش,انجام,استخدام,رایگان">
+{% endblock %}
+{% block sources %}
+{% load staticfiles %}
+<link href="{% static "css/TimeCircles.css" %} " rel="stylesheet" media="screen">
+<script src="{% static 'js/TimeCircles.js' %}"></script> 
+<link href="/static/css/trip.min.css" rel="stylesheet" media="screen">
+<script src="/static/js/trip.min.zirend.js" ></script> 
+{% endblock %}
+{% block content %}
+<div class="container container-lg">
+	<ol class="breadcrumb">
+		<li><a href="/">خانه</a></li>
+		<li><a href="/advanced-search/">جستجو در پروژه ها</a></li>
+		<li class="active">پروژه "{{form.project.title}}"</li>
+	</ol>
+</div>
+<div class="container container-lg"> {% ifequal form.offered True %}
+	<div class="alert alert-info">شما برای این پروژه پیشنهاد ارسال کرده اید</div>
+	{% endifequal %}
+	
+	{% if form.project.is_wait_for_employee %}
+	{% ifequal form.choosedOffer.offerer.id user.id %}
+	<div class="alert alert-success"> کارفرما شما را برای انجام پروژه انتخاب کرده است :
+		<form method='post' action="" style="display:inline">
+			{% csrf_token %}
+			<input   class="btn btn-default"  type="submit"   value="قبول می کنم" name="accept" >
+			<input class="btn btn-default"   type="submit"   value="قبول نمی کنم" name="cancel" >
+		</form>
+		<p> با قبول این درخواست مبلغی که در پیشنهاد خود به عنوان ضمانت اجرایی ذکر کرده اید از حساب شما کسر خواهد شد و تا پایان پروژه به امانت نزد ما باقی خواهد ماند</p>
+	</div>
+	{% endifequal %}
+	{% endif %}
+	<div class="panel panel-default help-step1">
+		<div class="panel-body">
+			<ul class="nav nav-tabs" id="myTab">
+				<li><a id="specifacationstab" href="#specifacations" data-toggle="tab"><span class="glyphicon glyphicon-folder-open"></span><span> مشخصات پروژه</span></a></li> 
+				<li><a id="discussiontab" href="#discussion" data-toggle="tab"><span class="glyphicon glyphicon-comment"></span><span> پرسش و پاسخ</span></a></li>
+				<li><a id="offertab" href="#offer" data-toggle="tab"> {% ifequal form.offered True %}
+					<span class="glyphicon glyphicon-hand-up"></span><span> ویرایش پیشنهاد</span>
+					{% else %}
+					<span class="glyphicon glyphicon-hand-up"></span><span> ثبت پیشنهاد</span>
+					{% endifequal %} </a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="specifacations">
+					<div class="panel panel-info">
+						<div   class="panel-heading">
+							<h3  class="panel-title">عنوان پروژه: {{form.project.title}} ( وضعیت: {% include "projectstatus.html" with project=form.project %} ) </h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<div style="height:190px" class="panel panel-default">
+								<div class="panel-body">
+									<span class="h4">میانگین پیشنهاد ها</span><span class="pull-left">{{form.averageOfferValue}} تومان</span>
+									<hr>
+									<span class="h4">محدوده بودجه </span><span title="این محدوده تخمین کارفرما از هزینه انجام پروژه می باشد." class="glyphicon glyphicon-question-sign orange"></span><span class="pull-left">{{form.project.startBid|money_tag}} - {{form.project.endBid|money_tag}} تومان</span>
+									<hr>
+									<span class="h4">مهلت انجام پروژه</span><span class="pull-left">{{form.project.offerDay}} روز</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div style="height:190px" class="panel panel-default">
+								<div class="panel-body"> 
+									<span  class="h4">زمان باقیمانده</span><span title="تا پایان این زمان فرصت دارید که برای این پروژه پیشنهاد ارسال کنید و یا پیشنهاد خود را ویرایش کنید." class="glyphicon glyphicon-question-sign pull-left orange"></span>
+									<hr class="hr-title">
+									{% ifequal form.is_time_remain True %}
+										<div  style="height:75px" class="countdown" data-timer="{{form.seconds_remain}}"></div>
+									{% else %}
+										<div class="alert alert-warning">زمان ارسال پیشنهاد به پایان رسیده است.</div>
+									{% endifequal %}
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div style="height:190px" class="panel panel-default">
+								<div class="panel-body">
+									<span class="h4">مشخصات کارفرما</span>
+									<hr class="hr-title">
+					
+									<p>نام کاربری: </p>
+									<a style="vertical-align: text-bottom;" href="/{{form.project.employer.user.username}}/">{{form.project.employer.user.username}}</a>
+									<span class="pull-left"><a class="btn btn-default" href="#" data-messageto="{{offer.offerer.user.id}}" data-toggle="modal" data-target="#message-Modal"><span class="glyphicon glyphicon-envelope"></span> ارسال پیام خصوصی</a></span>
+									</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<span class="h4">توضیحات</span>
+							<hr class="hr-title">
+							{{form.project.description |linebreaks }} 
+							{% if form.attachedUrl %}
+							<hr>
+							<p> <a href = "{{form.attachedUrl}}" ><span class="glyphicon glyphicon-file"></span> فایل ضمیمه شده</a> </p>
+							{% endif %} 
+							
+							{% if form.projectSkills.count %}
+								<hr>
+								<span class="h4">مهارتهای مورد نیاز:</span>
+								{% for skill in form.projectSkills %}
+									<button style="margin-bottom:5px" type="button" class="btn btn-info btn-sm skill" onclick="window.location.href='/advanced-search/skill/{{skill}}';" > {{skill}} </button>
+								{% endfor %}
+								<br>
+							{% endif %}
+							{% if form.projectLicences.count %}
+								<hr>
+								<span class="h4">رشته ی دانشگاهی مرتبط:</span>
+								{% for licence in form.projectLicences %}
+									{{licence}} 
+								{% endfor %}
+							{% endif %}
+							
+							
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<table class="table footable">
+							<thead>
+								<tr class="active">
+									<th >نام پیمانکار</th>
+									<th >پیشنهاد</th>
+									<th >مبلغ درخواستی برای شروع</th>
+									<th data-hide="phone,tablet"  >مبلغ ضمانت پیمانکار</th>
+									<th data-hide="phone,tablet" >زمان ارسال پیشنهاد</th>
+									<th data-hide="all" >رتبه پیمانکار</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							
+							{%  for offer in form.offerlist %}
+							{% ifequal offer.id form.project.choosedOffer_id%}
+							<tr class="accepted">
+								<td class="table-employee" ><a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a></td>
+								<td class="table-Bid"><p>{{offer.totallValue|money_tag}} تومان در {{offer.offerDay}} روز</p></td>
+								<td class="table-guaranty">{{offer.value|money_tag}} تومان</td>
+								<td class="table-guaranty">{{offer.bayane|money_tag}} تومان</td>
+								<td class="table-offer-date">{{offer.offerTime|since}}</td>
+								<td class="table-rank"> {% if offer.offerer.rankForEmployee %} 
+									{{ offer.offerer.rankForEmployee.totalRank }} 
+									{% else %}
+									هنوز رتبه ای نگرفته است
+									{% endif %} </td>
+								<td class="action"><ul class="list-unstyled">
+								<li><span class="glyphicon glyphicon-ok-sign"></span> پذیرفته شد! </li>
+									</ul></td>
+							</tr>
+							{% else %}
+							<tr>
+								<td class="table-employee" ><a href="/{{offer.offerer.user.username}}/">{{offer.offerer.user.username}}</a></td>
+								<td class="table-Bid"><p>{{offer.totallValue|money_tag}} تومان در {{offer.offerDay}} روز</p></td>
+								<td class="table-guaranty">{{offer.value|money_tag}} تومان</td>
+								<td class="table-guaranty">{{offer.bayane|money_tag}} تومان</td>
+								<td class="table-offer-date">{{offer.offerTime|since}}</td>
+								<td class="table-rank"> {% if offer.offerer.rankForEmployee %} 
+									{{ offer.offerer.rankForEmployee.totalRank }} 
+									{% else %}
+									هنوز رتبه ای نگرفته است
+									{% endif %} </td>
+								<td></td>
+							</tr>
+							{% endifequal %}
+							{% endfor %}
+								</tbody>
+							
+						</table>
+
+					</div>
+					{% if not form.offerlist.count %}
+					<div class="alert alert-info">پیشنهادی برای نمایش وجود ندارد.</div>
+					{% endif %}
+				</div>
+				<div class="tab-pane" id="discussion"> {% include "discussion-tab.html" %} </div>
+				<div class="tab-pane active" id="offer"> {% ifequal form.offered True %}
+					<div id="offer-edit"></div>
+					{% else %}
+					<form class="form-horizontal" role="form" method='post' action="/project/{{form.project.id}}/">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="bid-value" class="col-md-3 control-label">مبلغ پیشنهادی برای انجام پروژه:</label>
+							<div class="col-md-2">
+								<div class="input-group" title="مبلغی که برای انجام کل پروژه از کارفرما انتظار دارید" >
+									<input type="number"  class="form-control" id="totallValue" name="totallValue" placeholder="فقط عدد" required >
+									<span class="input-group-addon">تومان</span> </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="bid-value" class="col-md-3 control-label">پیش پرداخت در خواستی:</label>
+							<div class="col-md-2">
+								<div class="input-group" title="مبلغی که از کارفرما انتظار دارید برای شروع در سایت به صورت ودیعه قرار دهد">
+									<input type="number"   class="form-control" id="bid-value" name="value" placeholder="فقط عدد" required >
+									<span class="input-group-addon">تومان</span> </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="offer-day" class="col-md-3 control-label">تعداد روزهای لازم برای انجام پروژه:</label>
+							<div class="col-md-2">
+								<div class="input-group" title="تعداد روزهایی که برای انجام پروژه نیاز دارید">
+									<input type="number"    class="form-control" id="offer-day" name="offerDay" placeholder="فقط عدد" min="1" required >
+									<span class="input-group-addon">روز</span> </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="guaranty" class="col-md-3 control-label">مبلغ ضمانت انجام پروژه (اختیاری) :</label>
+							<div class="col-md-2">
+								<div class="input-group" title="شما میتوانید مبلغی را به عنوان ضمانت انجام پروژه در سایت به امانت بگذارید؛این مبلغ بعد از قبول شدن پیشنهاد شما توسط کارفرما در صورت موافقتتان از حساب شما کاسته خواهد شد و در صورتی که پروژه با موفقیت انجام شود این مبلغ به حساب شما باز خواهد گشت.">
+									<input type="number"   class="form-control" id="guaranty" name="bayane" placeholder="فقط عدد"   required >
+									<span class="input-group-addon">تومان</span> </div>
+							</div>
+						</div>
+						<div class="form-group" title="این توضیحات فقط به صورت خصوصی برای کارفرما به نمایش در می آید.">
+							<label for="description" class="col-md-3 control-label">توضیحات:</label>
+							<div class="col-md-5">
+								<textarea class="form-control" id="description" name="text" rows="3" placeholder="توضیحات شما در رابطه با پیشنهادتان ..." required></textarea>
+								<p class="help-block help-block-info gray">لطفا از ارسال اطلاعات تماس خودداری فرمایید. <a href="/faq/#b5">چرا؟</a></p>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-3 col-md-5">
+								<button type="submit"  class="btn btn-default" onclick="/project/form.project.id/">تایید</button>
+							</div>
+						</div>
+					</form>
+					{% endifequal %} </div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="message-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel"> ارسال پیام خصوصی</h4>
+			</div>
+			<div class="modal-body"> 
+			{% if not form.login or not login %}			
+				<div class="alert alert-warning">برای ارسال پیام باید وارد حساب کاربری خود شوید.</div>
+			{% else %}
+				{% ifequal form.offered False %}
+				<div class="alert alert-warning">ارسال پیام تنها برای کاربرانی که برای این پروژه پیشنهاد ارسال نموده اند امکان پذیر است.</div>
+				{% endifequal %}
+			{% endif %}
+			<div class="alert-info"></div>
+			<div id="message"> </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+			</div>
+		</div>
+	</div>
+</div>
+<img id="help-icon" title="با این صفحه بیشتر آشنا شوید!" src="/static/img/help-icon.png" >
+{% endblock %}
+{% block javascript %} 
+<script type="text/javascript ">
+
+
+    function del(offerid,projectid)
+    {
+
+        var url='/deleteOffer/'+offerid;
+        //document.write(url);
+        var oXmlHttp = zXmlHttp.createRequest();
+        oXmlHttp.open("GET", url,false);
+        oXmlHttp.onreadystatechange = function ()
+        {
+
+            if (oXmlHttp.readyState == 4)
+                if (oXmlHttp.status == 200)
+                {
+					alert("با موفقیت انجام شد");
+					window.location.href = "/project/"+projectid;
+                }
+
+
+        };
+
+        oXmlHttp.send(null);
+
+
+
+
+    }
+
+	
+	
+</script> 
+<script>
+$(document).ready(function(){
+//trip
+var trip = new Trip([
+  { sel : $(".help-step1"), content : "در صورتی که در مورد پروژه سوالی دارید می توانید در این قسمت مطرح کنید",position : "n" ,expose : true},
+  { sel : $(".help-step1"), content : "در صورتی که علاقه مند به انجام این پروژه هستید می توانید پیشنهاد خود را در این قسمت ثبت کنید.",position : "n" ,expose : true}
+  ], {
+  showNavigation : true,
+  delay : -1,
+  tripTheme : "yeti",
+  onTripChange : function(i, tripData) {
+  if ( i === 0 ) {
+  $("#discussiontab").click();
+  }
+  if ( i === 1 ) {
+  $("#offertab").click();
+  }
+  }
+});
+
+
+function hit()
+{
+	$.ajax({
+      url: "/help4/",      
+      success: function(html)
+		{
+		if (html=='true'){ trip.start(); }
+		}
+    });	
+}
+hit();
+$("#help-icon").click( function() {trip.start();} )
+
+
+
+
+$('#myTab a:first').tab('show')
+
+$('.footable').footable()
+
+$(".countdown").TimeCircles(); 
+
+//tab-selection
+$("#myTab a").each( function (){
+if ( "{{form.tabId}}" == $(this).attr("id") ) { 
+$(this).click();
+}
+})
+{% ifequal form.offered True %}
+$( "#offer-edit" ).load( "/changeOffer/{{form.project.id}}/{{form.youroffer.id}}/");
+{% endifequal %}
+})
+
+//message
+
+{% if form.login or login %}
+	{% ifequal form.offered True %}
+		$( "#message" ).load( "/message/" + {{form.project.employer.id}} )
+	{% endifequal %}
+{% endif %}
+
+
+</script> 
+{% endblock %} 
